@@ -1,0 +1,21 @@
+name: skills-ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate skill layout
+        run: |
+          test -f README.md
+          test -f agent-profiles/README.md
+          test -f mcp-presets/README.md
+          skill_count="$(find skills -name SKILL.md -type f | wc -l)"
+          test "$skill_count" -gt 0
+          find skills -name SKILL.md -type f -print0 | xargs -0 -I{} test -s "{}"
