@@ -1,0 +1,238 @@
+{
+  "$schema": "../schemas/platform-capability-catalog.schema.json",
+  "schemaVersion": "opensoha.dev/platform-capability-catalog/v1",
+  "version": "0.1.0",
+  "source": {
+    "repository": "github.com/opensoha/soha",
+    "path": "internal/domain/cluster/capabilities.go",
+    "syncStrategy": "Update this catalog from the Soha cluster DefaultCapabilityMatrix before publishing a soha-skills release. Local validation checks platformCapabilityRefs against this snapshot and, when a sibling soha checkout exists, checks the snapshot for source drift."
+  },
+  "capabilities": [
+    {
+      "key": "cluster.inventory",
+      "label": "Cluster inventory",
+      "category": "platform",
+      "requiredScopes": ["cluster"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/architecture/multi-cluster-model",
+      "direct": { "status": "available" },
+      "agent": { "status": "available" }
+    },
+    {
+      "key": "namespace.lifecycle",
+      "label": "Namespace lifecycle",
+      "category": "platform",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "mutate",
+      "requiresApproval": true,
+      "docsUrl": "/architecture/access-model",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "list namespaces through the agent; namespace create, update, and delete still require direct mode"
+      }
+    },
+    {
+      "key": "workload.read",
+      "label": "Workload read model",
+      "category": "workloads",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/architecture/multi-cluster-model",
+      "direct": { "status": "available" },
+      "agent": { "status": "available" }
+    },
+    {
+      "key": "workload.mutations",
+      "label": "Workload mutations",
+      "category": "workloads",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "mutate",
+      "requiresApproval": true,
+      "docsUrl": "/architecture/authorization",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "deployment restart, rollback, and scale are available through the agent; pod deletion and YAML apply remain direct-only"
+      }
+    },
+    {
+      "key": "resource.yaml.view",
+      "label": "YAML view",
+      "category": "configuration",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/operations/agent-runtime",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "core workload YAML can be read through the agent; generic resource and custom-resource YAML views remain direct-only"
+      }
+    },
+    {
+      "key": "resource.yaml.apply",
+      "label": "YAML apply and delete",
+      "category": "configuration",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "mutate",
+      "requiresApproval": true,
+      "docsUrl": "/operations/agent-runtime",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "unsupported",
+        "reason": "YAML apply and delete are not supported for agent-connected clusters yet"
+      }
+    },
+    {
+      "key": "configuration.inventory",
+      "label": "Configuration inventory",
+      "category": "configuration",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/architecture/multi-cluster-model",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "ConfigMap and Secret lists are available through the agent; detail views and create flows remain direct-only"
+      }
+    },
+    {
+      "key": "rbac.inventory",
+      "label": "RBAC inventory",
+      "category": "access",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/architecture/access-model",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "RBAC lists and several detail views are available through the agent; create flows remain direct-only"
+      }
+    },
+    {
+      "key": "network.inventory",
+      "label": "Network inventory",
+      "category": "network",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/architecture/multi-cluster-model",
+      "direct": { "status": "available" },
+      "agent": { "status": "available" }
+    },
+    {
+      "key": "port.forward",
+      "label": "Port forwarding",
+      "category": "network",
+      "requiredScopes": ["cluster", "namespace", "pod"],
+      "riskLevel": "execute",
+      "requiresApproval": true,
+      "docsUrl": "/operations/agent-runtime",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "agent-mode requests are persisted as pending until the agent tunnel protocol attaches them"
+      }
+    },
+    {
+      "key": "storage.inventory",
+      "label": "Storage inventory",
+      "category": "storage",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/architecture/multi-cluster-model",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "storage lists are available through the agent; PVC, PV, and StorageClass detail and create flows remain direct-only"
+      }
+    },
+    {
+      "key": "custom.resources",
+      "label": "Custom resources",
+      "category": "extensions",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "mutate",
+      "requiresApproval": true,
+      "docsUrl": "/development/add-resource-module",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "CRD discovery is available through the agent; custom-resource list, YAML, create, apply, and delete remain direct-only"
+      }
+    },
+    {
+      "key": "helm.releases",
+      "label": "Helm releases",
+      "category": "helm",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "mutate",
+      "requiresApproval": true,
+      "docsUrl": "/operations/agent-runtime",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "release list, detail, history, and values read are available through the agent; install, values update, and delete remain direct-only"
+      }
+    },
+    {
+      "key": "delivery.actions",
+      "label": "Delivery actions",
+      "category": "delivery",
+      "requiredScopes": ["application", "environment", "cluster", "namespace"],
+      "riskLevel": "execute",
+      "requiresApproval": true,
+      "docsUrl": "/architecture/application-delivery",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "build actions remain available; deploy, build-deploy, verification, and rollback against agent-connected targets require delivery runner parity"
+      }
+    },
+    {
+      "key": "pod.logs",
+      "label": "Pod logs",
+      "category": "observability",
+      "requiredScopes": ["cluster", "namespace", "pod"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/operations/agent-runtime",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "snapshot log reads are available through the agent; streaming logs remain direct-only"
+      }
+    },
+    {
+      "key": "pod.exec",
+      "label": "Pod exec and terminal",
+      "category": "workloads",
+      "requiredScopes": ["cluster", "namespace", "pod"],
+      "riskLevel": "execute",
+      "requiresApproval": true,
+      "docsUrl": "/operations/agent-runtime",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "partial",
+        "reason": "non-interactive exec is available through the agent; interactive terminal sessions remain direct-only"
+      }
+    },
+    {
+      "key": "metrics",
+      "label": "Metrics",
+      "category": "observability",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/architecture/monitoring-and-alerting",
+      "direct": { "status": "available" },
+      "agent": { "status": "available" }
+    }
+  ]
+}

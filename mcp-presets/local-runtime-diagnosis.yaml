@@ -1,0 +1,153 @@
+schemaVersion: opensoha.dev/mcp-preset/v1
+id: local-runtime-diagnosis
+name: Local Runtime Diagnosis
+version: 0.1.0
+description: Local self-hosted runtime diagnosis preset for Kubernetes, Agent Runtime, and observability evidence.
+riskLevel: analyze
+skillRefs:
+  - k8s-sre
+  - agent-runtime
+  - observability
+  - cloud-local-presets
+platformCapabilityRefs:
+  - cluster.inventory
+  - workload.read
+  - network.inventory
+  - storage.inventory
+  - pod.logs
+  - metrics
+requiredScopes:
+  - cluster
+  - namespace
+tools:
+  - name: delivery.applications.list
+    description: List applications when local runtime diagnosis needs delivery context.
+    riskLevel: read
+    requiredScopes:
+      - businessLine
+      - application
+  - name: delivery.approval_policies.list
+    description: Read approval policies that may affect runtime or preset recommendations.
+    riskLevel: read
+    requiredScopes:
+      - application
+      - environment
+  - name: delivery.execution_tasks.list
+    description: List execution tasks that handed off to Agent Runtime.
+    riskLevel: read
+    requiredScopes:
+      - application
+      - environment
+  - name: delivery.execution_logs.list
+    description: Read execution logs for runtime handoff evidence.
+    riskLevel: read
+    requiredScopes:
+      - application
+      - environment
+      - executionTask
+  - name: diagnosis.release_failure.analyze
+    description: Analyze release failures with scoped runtime evidence.
+    riskLevel: analyze
+    requiredScopes:
+      - application
+      - environment
+      - executionTask
+  - name: k8s.pods.list
+    description: List pods in the scoped namespace.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.pods.logs
+    description: Read recent pod logs in the scoped namespace.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+      - pod
+  - name: k8s.pods.describe
+    description: Read pod describe context.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+      - pod
+  - name: k8s.deployments.list
+    description: List deployments in the scoped namespace.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.deployments.rollout_status
+    description: Read deployment rollout status.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+      - deployment
+  - name: k8s.deployments.events
+    description: Read deployment event context.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+      - deployment
+      - timeRange
+  - name: k8s.services.list
+    description: List services in the scoped namespace.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.services.backends
+    description: Read service backend context.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+      - service
+  - name: k8s.routes.context
+    description: Read route and ingress context.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+      - service
+  - name: k8s.storage.context
+    description: Read storage binding context.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+      - storage
+  - name: k8s.nodes.detail
+    description: Read node detail for observability triage.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - node
+  - name: k8s.events.list
+    description: Read recent Kubernetes events.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+      - timeRange
+resources:
+  - name: soha://k8s/runtime
+    description: Scoped Kubernetes runtime context for local diagnosis.
+    requiredScopes:
+      - cluster
+      - namespace
+prompts:
+  - name: soha.runtime.diagnose_agent_handoff
+    description: Agent Runtime handoff diagnosis prompt bounded to Gateway evidence.
+    requiredScopes:
+      - cluster
+      - namespace
+guardrails:
+  - read_mostly
+  - no_kubeconfig
+  - no_secret_output
+  - preserve_runtime_evidence
+  - separate_local_and_cloud_scope

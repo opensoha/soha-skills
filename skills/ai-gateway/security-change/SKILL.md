@@ -1,7 +1,9 @@
 ---
 id: security-change
 name: Security Change
+version: 0.1.0
 category: security
+description: Security-sensitive operational change planning through Soha AI Gateway.
 capabilityRefs:
   - delivery.actions.trigger
   - delivery.approval_policies.list
@@ -36,6 +38,33 @@ Use this skill when an AI assistant is helping plan, review, or hand off a secur
 5. Collect pre-change evidence through read-only tools.
 6. If execution is required, stop for explicit human confirmation and use only the approved Gateway action.
 7. Collect post-change evidence and compare it with the pre-change baseline.
+
+## Examples
+
+### Input Example
+
+User asks: "Plan a production rollback for payments API after a suspected security regression, but do not execute it yet."
+
+### Expected Tool Calls
+
+1. `delivery.approval_policies.list` to identify approval requirements.
+2. `delivery.workflow_templates.list` to identify permitted workflow paths.
+3. `delivery.rollback.context` to gather rollback candidates and signals.
+4. `delivery.execution_tasks.list` to collect recent execution evidence.
+5. `k8s.events.list` for bounded pre-change runtime evidence when cluster and namespace are in scope.
+6. `delivery.actions.trigger` only after explicit human confirmation and only when the Gateway approval path allows execution.
+
+## Permission Boundaries
+
+- Requires Gateway-visible delivery governance and scoped runtime evidence for `application`, `environment`, `cluster`, and `namespace` scopes.
+- Keeps execution behind Soha Gateway risk policy, approval policy, audit, and durable task handling.
+- Uses read-only evidence first and treats approval-required responses as a stop point.
+
+## Forbidden Actions
+
+- Do not request or reveal access token, refresh token, kubeconfig, password, private key, environment secret, or registry credential values.
+- Do not downgrade approval, scope, risk, or audit controls.
+- Do not split high-risk production changes into smaller calls to bypass approval or confirmation.
 
 ## Guardrails
 

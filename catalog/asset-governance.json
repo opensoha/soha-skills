@@ -1,0 +1,613 @@
+{
+  "$schema": "../schemas/asset-governance.schema.json",
+  "schemaVersion": "opensoha.dev/skills-asset-governance/v1",
+  "version": "0.1.0",
+  "releaseSigning": {
+    "provenanceRequired": true,
+    "attestationProvider": "github-actions-attest-build-provenance",
+    "signedArtifacts": [
+      "releaseTarball",
+      "checksum",
+      "manifest",
+      "validationReport",
+      "githubBuildProvenance"
+    ],
+    "verification": "Verify the GitHub build provenance attestation, release manifest, checksum file, validation report, and embedded package manifest before activating a skills runtime."
+  },
+  "permissionReview": {
+    "reviewedAt": "2026-06-12",
+    "reviewer": "opensoha-maintainers",
+    "assets": [
+      {
+        "type": "skill",
+        "id": "delivery-developer",
+        "version": "0.1.0",
+        "riskLevel": "execute",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "delivery.applications.list",
+          "delivery.applications.detail",
+          "delivery.applications.create",
+          "delivery.application_environments.list",
+          "delivery.application_services.list",
+          "delivery.build_sources.list",
+          "delivery.release_targets.list",
+          "delivery.release_bundles.list",
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list",
+          "delivery.release_context.diff",
+          "delivery.rollback.context",
+          "delivery.actions.trigger"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "businessLine",
+          "application",
+          "environment"
+        ],
+        "guardrails": [
+          "gateway_only",
+          "approval_for_delivery_actions",
+          "no_direct_runtime_access",
+          "preserve_delivery_evidence"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "delivery-tester",
+        "version": "0.1.0",
+        "riskLevel": "analyze",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "delivery.application_environments.list",
+          "delivery.release_targets.list",
+          "delivery.release_bundles.list",
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list",
+          "delivery.release_context.diff",
+          "diagnosis.release_failure.analyze"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "application",
+          "environment"
+        ],
+        "guardrails": [
+          "read_only_delivery_evidence",
+          "no_mutation",
+          "minimal_failure_logs",
+          "preserve_artifact_ids"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "k8s-sre",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "k8s.pods.list",
+          "k8s.pods.logs",
+          "k8s.pods.describe",
+          "k8s.deployments.list",
+          "k8s.deployments.rollout_status",
+          "k8s.deployments.events",
+          "k8s.services.list",
+          "k8s.services.backends",
+          "k8s.routes.context",
+          "k8s.storage.context",
+          "k8s.nodes.detail",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "read_only",
+          "no_kubeconfig",
+          "scoped_cluster_namespace",
+          "no_secret_output"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "security-change",
+        "version": "0.1.0",
+        "riskLevel": "execute",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "delivery.actions.trigger",
+          "delivery.approval_policies.list",
+          "delivery.workflow_templates.list",
+          "delivery.rollback.context",
+          "delivery.execution_tasks.list",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "application",
+          "environment",
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "human_confirmation",
+          "gateway_risk_policy",
+          "approval_handoff",
+          "pre_post_change_evidence"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "mcpPreset",
+        "id": "k8s-readonly",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "k8s.pods.list",
+          "k8s.pods.logs",
+          "k8s.pods.describe",
+          "k8s.deployments.list",
+          "k8s.deployments.rollout_status",
+          "k8s.deployments.events",
+          "k8s.services.list",
+          "k8s.services.backends",
+          "k8s.routes.context",
+          "k8s.storage.context",
+          "k8s.nodes.detail",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [
+          "cluster.inventory",
+          "workload.read",
+          "network.inventory",
+          "storage.inventory",
+          "pod.logs",
+          "metrics"
+        ],
+        "requiredScopes": [
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "read_only",
+          "no_kubeconfig",
+          "no_secret_output",
+          "scoped_cluster_namespace"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "agentProfile",
+        "id": "k8s-sre-readonly",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "k8s.pods.list",
+          "k8s.pods.logs",
+          "k8s.pods.describe",
+          "k8s.deployments.list",
+          "k8s.deployments.rollout_status",
+          "k8s.deployments.events",
+          "k8s.services.list",
+          "k8s.services.backends",
+          "k8s.routes.context",
+          "k8s.storage.context",
+          "k8s.nodes.detail",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [
+          "cluster.inventory",
+          "workload.read",
+          "network.inventory",
+          "storage.inventory",
+          "pod.logs",
+          "metrics"
+        ],
+        "requiredScopes": [
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "read_only",
+          "no_direct_cluster_access",
+          "no_secret_output",
+          "require_cluster_namespace_scope"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "agent-runtime",
+        "version": "0.1.0",
+        "riskLevel": "analyze",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list",
+          "diagnosis.release_failure.analyze",
+          "k8s.events.list",
+          "k8s.pods.logs"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "application",
+          "environment",
+          "executionTask",
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "gateway_only",
+          "preserve_runtime_evidence",
+          "no_secret_output",
+          "callback_state_clarity"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "observability",
+        "version": "0.1.0",
+        "riskLevel": "analyze",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "k8s.pods.logs",
+          "k8s.events.list",
+          "k8s.nodes.detail",
+          "delivery.execution_logs.list",
+          "diagnosis.release_failure.analyze"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "cluster",
+          "namespace",
+          "application",
+          "environment"
+        ],
+        "guardrails": [
+          "read_only_observability",
+          "redact_sensitive_logs",
+          "preserve_evidence_ids",
+          "no_unapproved_mutation"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "incident-handoff",
+        "version": "0.1.0",
+        "riskLevel": "analyze",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list",
+          "delivery.release_context.diff",
+          "delivery.rollback.context",
+          "diagnosis.release_failure.analyze",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "application",
+          "environment",
+          "executionTask",
+          "releaseBundle",
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "handoff_only",
+          "separate_facts_from_hypotheses",
+          "no_secret_output",
+          "preserve_incident_evidence"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "onboarding",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "delivery.applications.list",
+          "delivery.applications.detail",
+          "delivery.application_environments.list",
+          "delivery.application_services.list",
+          "delivery.build_sources.list",
+          "delivery.release_targets.list",
+          "k8s.pods.list",
+          "k8s.services.list"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "businessLine",
+          "application",
+          "environment",
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "read_only_onboarding",
+          "no_secret_collection",
+          "explicit_scope",
+          "handoff_for_creation"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "plugin-administration",
+        "version": "0.1.0",
+        "riskLevel": "execute",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "delivery.approval_policies.list",
+          "delivery.workflow_templates.list",
+          "delivery.execution_tasks.list",
+          "delivery.actions.trigger",
+          "delivery.rollback.context"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "application",
+          "environment",
+          "executionTask",
+          "releaseBundle"
+        ],
+        "guardrails": [
+          "approval_required",
+          "verify_source_checksum",
+          "no_direct_marketplace_edit",
+          "preserve_audit_context"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "cloud-local-presets",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "delivery.applications.list",
+          "delivery.approval_policies.list",
+          "delivery.execution_tasks.list",
+          "k8s.pods.list",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "businessLine",
+          "application",
+          "environment",
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "least_privilege_preset",
+          "separate_cloud_local_scope",
+          "no_secret_output",
+          "approval_visibility"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "mcpPreset",
+        "id": "local-runtime-diagnosis",
+        "version": "0.1.0",
+        "riskLevel": "analyze",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "delivery.applications.list",
+          "delivery.approval_policies.list",
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list",
+          "diagnosis.release_failure.analyze",
+          "k8s.pods.list",
+          "k8s.pods.logs",
+          "k8s.pods.describe",
+          "k8s.deployments.list",
+          "k8s.deployments.rollout_status",
+          "k8s.deployments.events",
+          "k8s.services.list",
+          "k8s.services.backends",
+          "k8s.routes.context",
+          "k8s.storage.context",
+          "k8s.nodes.detail",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [
+          "cluster.inventory",
+          "workload.read",
+          "network.inventory",
+          "storage.inventory",
+          "pod.logs",
+          "metrics"
+        ],
+        "requiredScopes": [
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "read_mostly",
+          "no_kubeconfig",
+          "no_secret_output",
+          "preserve_runtime_evidence"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "mcpPreset",
+        "id": "cloud-governance",
+        "version": "0.1.0",
+        "riskLevel": "execute",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "delivery.applications.list",
+          "delivery.applications.detail",
+          "delivery.application_environments.list",
+          "delivery.application_services.list",
+          "delivery.build_sources.list",
+          "delivery.release_targets.list",
+          "delivery.approval_policies.list",
+          "delivery.workflow_templates.list",
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list",
+          "delivery.release_context.diff",
+          "delivery.rollback.context",
+          "delivery.actions.trigger",
+          "diagnosis.release_failure.analyze",
+          "k8s.pods.list",
+          "k8s.services.list",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [
+          "cluster.inventory",
+          "workload.read",
+          "network.inventory",
+          "delivery.actions",
+          "metrics"
+        ],
+        "requiredScopes": [
+          "application",
+          "environment",
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "approval_required_for_execute",
+          "no_secret_output",
+          "preserve_audit_context",
+          "verify_plugin_source_checksum"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "agentProfile",
+        "id": "local-agent-runtime",
+        "version": "0.1.0",
+        "riskLevel": "analyze",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "delivery.applications.list",
+          "delivery.approval_policies.list",
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list",
+          "diagnosis.release_failure.analyze",
+          "k8s.pods.list",
+          "k8s.pods.logs",
+          "k8s.pods.describe",
+          "k8s.deployments.list",
+          "k8s.deployments.rollout_status",
+          "k8s.deployments.events",
+          "k8s.services.list",
+          "k8s.services.backends",
+          "k8s.routes.context",
+          "k8s.storage.context",
+          "k8s.nodes.detail",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [
+          "cluster.inventory",
+          "workload.read",
+          "network.inventory",
+          "storage.inventory",
+          "pod.logs",
+          "metrics"
+        ],
+        "requiredScopes": [
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "read_mostly",
+          "no_direct_cluster_access",
+          "no_secret_output",
+          "preserve_runtime_evidence"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "agentProfile",
+        "id": "cloud-governance-admin",
+        "version": "0.1.0",
+        "riskLevel": "execute",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "delivery.applications.list",
+          "delivery.applications.detail",
+          "delivery.application_environments.list",
+          "delivery.application_services.list",
+          "delivery.build_sources.list",
+          "delivery.release_targets.list",
+          "delivery.approval_policies.list",
+          "delivery.workflow_templates.list",
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list",
+          "delivery.release_context.diff",
+          "delivery.rollback.context",
+          "delivery.actions.trigger",
+          "diagnosis.release_failure.analyze",
+          "k8s.pods.list",
+          "k8s.services.list",
+          "k8s.events.list"
+        ],
+        "platformCapabilityRefs": [
+          "cluster.inventory",
+          "workload.read",
+          "network.inventory",
+          "delivery.actions",
+          "metrics"
+        ],
+        "requiredScopes": [
+          "application",
+          "environment",
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "approval_required_for_execute",
+          "no_direct_cluster_access",
+          "no_secret_output",
+          "preserve_audit_context"
+        ],
+        "reviewStatus": "approved"
+      }
+    ]
+  },
+  "installAudit": {
+    "eventSchema": "schemas/skills-install-audit-event.schema.json",
+    "requiredEvents": [
+      "verify",
+      "install",
+      "upgrade",
+      "rollback",
+      "activate"
+    ],
+    "retentionDays": 365,
+    "fields": [
+      "eventId",
+      "eventType",
+      "occurredAt",
+      "assetType",
+      "assetId",
+      "assetVersion",
+      "packageVersion",
+      "actor",
+      "source",
+      "checksum",
+      "decision",
+      "requestId",
+      "reason"
+    ]
+  }
+}

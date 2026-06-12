@@ -1,0 +1,239 @@
+{
+  "$schema": "../schemas/skills-index.schema.json",
+  "schemaVersion": "opensoha.dev/skills-index/v1",
+  "version": "0.1.0",
+  "skills": [
+    {
+      "id": "agent-runtime",
+      "name": "Agent Runtime",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Agent Runtime claim, callback, and failure artifact handoff through Soha AI Gateway.",
+      "path": "skills/ai-gateway/agent-runtime/SKILL.md",
+      "capabilityRefs": [
+        "delivery.execution_tasks.list",
+        "delivery.execution_logs.list",
+        "diagnosis.release_failure.analyze",
+        "k8s.events.list",
+        "k8s.pods.logs"
+      ],
+      "requiredScopes": [
+        "application",
+        "environment",
+        "executionTask",
+        "cluster",
+        "namespace"
+      ]
+    },
+    {
+      "id": "cloud-local-presets",
+      "name": "Cloud Local Presets",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Choose and validate cloud or local Soha MCP presets and profile scope before use.",
+      "path": "skills/ai-gateway/cloud-local-presets/SKILL.md",
+      "capabilityRefs": [
+        "delivery.applications.list",
+        "delivery.approval_policies.list",
+        "delivery.execution_tasks.list",
+        "k8s.pods.list",
+        "k8s.events.list"
+      ],
+      "requiredScopes": [
+        "businessLine",
+        "application",
+        "environment",
+        "cluster",
+        "namespace"
+      ]
+    },
+    {
+      "id": "delivery-developer",
+      "name": "Delivery Developer",
+      "version": "0.1.0",
+      "category": "delivery",
+      "description": "Developer delivery workflows through Soha AI Gateway.",
+      "path": "skills/ai-gateway/delivery-developer/SKILL.md",
+      "capabilityRefs": [
+        "delivery.applications.list",
+        "delivery.applications.detail",
+        "delivery.applications.create",
+        "delivery.application_environments.list",
+        "delivery.application_services.list",
+        "delivery.build_sources.list",
+        "delivery.release_targets.list",
+        "delivery.release_bundles.list",
+        "delivery.execution_tasks.list",
+        "delivery.execution_logs.list",
+        "delivery.release_context.diff",
+        "delivery.rollback.context",
+        "delivery.actions.trigger"
+      ],
+      "requiredScopes": [
+        "businessLine",
+        "application",
+        "environment"
+      ]
+    },
+    {
+      "id": "delivery-tester",
+      "name": "Delivery Tester",
+      "version": "0.1.0",
+      "category": "delivery",
+      "description": "Release testing and promotion evidence through Soha AI Gateway.",
+      "path": "skills/ai-gateway/delivery-tester/SKILL.md",
+      "capabilityRefs": [
+        "delivery.application_environments.list",
+        "delivery.release_targets.list",
+        "delivery.release_bundles.list",
+        "delivery.execution_tasks.list",
+        "delivery.execution_logs.list",
+        "delivery.release_context.diff",
+        "diagnosis.release_failure.analyze"
+      ],
+      "requiredScopes": [
+        "application",
+        "environment"
+      ]
+    },
+    {
+      "id": "incident-handoff",
+      "name": "Incident Handoff",
+      "version": "0.1.0",
+      "category": "delivery",
+      "description": "Incident handoff summaries using delivery, rollback, Kubernetes, and analysis evidence.",
+      "path": "skills/ai-gateway/incident-handoff/SKILL.md",
+      "capabilityRefs": [
+        "delivery.execution_tasks.list",
+        "delivery.execution_logs.list",
+        "delivery.release_context.diff",
+        "delivery.rollback.context",
+        "diagnosis.release_failure.analyze",
+        "k8s.events.list"
+      ],
+      "requiredScopes": [
+        "application",
+        "environment",
+        "executionTask",
+        "releaseBundle",
+        "cluster",
+        "namespace"
+      ]
+    },
+    {
+      "id": "k8s-sre",
+      "name": "K8s SRE",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Read-only Kubernetes diagnosis through Soha AI Gateway.",
+      "path": "skills/ai-gateway/k8s-sre/SKILL.md",
+      "capabilityRefs": [
+        "k8s.pods.list",
+        "k8s.pods.logs",
+        "k8s.pods.describe",
+        "k8s.deployments.list",
+        "k8s.deployments.rollout_status",
+        "k8s.deployments.events",
+        "k8s.services.list",
+        "k8s.services.backends",
+        "k8s.routes.context",
+        "k8s.storage.context",
+        "k8s.nodes.detail",
+        "k8s.events.list"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ]
+    },
+    {
+      "id": "observability",
+      "name": "Observability",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Cross-domain observability triage through Soha AI Gateway evidence.",
+      "path": "skills/ai-gateway/observability/SKILL.md",
+      "capabilityRefs": [
+        "k8s.pods.logs",
+        "k8s.events.list",
+        "k8s.nodes.detail",
+        "delivery.execution_logs.list",
+        "diagnosis.release_failure.analyze"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "application",
+        "environment"
+      ]
+    },
+    {
+      "id": "onboarding",
+      "name": "Onboarding",
+      "version": "0.1.0",
+      "category": "delivery",
+      "description": "New application, environment, cluster, and service onboarding through Soha Gateway.",
+      "path": "skills/ai-gateway/onboarding/SKILL.md",
+      "capabilityRefs": [
+        "delivery.applications.list",
+        "delivery.applications.detail",
+        "delivery.application_environments.list",
+        "delivery.application_services.list",
+        "delivery.build_sources.list",
+        "delivery.release_targets.list",
+        "k8s.pods.list",
+        "k8s.services.list"
+      ],
+      "requiredScopes": [
+        "businessLine",
+        "application",
+        "environment",
+        "cluster",
+        "namespace"
+      ]
+    },
+    {
+      "id": "plugin-administration",
+      "name": "Plugin Administration",
+      "version": "0.1.0",
+      "category": "security",
+      "description": "Plugin installation and upgrade governance planning through existing Soha Gateway evidence.",
+      "path": "skills/ai-gateway/plugin-administration/SKILL.md",
+      "capabilityRefs": [
+        "delivery.approval_policies.list",
+        "delivery.workflow_templates.list",
+        "delivery.execution_tasks.list",
+        "delivery.actions.trigger",
+        "delivery.rollback.context"
+      ],
+      "requiredScopes": [
+        "application",
+        "environment",
+        "executionTask",
+        "releaseBundle"
+      ]
+    },
+    {
+      "id": "security-change",
+      "name": "Security Change",
+      "version": "0.1.0",
+      "category": "security",
+      "description": "Security-sensitive operational change planning through Soha AI Gateway.",
+      "path": "skills/ai-gateway/security-change/SKILL.md",
+      "capabilityRefs": [
+        "delivery.actions.trigger",
+        "delivery.approval_policies.list",
+        "delivery.workflow_templates.list",
+        "delivery.rollback.context",
+        "delivery.execution_tasks.list",
+        "k8s.events.list"
+      ],
+      "requiredScopes": [
+        "application",
+        "environment",
+        "cluster",
+        "namespace"
+      ]
+    }
+  ]
+}

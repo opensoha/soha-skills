@@ -1,7 +1,9 @@
 ---
 id: delivery-developer
 name: Delivery Developer
+version: 0.1.0
 category: delivery
+description: Developer delivery workflows through Soha AI Gateway.
 capabilityRefs:
   - delivery.applications.list
   - delivery.applications.detail
@@ -44,6 +46,33 @@ Use this skill when an AI coding tool is helping a developer onboard an applicat
 6. Before rollback, read `delivery.rollback.context`, confirm the intended `releaseBundleId`, and state the rollback signal and owner.
 7. After triggering, read release bundle and execution task status, logs, and artifacts when those tools are available.
 8. Return a compact handoff with status, IDs, links if present, and the next safe manual step.
+
+## Examples
+
+### Input Example
+
+User asks: "Build the payments API from branch `release/2026-06-09` into staging and show me the task status."
+
+### Expected Tool Calls
+
+1. `delivery.applications.list` with a search term such as `payments`.
+2. `delivery.applications.detail` for the selected `applicationId`.
+3. `delivery.application_environments.list` to select the staging binding.
+4. `delivery.build_sources.list` to select the build source.
+5. `delivery.actions.trigger` with `action=build`, the selected application environment, branch or commit, and a non-secret reason.
+6. `delivery.execution_tasks.list` and `delivery.execution_logs.list` to report task status and redacted log evidence.
+
+## Permission Boundaries
+
+- Requires Gateway-visible delivery capabilities for the current identity and the `businessLine`, `application`, and `environment` scopes.
+- Uses only non-secret application metadata and release identifiers in arguments.
+- Treats approval-required responses from `delivery.actions.trigger` as the terminal handoff.
+
+## Forbidden Actions
+
+- Do not pass access token, refresh token, kubeconfig, password, registry credential, environment variable, or runner secret values into Gateway tools.
+- Do not bypass `delivery.actions.trigger` by calling CI, Docker, Kubernetes, PostgreSQL, or runners directly.
+- Do not deploy to production, verify, or roll back unless the user explicitly names the target and intent.
 
 ## Guardrails
 

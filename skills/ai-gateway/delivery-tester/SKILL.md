@@ -1,7 +1,9 @@
 ---
 id: delivery-tester
 name: Delivery Tester
+version: 0.1.0
 category: delivery
+description: Release testing and promotion evidence through Soha AI Gateway.
 capabilityRefs:
   - delivery.application_environments.list
   - delivery.release_targets.list
@@ -36,6 +38,33 @@ Use this skill when an AI assistant is helping QA or a release tester inspect ca
 6. For failures, gather only the minimum logs and artifacts needed to explain the failure mode.
 7. Produce a promotion checklist with evidence IDs and unresolved risks.
 8. If the failure needs deeper provider reasoning, invoke `diagnosis.release_failure.analyze` with `deepAnalysis=true` and an external `agentProviderId`; report the returned `agentRunId` as queued until Agent Runtime callback artifacts arrive.
+
+## Examples
+
+### Input Example
+
+User asks: "Check whether release bundle `rb-20260609-17` for checkout service is ready to promote from test to staging."
+
+### Expected Tool Calls
+
+1. `delivery.application_environments.list` for the checkout application and test environment.
+2. `delivery.release_targets.list` to confirm the target binding.
+3. `delivery.release_bundles.list` to locate `rb-20260609-17`.
+4. `delivery.execution_tasks.list` for execution evidence tied to the bundle.
+5. `delivery.execution_logs.list` for bounded, redacted failure or verification logs.
+6. `delivery.release_context.diff` to compare candidate context before producing the promotion checklist.
+
+## Permission Boundaries
+
+- Requires Gateway-visible delivery read and analysis capabilities for `application` and `environment` scopes.
+- Reads release evidence and summarizes sensitive-looking log values as redacted.
+- Uses `diagnosis.release_failure.analyze` only when bounded evidence is insufficient and the current manifest exposes that capability.
+
+## Forbidden Actions
+
+- Do not approve, reject, retry, cancel, deploy, roll back, or mutate release state from this skill.
+- Do not include access token, refresh token, password, kubeconfig, private key, credential, or raw secret-looking log values in output.
+- Do not invent artifact, task, or test-report identifiers when Gateway evidence is missing.
 
 ## Guardrails
 

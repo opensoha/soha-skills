@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opensoha.dev/schemas/gateway-capability-catalog.schema.json",
+  "title": "OpenSoha Gateway Capability Catalog Snapshot",
+  "type": "object",
+  "required": ["$schema", "schemaVersion", "version", "source", "tools"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schemaVersion": {
+      "const": "opensoha.dev/gateway-capability-catalog/v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+([-+][A-Za-z0-9.-]+)?$"
+    },
+    "source": {
+      "type": "object",
+      "required": ["repository", "path", "syncStrategy"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "syncStrategy": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "tools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "domain", "action", "riskLevel", "requiredScopes"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "domain": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "riskLevel": {
+            "type": "string",
+            "enum": ["read", "analyze", "mutate", "execute", "high"]
+          },
+          "requiredScopes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}
