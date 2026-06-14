@@ -6,7 +6,6 @@ category: security
 description: Security-sensitive operational change planning through Soha AI Gateway.
 capabilityRefs:
   - delivery.actions.trigger
-  - delivery.approval_policies.list
   - delivery.workflow_templates.list
   - delivery.rollback.context
   - delivery.execution_tasks.list
@@ -25,7 +24,7 @@ Use this skill when an AI assistant is helping plan, review, or hand off a secur
 ## Operating Contract
 
 - This skill is a control checklist, not a permission grant.
-- High-risk actions must remain behind Gateway risk policy, approval policy, and the owning domain service.
+- High-risk actions must remain behind Gateway risk policy, Gateway approval guardrail, and the owning domain service.
 - Prefer change plans, rollback criteria, evidence collection, and approval handoffs over direct execution.
 - Treat credentials, security policy, network exposure, registry references, and production deploys as sensitive.
 
@@ -47,17 +46,16 @@ User asks: "Plan a production rollback for payments API after a suspected securi
 
 ### Expected Tool Calls
 
-1. `delivery.approval_policies.list` to identify approval requirements.
-2. `delivery.workflow_templates.list` to identify permitted workflow paths.
-3. `delivery.rollback.context` to gather rollback candidates and signals.
-4. `delivery.execution_tasks.list` to collect recent execution evidence.
-5. `k8s.events.list` for bounded pre-change runtime evidence when cluster and namespace are in scope.
-6. `delivery.actions.trigger` only after explicit human confirmation and only when the Gateway approval path allows execution.
+1. `delivery.workflow_templates.list` to identify permitted workflow paths and approval nodes.
+2. `delivery.rollback.context` to gather rollback candidates and signals.
+3. `delivery.execution_tasks.list` to collect recent execution evidence.
+4. `k8s.events.list` for bounded pre-change runtime evidence when cluster and namespace are in scope.
+5. `delivery.actions.trigger` only after explicit human confirmation and only when the Gateway approval path allows execution.
 
 ## Permission Boundaries
 
 - Requires Gateway-visible delivery governance and scoped runtime evidence for `application`, `environment`, `cluster`, and `namespace` scopes.
-- Keeps execution behind Soha Gateway risk policy, approval policy, audit, and durable task handling.
+- Keeps execution behind Soha Gateway risk policy, approval guardrail, audit, and durable task handling.
 - Uses read-only evidence first and treats approval-required responses as a stop point.
 
 ## Forbidden Actions

@@ -35,7 +35,6 @@ enabledToolRefs:
   - delivery.application_services.list
   - delivery.build_sources.list
   - delivery.release_targets.list
-  - delivery.approval_policies.list
   - delivery.workflow_templates.list
   - delivery.execution_tasks.list
   - delivery.execution_logs.list

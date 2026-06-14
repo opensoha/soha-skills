@@ -26,12 +26,6 @@ tools:
     requiredScopes:
       - businessLine
       - application
-  - name: delivery.approval_policies.list
-    description: Read approval policies that may affect runtime or preset recommendations.
-    riskLevel: read
-    requiredScopes:
-      - application
-      - environment
   - name: delivery.execution_tasks.list
     description: List execution tasks that handed off to Agent Runtime.
     riskLevel: read

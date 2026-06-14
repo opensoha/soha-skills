@@ -25,7 +25,7 @@ Use this skill when an AI assistant is helping QA or a release tester inspect ca
 
 - Treat release bundles and execution tasks as immutable delivery evidence.
 - Use soha Gateway tools for application-environment bindings, execution tasks, logs, artifacts, and release-failure context.
-- Do not mutate application configuration, environment bindings, approval policies, or Kubernetes resources while working in this skill.
+- Do not mutate application configuration, environment bindings, workflow approval gates, or Kubernetes resources while working in this skill.
 - Keep every conclusion tied to a bundle id, execution task id, environment id, log excerpt summary, artifact id, or test report reference.
 
 ## Workflow

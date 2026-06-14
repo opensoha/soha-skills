@@ -56,12 +56,6 @@ tools:
     requiredScopes:
       - application
       - environment
-  - name: delivery.approval_policies.list
-    description: Read approval policies for governed operations.
-    riskLevel: read
-    requiredScopes:
-      - application
-      - environment
   - name: delivery.workflow_templates.list
     description: Read workflow templates for governed plugin or delivery changes.
     riskLevel: read

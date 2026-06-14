@@ -13,196 +13,281 @@
       "domain": "delivery",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["businessLine", "application"]
+      "requiredScopes": [
+        "businessLine",
+        "application"
+      ]
     },
     {
       "name": "delivery.applications.detail",
       "domain": "delivery",
       "action": "read",
       "riskLevel": "read",
-      "requiredScopes": ["businessLine", "application"]
+      "requiredScopes": [
+        "businessLine",
+        "application"
+      ]
     },
     {
       "name": "delivery.applications.create",
       "domain": "delivery",
       "action": "create",
       "riskLevel": "mutate",
-      "requiredScopes": ["businessLine"]
+      "requiredScopes": [
+        "businessLine"
+      ]
     },
     {
       "name": "delivery.application_environments.list",
       "domain": "delivery",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["application", "environment"]
+      "requiredScopes": [
+        "application",
+        "environment"
+      ]
     },
     {
       "name": "delivery.application_services.list",
       "domain": "delivery",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["application"]
+      "requiredScopes": [
+        "application"
+      ]
     },
     {
       "name": "delivery.build_sources.list",
       "domain": "delivery",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["application"]
+      "requiredScopes": [
+        "application"
+      ]
     },
     {
       "name": "delivery.release_targets.list",
       "domain": "delivery",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["application", "environment"]
+      "requiredScopes": [
+        "application",
+        "environment"
+      ]
     },
     {
       "name": "delivery.actions.trigger",
       "domain": "delivery",
       "action": "execute",
       "riskLevel": "execute",
-      "requiredScopes": ["application", "environment"]
+      "requiredScopes": [
+        "application",
+        "environment"
+      ]
     },
     {
       "name": "delivery.release_bundles.list",
       "domain": "delivery",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["application", "environment"]
+      "requiredScopes": [
+        "application",
+        "environment"
+      ]
     },
     {
       "name": "delivery.execution_tasks.list",
       "domain": "delivery",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["application", "environment"]
+      "requiredScopes": [
+        "application",
+        "environment"
+      ]
     },
     {
       "name": "delivery.execution_logs.list",
       "domain": "delivery",
       "action": "logs",
       "riskLevel": "read",
-      "requiredScopes": ["application", "environment", "executionTask"]
-    },
-    {
-      "name": "delivery.approval_policies.list",
-      "domain": "delivery",
-      "action": "list",
-      "riskLevel": "read",
-      "requiredScopes": ["application", "environment"]
+      "requiredScopes": [
+        "application",
+        "environment",
+        "executionTask"
+      ]
     },
     {
       "name": "delivery.workflow_templates.list",
       "domain": "delivery",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["application", "environment"]
+      "requiredScopes": [
+        "application",
+        "environment"
+      ]
     },
     {
       "name": "delivery.release_context.diff",
       "domain": "delivery",
       "action": "analyze",
       "riskLevel": "analyze",
-      "requiredScopes": ["application", "environment", "releaseBundle"]
+      "requiredScopes": [
+        "application",
+        "environment",
+        "releaseBundle"
+      ]
     },
     {
       "name": "delivery.rollback.context",
       "domain": "delivery",
       "action": "analyze",
       "riskLevel": "analyze",
-      "requiredScopes": ["application", "environment", "releaseBundle", "executionTask"]
+      "requiredScopes": [
+        "application",
+        "environment",
+        "releaseBundle",
+        "executionTask"
+      ]
     },
     {
       "name": "k8s.pods.list",
       "domain": "k8s",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace"]
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ]
     },
     {
       "name": "k8s.pods.logs",
       "domain": "k8s",
       "action": "logs",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace", "pod"]
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "pod"
+      ]
     },
     {
       "name": "k8s.pods.describe",
       "domain": "k8s",
       "action": "read",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace", "pod"]
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "pod"
+      ]
     },
     {
       "name": "k8s.deployments.list",
       "domain": "k8s",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace"]
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ]
     },
     {
       "name": "k8s.deployments.rollout_status",
       "domain": "k8s",
       "action": "read",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace", "deployment"]
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "deployment"
+      ]
     },
     {
       "name": "k8s.deployments.events",
       "domain": "k8s",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace", "deployment", "timeRange"]
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "deployment",
+        "timeRange"
+      ]
     },
     {
       "name": "k8s.services.list",
       "domain": "k8s",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace"]
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ]
     },
     {
       "name": "k8s.services.backends",
       "domain": "k8s",
       "action": "read",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace", "service"]
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "service"
+      ]
     },
     {
       "name": "k8s.routes.context",
       "domain": "k8s",
       "action": "read",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace", "service"]
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "service"
+      ]
     },
     {
       "name": "k8s.storage.context",
       "domain": "k8s",
       "action": "read",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace", "storage"]
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "storage"
+      ]
     },
     {
       "name": "k8s.nodes.detail",
       "domain": "k8s",
       "action": "read",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "node"]
+      "requiredScopes": [
+        "cluster",
+        "node"
+      ]
     },
     {
       "name": "k8s.events.list",
       "domain": "k8s",
       "action": "list",
       "riskLevel": "read",
-      "requiredScopes": ["cluster", "namespace", "timeRange"]
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "timeRange"
+      ]
     },
     {
       "name": "diagnosis.release_failure.analyze",
       "domain": "ai",
       "action": "analyze",
       "riskLevel": "analyze",
-      "requiredScopes": ["application", "environment", "executionTask"]
+      "requiredScopes": [
+        "application",
+        "environment",
+        "executionTask"
+      ]
     }
   ]
 }

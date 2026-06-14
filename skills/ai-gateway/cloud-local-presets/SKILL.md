@@ -6,7 +6,7 @@ category: platform
 description: Choose and validate cloud or local Soha MCP presets and profile scope before use.
 capabilityRefs:
   - delivery.applications.list
-  - delivery.approval_policies.list
+  - delivery.workflow_templates.list
   - delivery.execution_tasks.list
   - k8s.pods.list
   - k8s.events.list
@@ -33,7 +33,7 @@ Use this skill when an AI assistant is helping choose between local self-hosted,
 
 1. Confirm whether the user is targeting local self-hosted Soha, Soha Cloud compatible endpoint, or both.
 2. List application and platform evidence needed by the requested workflow.
-3. Check approval policy and recent execution task context when a preset may trigger governed actions.
+3. Check workflow approval nodes and recent execution task context when a preset may trigger governed actions.
 4. Choose the narrowest preset that covers the requested tools and scopes.
 5. Explain unavailable capabilities, unsupported agent-mode paths, and required approvals.
 6. Return the preset/profile recommendation with scope assumptions and validation commands.
@@ -47,7 +47,7 @@ Pick a safe local preset for read-only Kubernetes diagnosis and a cloud preset f
 ### Expected Tool Calls
 
 - `delivery.applications.list`
-- `delivery.approval_policies.list`
+- `delivery.workflow_templates.list`
 - `delivery.execution_tasks.list`
 - `k8s.pods.list`
 - `k8s.events.list`

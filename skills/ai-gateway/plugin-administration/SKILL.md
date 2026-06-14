@@ -5,7 +5,6 @@ version: 0.1.0
 category: security
 description: Plugin installation and upgrade governance planning through existing Soha Gateway evidence.
 capabilityRefs:
-  - delivery.approval_policies.list
   - delivery.workflow_templates.list
   - delivery.execution_tasks.list
   - delivery.actions.trigger
@@ -24,14 +23,14 @@ Use this skill when an AI assistant is helping an operator plan, review, or hand
 ## Operating Contract
 
 - Treat plugin administration as a governed change, not as direct file or database editing.
-- Use Gateway evidence for approval policy, workflow template, execution task, and rollback context.
-- Keep plugin id, version, source, checksum, application, environment, execution task, approval policy, and rollback owner explicit.
-- Do not bypass the plugin marketplace, RBAC, approval policy, or audit path.
+- Use Gateway evidence for workflow approval nodes, workflow template, execution task, and rollback context.
+- Keep plugin id, version, source, checksum, application, environment, execution task, workflow approval gate, and rollback owner explicit.
+- Do not bypass the plugin marketplace, RBAC, workflow approval gate, or audit path.
 
 ## Workflow
 
 1. Confirm plugin id, target environment, source, expected version, checksum, and owner.
-2. List approval policies and workflow templates that govern the plugin change.
+2. List workflow templates and approval nodes that govern the plugin change.
 3. Inspect recent execution tasks for similar plugin operations or failed rollouts.
 4. Review rollback context before recommending enablement or upgrade.
 5. If execution is requested, require explicit approval and use only the approved delivery action path.
@@ -45,7 +44,6 @@ Prepare an upgrade plan for plugin `opensoha.k8s-sre-pack` in staging and includ
 
 ### Expected Tool Calls
 
-- `delivery.approval_policies.list`
 - `delivery.workflow_templates.list`
 - `delivery.execution_tasks.list`
 - `delivery.rollback.context`
@@ -54,7 +52,7 @@ Prepare an upgrade plan for plugin `opensoha.k8s-sre-pack` in staging and includ
 ## Permission Boundaries
 
 - Read governance and execution evidence for the declared application and environment.
-- `delivery.actions.trigger` is allowed only after explicit user confirmation and visible approval policy context.
+- `delivery.actions.trigger` is allowed only after explicit user confirmation and visible workflow approval context.
 - Plugin source, checksum, and manifest review must be recorded before execution.
 
 ## Forbidden Actions
@@ -67,5 +65,5 @@ Prepare an upgrade plan for plugin `opensoha.k8s-sre-pack` in staging and includ
 
 - Include plugin source and checksum in the final plan when available.
 - Separate planning, approval, execution, verification, and rollback sections.
-- Treat missing approval policy as a blocker.
+- Treat missing workflow approval context as a blocker for governed changes.
 - Preserve audit context for every recommended action.

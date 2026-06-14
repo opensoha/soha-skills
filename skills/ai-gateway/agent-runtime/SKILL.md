@@ -56,7 +56,7 @@ Investigate why execution task `task-123` for application `billing-api` in envir
 
 - Requires application, environment, execution task, cluster, and namespace scope.
 - Uses only read/analyze Gateway tools unless a separate approved delivery action is requested.
-- Callback retry or workflow mutation must stay behind the owning delivery action and approval policy.
+- Callback retry or workflow mutation must stay behind the owning delivery action and Gateway approval guardrail.
 
 ## Forbidden Actions
 

@@ -122,7 +122,6 @@
         "approvalRequired": true,
         "gatewayCapabilityRefs": [
           "delivery.actions.trigger",
-          "delivery.approval_policies.list",
           "delivery.workflow_templates.list",
           "delivery.rollback.context",
           "delivery.execution_tasks.list",
@@ -350,7 +349,6 @@
         "riskLevel": "execute",
         "approvalRequired": true,
         "gatewayCapabilityRefs": [
-          "delivery.approval_policies.list",
           "delivery.workflow_templates.list",
           "delivery.execution_tasks.list",
           "delivery.actions.trigger",
@@ -379,7 +377,6 @@
         "approvalRequired": false,
         "gatewayCapabilityRefs": [
           "delivery.applications.list",
-          "delivery.approval_policies.list",
           "delivery.execution_tasks.list",
           "k8s.pods.list",
           "k8s.events.list"
@@ -408,7 +405,6 @@
         "approvalRequired": false,
         "gatewayCapabilityRefs": [
           "delivery.applications.list",
-          "delivery.approval_policies.list",
           "delivery.execution_tasks.list",
           "delivery.execution_logs.list",
           "diagnosis.release_failure.analyze",
@@ -458,7 +454,6 @@
           "delivery.application_services.list",
           "delivery.build_sources.list",
           "delivery.release_targets.list",
-          "delivery.approval_policies.list",
           "delivery.workflow_templates.list",
           "delivery.execution_tasks.list",
           "delivery.execution_logs.list",
@@ -499,7 +494,6 @@
         "approvalRequired": false,
         "gatewayCapabilityRefs": [
           "delivery.applications.list",
-          "delivery.approval_policies.list",
           "delivery.execution_tasks.list",
           "delivery.execution_logs.list",
           "diagnosis.release_failure.analyze",
@@ -549,7 +543,6 @@
           "delivery.application_services.list",
           "delivery.build_sources.list",
           "delivery.release_targets.list",
-          "delivery.approval_policies.list",
           "delivery.workflow_templates.list",
           "delivery.execution_tasks.list",
           "delivery.execution_logs.list",

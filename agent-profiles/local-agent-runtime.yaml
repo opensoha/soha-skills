@@ -28,7 +28,6 @@ requiredScopes:
   - namespace
 enabledToolRefs:
   - delivery.applications.list
-  - delivery.approval_policies.list
   - delivery.execution_tasks.list
   - delivery.execution_logs.list
   - diagnosis.release_failure.analyze
