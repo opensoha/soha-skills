@@ -34,6 +34,7 @@
       "path": "skills/ai-gateway/cloud-local-presets/SKILL.md",
       "capabilityRefs": [
         "delivery.applications.list",
+        "delivery.workflow_templates.list",
         "delivery.execution_tasks.list",
         "k8s.pods.list",
         "k8s.events.list"
@@ -57,6 +58,13 @@
         "delivery.applications.list",
         "delivery.applications.detail",
         "delivery.applications.create",
+        "delivery.onboarding.analyze_repo",
+        "delivery.standards.dockerfile.generate",
+        "delivery.standards.dockerfile.validate",
+        "delivery.standards.helm.generate",
+        "delivery.standards.k8s.validate",
+        "delivery.spec.render",
+        "delivery.application.bootstrap",
         "delivery.application_environments.list",
         "delivery.application_services.list",
         "delivery.build_sources.list",
@@ -64,6 +72,7 @@
         "delivery.release_bundles.list",
         "delivery.execution_tasks.list",
         "delivery.execution_logs.list",
+        "delivery.release.plan",
         "delivery.release_context.diff",
         "delivery.rollback.context",
         "delivery.actions.trigger"
@@ -87,6 +96,7 @@
         "delivery.release_bundles.list",
         "delivery.execution_tasks.list",
         "delivery.execution_logs.list",
+        "delivery.release.plan",
         "delivery.release_context.diff",
         "diagnosis.release_failure.analyze"
       ],

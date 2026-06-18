@@ -10,6 +10,7 @@ capabilityRefs:
   - delivery.release_bundles.list
   - delivery.execution_tasks.list
   - delivery.execution_logs.list
+  - delivery.release.plan
   - delivery.release_context.diff
   - diagnosis.release_failure.analyze
 requiredScopes:
@@ -35,9 +36,10 @@ Use this skill when an AI assistant is helping QA or a release tester inspect ca
 3. List recent release bundles and release targets for the application or environment.
 4. Inspect execution tasks for the candidate bundle, including logs and artifacts when available.
 5. Classify the result as ready, blocked, failed, or needs manual verification.
-6. For failures, gather only the minimum logs and artifacts needed to explain the failure mode.
-7. Produce a promotion checklist with evidence IDs and unresolved risks.
-8. If the failure needs deeper provider reasoning, invoke `diagnosis.release_failure.analyze` with `deepAnalysis=true` and an external `agentProviderId`; report the returned `agentRunId` as queued until Agent Runtime callback artifacts arrive.
+6. When asked for a promotion or deploy recommendation, use `delivery.release.plan` to produce a DeliveryPlan preview only; do not trigger execution.
+7. For failures, gather only the minimum logs and artifacts needed to explain the failure mode.
+8. Produce a promotion checklist with evidence IDs and unresolved risks.
+9. If the failure needs deeper provider reasoning, invoke `diagnosis.release_failure.analyze` with `deepAnalysis=true` and an external `agentProviderId`; report the returned `agentRunId` as queued until Agent Runtime callback artifacts arrive.
 
 ## Examples
 
@@ -53,11 +55,13 @@ User asks: "Check whether release bundle `rb-20260609-17` for checkout service i
 4. `delivery.execution_tasks.list` for execution evidence tied to the bundle.
 5. `delivery.execution_logs.list` for bounded, redacted failure or verification logs.
 6. `delivery.release_context.diff` to compare candidate context before producing the promotion checklist.
+7. `delivery.release.plan` only if the user asks for a deploy/promotion plan preview; confirmation and execution stay outside this skill.
 
 ## Permission Boundaries
 
 - Requires Gateway-visible delivery read and analysis capabilities for `application` and `environment` scopes.
 - Reads release evidence and summarizes sensitive-looking log values as redacted.
+- Uses `delivery.release.plan` only for previewing a DeliveryPlan; it must not confirm or execute the plan.
 - Uses `diagnosis.release_failure.analyze` only when bounded evidence is insufficient and the current manifest exposes that capability.
 
 ## Forbidden Actions

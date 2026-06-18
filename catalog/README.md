@@ -25,6 +25,7 @@ The normalized Gateway required scope union is:
 - `node`
 - `pod`
 - `releaseBundle`
+- `repository`
 - `service`
 - `storage`
 - `timeRange`

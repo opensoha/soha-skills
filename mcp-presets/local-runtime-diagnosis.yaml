@@ -32,6 +32,12 @@ tools:
     requiredScopes:
       - application
       - environment
+  - name: delivery.workflow_templates.list
+    description: List workflow templates to inspect approval and verification nodes before choosing a preset.
+    riskLevel: read
+    requiredScopes:
+      - application
+      - environment
   - name: delivery.execution_logs.list
     description: Read execution logs for runtime handoff evidence.
     riskLevel: read

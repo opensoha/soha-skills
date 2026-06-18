@@ -127,6 +127,89 @@
       ]
     },
     {
+      "name": "delivery.onboarding.analyze_repo",
+      "domain": "delivery",
+      "action": "analyze",
+      "riskLevel": "analyze",
+      "requiredScopes": [
+        "businessLine",
+        "repository"
+      ]
+    },
+    {
+      "name": "delivery.standards.dockerfile.generate",
+      "domain": "delivery",
+      "action": "generate",
+      "riskLevel": "analyze",
+      "requiredScopes": [
+        "businessLine",
+        "repository"
+      ]
+    },
+    {
+      "name": "delivery.standards.dockerfile.validate",
+      "domain": "delivery",
+      "action": "validate",
+      "riskLevel": "analyze",
+      "requiredScopes": [
+        "businessLine",
+        "repository"
+      ]
+    },
+    {
+      "name": "delivery.standards.helm.generate",
+      "domain": "delivery",
+      "action": "generate",
+      "riskLevel": "analyze",
+      "requiredScopes": [
+        "businessLine",
+        "repository",
+        "environment"
+      ]
+    },
+    {
+      "name": "delivery.standards.k8s.validate",
+      "domain": "delivery",
+      "action": "validate",
+      "riskLevel": "analyze",
+      "requiredScopes": [
+        "application",
+        "environment"
+      ]
+    },
+    {
+      "name": "delivery.spec.render",
+      "domain": "delivery",
+      "action": "render",
+      "riskLevel": "analyze",
+      "requiredScopes": [
+        "businessLine",
+        "application",
+        "environment"
+      ]
+    },
+    {
+      "name": "delivery.application.bootstrap",
+      "domain": "delivery",
+      "action": "plan",
+      "riskLevel": "analyze",
+      "requiredScopes": [
+        "businessLine",
+        "application",
+        "environment"
+      ]
+    },
+    {
+      "name": "delivery.release.plan",
+      "domain": "delivery",
+      "action": "plan",
+      "riskLevel": "analyze",
+      "requiredScopes": [
+        "application",
+        "environment"
+      ]
+    },
+    {
       "name": "delivery.release_context.diff",
       "domain": "delivery",
       "action": "analyze",
