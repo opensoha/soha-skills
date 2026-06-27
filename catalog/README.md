@@ -16,6 +16,9 @@ by local validation.
 The normalized Gateway required scope union is:
 
 - `application`
+- `aiClient`
+- `approval`
+- `audit`
 - `businessLine`
 - `cluster`
 - `deployment`
@@ -24,11 +27,21 @@ The normalized Gateway required scope union is:
 - `namespace`
 - `node`
 - `pod`
+- `policy`
+- `relayCache`
+- `relayCall`
+- `relayRoute`
+- `relayUpstream`
 - `releaseBundle`
 - `repository`
 - `service`
+- `serviceAccount`
+- `skill`
 - `storage`
+- `subject`
 - `timeRange`
+- `token`
+- `tool`
 
 Validation prefers the published `node_modules/@opensoha/contracts` package
 when it is available. A sibling `../soha-contracts` checkout is a local

@@ -5,7 +5,10 @@
   "gatewayCapabilityCatalogVersion": "0.1.0",
   "platformCapabilityCatalogVersion": "0.1.0",
   "requiredScopes": [
+    "aiClient",
     "application",
+    "approval",
+    "audit",
     "businessLine",
     "cluster",
     "deployment",
@@ -14,11 +17,21 @@
     "namespace",
     "node",
     "pod",
+    "policy",
+    "relayCache",
+    "relayCall",
+    "relayRoute",
+    "relayUpstream",
     "releaseBundle",
     "repository",
     "service",
+    "serviceAccount",
+    "skill",
     "storage",
-    "timeRange"
+    "subject",
+    "timeRange",
+    "token",
+    "tool"
   ],
   "supportedVersions": {
     "soha-core": ">=0.1.0 <0.2.0",

@@ -216,12 +216,95 @@ def load_capability_catalog() -> dict[str, Any]:
         raise ValidationError(f"{rel(CATALOG_PATH)}: catalog must be a JSON object")
     validate_schema(catalog, load_schema("gateway-capability-catalog.schema.json"), rel(CATALOG_PATH))
     tool_names: set[str] = set()
+    runtime_tool_names: set[str] = set()
+    known_skill_refs: set[str] = set(catalog.get("plannedSkills", []))
+    resource_names = {resource["name"] for resource in catalog.get("resources", [])}
+    prompt_names = {prompt["name"] for prompt in catalog.get("prompts", [])}
+    if len(resource_names) != len(catalog.get("resources", [])):
+        raise ValidationError(f"{rel(CATALOG_PATH)}: duplicate Gateway resource record")
+    if len(prompt_names) != len(catalog.get("prompts", [])):
+        raise ValidationError(f"{rel(CATALOG_PATH)}: duplicate Gateway prompt record")
+
     for tool in catalog["tools"]:
         name = tool["name"]
         if name in tool_names:
             raise ValidationError(f"{rel(CATALOG_PATH)}: duplicate Gateway tool {name!r}")
         tool_names.add(name)
+        if tool["status"] == "stable-runtime":
+            runtime_tool_names.add(name)
+        validate_gateway_catalog_tool_record(tool, resource_names, prompt_names)
+        known_skill_refs.update(tool.get("skillRefs", []))
+
+    for resource in catalog.get("resources", []):
+        validate_gateway_catalog_resource_record(resource, tool_names, prompt_names)
+        known_skill_refs.update(resource.get("skillRefs", []))
+
+    for prompt in catalog.get("prompts", []):
+        validate_gateway_catalog_prompt_record(prompt, tool_names, resource_names)
+        known_skill_refs.update(prompt.get("skillRefs", []))
+
+    catalog["_runtimeToolNames"] = sorted(runtime_tool_names)
+    catalog["_knownSkillRefs"] = sorted(known_skill_refs)
     return catalog
+
+
+def validate_gateway_catalog_tool_record(
+    tool: dict[str, Any], resource_names: set[str], prompt_names: set[str]
+) -> None:
+    name = tool["name"]
+    status = tool["status"]
+    if status == "reserved":
+        if not name.endswith(".*"):
+            raise ValidationError(f"{rel(CATALOG_PATH)}: reserved Gateway namespace {name!r} must end with .*")
+        return
+
+    if tool["owningService"] == "reserved":
+        raise ValidationError(f"{rel(CATALOG_PATH)}: non-reserved Gateway tool {name!r} must declare an owning service")
+    if not tool["permissionKeys"]:
+        raise ValidationError(f"{rel(CATALOG_PATH)}: Gateway tool {name!r} must declare permissionKeys")
+    if not tool["requiredScopes"]:
+        raise ValidationError(f"{rel(CATALOG_PATH)}: Gateway tool {name!r} must declare requiredScopes")
+    if tool["riskLevel"] in {"mutate", "execute", "high"} and not isinstance(tool["requiresApproval"], bool):
+        raise ValidationError(f"{rel(CATALOG_PATH)}: Gateway tool {name!r} must declare explicit approval posture")
+    approval_decision_tools = {"gateway.approvals.decide"}
+    if tool["riskLevel"] in {"execute", "high"} and not tool["requiresApproval"] and name not in approval_decision_tools:
+        raise ValidationError(f"{rel(CATALOG_PATH)}: Gateway tool {name!r} must require approval for {tool['riskLevel']}")
+    for resource_ref in tool.get("resourceRefs", []):
+        if resource_ref not in resource_names:
+            raise ValidationError(f"{rel(CATALOG_PATH)}: Gateway tool {name!r} references unknown resource {resource_ref!r}")
+    for prompt_ref in tool.get("promptRefs", []):
+        if prompt_ref not in prompt_names:
+            raise ValidationError(f"{rel(CATALOG_PATH)}: Gateway tool {name!r} references unknown prompt {prompt_ref!r}")
+
+
+def validate_gateway_catalog_resource_record(
+    resource: dict[str, Any], tool_names: set[str], prompt_names: set[str]
+) -> None:
+    for tool_ref in resource.get("toolRefs", []):
+        if tool_ref not in tool_names:
+            raise ValidationError(
+                f"{rel(CATALOG_PATH)}: Gateway resource {resource['name']!r} references unknown tool {tool_ref!r}"
+            )
+    for prompt_ref in resource.get("promptRefs", []):
+        if prompt_ref not in prompt_names:
+            raise ValidationError(
+                f"{rel(CATALOG_PATH)}: Gateway resource {resource['name']!r} references unknown prompt {prompt_ref!r}"
+            )
+
+
+def validate_gateway_catalog_prompt_record(
+    prompt: dict[str, Any], tool_names: set[str], resource_names: set[str]
+) -> None:
+    for tool_ref in prompt.get("toolRefs", []):
+        if tool_ref not in tool_names:
+            raise ValidationError(
+                f"{rel(CATALOG_PATH)}: Gateway prompt {prompt['name']!r} references unknown tool {tool_ref!r}"
+            )
+    for resource_ref in prompt.get("resourceRefs", []):
+        if resource_ref not in resource_names:
+            raise ValidationError(
+                f"{rel(CATALOG_PATH)}: Gateway prompt {prompt['name']!r} references unknown resource {resource_ref!r}"
+            )
 
 
 def load_platform_capability_catalog() -> dict[str, Any]:
@@ -478,6 +561,10 @@ def validate_skill_capabilities(path: Path, meta: dict[str, Any], catalog_tools:
         tool = catalog_tools.get(capability_ref)
         if tool is None:
             raise ValidationError(f"{rel(path)}: unknown capabilityRef {capability_ref!r} in Gateway capability catalog")
+        if tool.get("status") != "stable-runtime":
+            raise ValidationError(
+                f"{rel(path)}: capabilityRef {capability_ref!r} is {tool.get('status')!r}, not stable-runtime"
+            )
         catalog_scopes.update(tool["requiredScopes"])
 
     unknown_scopes = sorted(set(meta["requiredScopes"]) - catalog_scopes)
@@ -485,14 +572,30 @@ def validate_skill_capabilities(path: Path, meta: dict[str, Any], catalog_tools:
         raise ValidationError(f"{rel(path)}: requiredScopes are not exposed by referenced Gateway capabilities: {unknown_scopes}")
 
 
-def extract_gateway_tool_names_from_source(path: Path) -> set[str]:
+def extract_gateway_capability_names_from_source(path: Path, function_name: str, type_name: str) -> set[str]:
     if not path.exists():
         raise ValidationError(f"{path}: Gateway catalog source was requested but does not exist")
     text = path.read_text()
-    match = re.search(r"func defaultTools\(\).*?return \[\]domainaigateway\.ToolCapability\{(?P<body>.*?)\n\t}\n}", text, re.DOTALL)
+    match = re.search(
+        rf"func {re.escape(function_name)}\(\).*?return \[\]domainaigateway\.{re.escape(type_name)}\{{(?P<body>.*?)\n\t}}\n}}",
+        text,
+        re.DOTALL,
+    )
     if not match:
-        raise ValidationError(f"{path}: could not locate defaultTools catalog")
-    return set(re.findall(r'Name:\s+"([^"]+)"', match.group("body")))
+        raise ValidationError(f"{path}: could not locate {function_name} catalog")
+    return set(re.findall(r'(?m)^\s*Name:\s+"([^"]+)"', match.group("body")))
+
+
+def extract_gateway_tool_names_from_source(path: Path) -> set[str]:
+    return extract_gateway_capability_names_from_source(path, "defaultTools", "ToolCapability")
+
+
+def extract_gateway_resource_names_from_source(path: Path) -> set[str]:
+    return extract_gateway_capability_names_from_source(path, "defaultResources", "ResourceCapability")
+
+
+def extract_gateway_prompt_names_from_source(path: Path) -> set[str]:
+    return extract_gateway_capability_names_from_source(path, "defaultPrompts", "PromptCapability")
 
 
 def extract_platform_capability_keys_from_source(path: Path) -> set[str]:
@@ -513,11 +616,29 @@ def validate_gateway_catalog_source_drift(catalog: dict[str, Any], gateway_catal
     if gateway_catalog_source is None:
         return
     source_names = extract_gateway_tool_names_from_source(gateway_catalog_source)
-    catalog_names = {tool["name"] for tool in catalog["tools"]}
+    catalog_names = {tool["name"] for tool in catalog["tools"] if tool["status"] == "stable-runtime"}
     if source_names != catalog_names:
         raise ValidationError(
             f"{rel(CATALOG_PATH)}: Gateway catalog snapshot differs from {gateway_catalog_source}: "
             f"missing={sorted(source_names - catalog_names)} extra={sorted(catalog_names - source_names)}"
+        )
+
+    source_resources = extract_gateway_resource_names_from_source(gateway_catalog_source)
+    catalog_resources = {
+        resource["name"] for resource in catalog.get("resources", []) if resource["status"] == "stable-runtime"
+    }
+    if source_resources != catalog_resources:
+        raise ValidationError(
+            f"{rel(CATALOG_PATH)}: Gateway resource snapshot differs from {gateway_catalog_source}: "
+            f"missing={sorted(source_resources - catalog_resources)} extra={sorted(catalog_resources - source_resources)}"
+        )
+
+    source_prompts = extract_gateway_prompt_names_from_source(gateway_catalog_source)
+    catalog_prompts = {prompt["name"] for prompt in catalog.get("prompts", []) if prompt["status"] == "stable-runtime"}
+    if source_prompts != catalog_prompts:
+        raise ValidationError(
+            f"{rel(CATALOG_PATH)}: Gateway prompt snapshot differs from {gateway_catalog_source}: "
+            f"missing={sorted(source_prompts - catalog_prompts)} extra={sorted(catalog_prompts - source_prompts)}"
         )
 
 
@@ -594,7 +715,14 @@ def validate_index(generated_index: dict[str, Any], write_index: bool) -> None:
 
 
 def required_scope_union(catalog: dict[str, Any]) -> list[str]:
-    return sorted({scope for tool in catalog["tools"] for scope in tool["requiredScopes"]})
+    return sorted(
+        {
+            scope
+            for tool in catalog["tools"]
+            if tool["status"] == "stable-runtime"
+            for scope in tool["requiredScopes"]
+        }
+    )
 
 
 def validate_compatibility_matrix(
@@ -1267,9 +1395,22 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
         current_check = "gateway-capability-catalog"
         catalog = load_capability_catalog()
         gateway_tools = {tool["name"]: tool for tool in catalog["tools"]}
+        gateway_status_counts: dict[str, int] = {}
+        for tool in catalog["tools"]:
+            gateway_status_counts[tool["status"]] = gateway_status_counts.get(tool["status"], 0) + 1
         summary["gatewayCatalogVersion"] = catalog["version"]
         summary["gatewayTools"] = len(catalog["tools"])
-        checks.append(check(current_check, version=catalog["version"], tools=len(catalog["tools"])))
+        summary["gatewayRuntimeTools"] = len(catalog["_runtimeToolNames"])
+        summary["gatewayToolStatusCounts"] = gateway_status_counts
+        checks.append(
+            check(
+                current_check,
+                version=catalog["version"],
+                tools=len(catalog["tools"]),
+                runtimeTools=len(catalog["_runtimeToolNames"]),
+                statuses=gateway_status_counts,
+            )
+        )
 
         current_check = "gateway-catalog-source-drift"
         if args.gateway_catalog_source is None:
