@@ -398,7 +398,8 @@
         "agent-runtime",
         "incident-handoff",
         "plugin-administration",
-        "security-change"
+        "security-change",
+        "ai-evaluation-engineer"
       ],
       "resourceRefs": [
         "soha://delivery/execution-tasks"
@@ -443,7 +444,8 @@
         "delivery-tester",
         "agent-runtime",
         "incident-handoff",
-        "observability"
+        "observability",
+        "ai-evaluation-engineer"
       ],
       "resourceRefs": [
         "soha://delivery/execution-tasks"
@@ -4182,6 +4184,47 @@
       ]
     },
     {
+      "name": "knowledge.search",
+      "title": "Search Knowledge",
+      "domain": "knowledge",
+      "owningWorkbench": "ai",
+      "owningService": "internal/application/knowledge.Service",
+      "action": "search",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "ai.knowledge.view"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill"
+      ],
+      "mcpAdapterId": "knowledge.v1",
+      "mcpToolName": "knowledge.search",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "knowledge-curator",
+        "knowledge-researcher"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "knowledgeBaseIds",
+          "traceId"
+        ]
+      },
+      "redaction": [
+        "hits.content"
+      ],
+      "moduleId": "ai",
+      "routeEvidence": [
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
       "name": "gateway.manifest.read",
       "title": "Read Gateway Manifest",
       "domain": "gateway",
@@ -4202,7 +4245,10 @@
       "requiresApproval": false,
       "status": "stable-runtime",
       "skillRefs": [
-        "gateway-governance"
+        "gateway-governance",
+        "knowledge-researcher",
+        "knowledge-curator",
+        "ai-evaluation-engineer"
       ],
       "resourceRefs": [
         "soha://gateway/governance"

@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_DIR = ROOT / "schemas"
 CATALOG_PATH = ROOT / "catalog" / "gateway-capabilities.json"
 PLATFORM_CATALOG_PATH = ROOT / "catalog" / "platform-capabilities.json"
+AI_PLATFORM_CATALOG_PATH = ROOT / "catalog" / "ai-platform-capabilities.json"
 COMPATIBILITY_MATRIX_PATH = ROOT / "catalog" / "compatibility-matrix.json"
 ASSET_GOVERNANCE_PATH = ROOT / "catalog" / "asset-governance.json"
 CATALOG_README_PATH = ROOT / "catalog" / "README.md"
@@ -321,6 +322,22 @@ def load_platform_capability_catalog() -> dict[str, Any]:
     return catalog
 
 
+def load_ai_platform_capability_catalog() -> dict[str, Any]:
+    catalog = read_json(AI_PLATFORM_CATALOG_PATH)
+    if not isinstance(catalog, dict):
+        raise ValidationError(f"{rel(AI_PLATFORM_CATALOG_PATH)}: catalog must be a JSON object")
+    validate_schema(catalog, load_schema("ai-platform-capability-catalog.schema.json"), rel(AI_PLATFORM_CATALOG_PATH))
+    keys: set[str] = set()
+    for capability in catalog["capabilities"]:
+        key = capability["key"]
+        if key in keys:
+            raise ValidationError(f"{rel(AI_PLATFORM_CATALOG_PATH)}: duplicate AI platform capability {key!r}")
+        keys.add(key)
+        if capability["riskLevel"] in {"execute", "high"} and not capability["requiresApproval"]:
+            raise ValidationError(f"{rel(AI_PLATFORM_CATALOG_PATH)}: {key!r} must require approval")
+    return catalog
+
+
 def default_contract_schema(relative_path: str) -> Path | None:
     for root in (PUBLIC_CONTRACTS_ROOT, SIBLING_CONTRACTS_ROOT):
         candidate = root / relative_path
@@ -551,7 +568,12 @@ def section_text(body: str, section: str) -> str:
     return match.group("body") if match else ""
 
 
-def validate_skill_capabilities(path: Path, meta: dict[str, Any], catalog_tools: dict[str, dict[str, Any]]) -> None:
+def validate_skill_capabilities(
+    path: Path,
+    meta: dict[str, Any],
+    catalog_tools: dict[str, dict[str, Any]],
+    ai_platform_capabilities: dict[str, dict[str, Any]],
+) -> None:
     category = meta["category"]
     if category not in ALLOWED_SKILL_CATEGORIES:
         raise ValidationError(f"{rel(path)}: category {category!r} is not in allowed categories {sorted(ALLOWED_SKILL_CATEGORIES)}")
@@ -566,6 +588,18 @@ def validate_skill_capabilities(path: Path, meta: dict[str, Any], catalog_tools:
                 f"{rel(path)}: capabilityRef {capability_ref!r} is {tool.get('status')!r}, not stable-runtime"
             )
         catalog_scopes.update(tool["requiredScopes"])
+
+    metadata = meta.get("metadata", {})
+    http_refs = metadata.get("httpCapabilityRefs", []) if isinstance(metadata, dict) else []
+    if not isinstance(http_refs, list) or any(not isinstance(ref, str) for ref in http_refs):
+        raise ValidationError(f"{rel(path)}: metadata.httpCapabilityRefs must be an array of capability keys")
+    for capability_ref in http_refs:
+        capability = ai_platform_capabilities.get(capability_ref)
+        if capability is None:
+            raise ValidationError(f"{rel(path)}: unknown HTTP capability ref {capability_ref!r}")
+        if capability["status"] == "deprecated":
+            raise ValidationError(f"{rel(path)}: HTTP capability ref {capability_ref!r} is deprecated")
+        catalog_scopes.update(capability["requiredScopes"])
 
     unknown_scopes = sorted(set(meta["requiredScopes"]) - catalog_scopes)
     if unknown_scopes:
@@ -587,7 +621,20 @@ def extract_gateway_capability_names_from_source(path: Path, function_name: str,
 
 
 def extract_gateway_tool_names_from_source(path: Path) -> set[str]:
-    return extract_gateway_capability_names_from_source(path, "defaultTools", "ToolCapability")
+    text = path.read_text()
+    catalog = re.search(
+        r"var defaultToolCatalog = \[\]domainaigateway\.ToolCapability\{(?P<body>.*?)\n\}",
+        text,
+        re.DOTALL,
+    )
+    if catalog:
+        names = set(re.findall(r'(?m)^\s*Name:\s+"([^"]+)"', catalog.group("body")))
+    else:
+        names = extract_gateway_capability_names_from_source(path, "defaultTools", "ToolCapability")
+    knowledge_provider = path.with_name("knowledge_provider.go")
+    if knowledge_provider.exists():
+        names.update(re.findall(r'(?m)^\s*Name:\s+"([^"]+)"', knowledge_provider.read_text()))
+    return names
 
 
 def extract_gateway_resource_names_from_source(path: Path) -> set[str]:
@@ -655,7 +702,9 @@ def validate_platform_catalog_source_drift(catalog: dict[str, Any], platform_cap
 
 
 def validate_skills(
-    release_version: str, contract_schema_path: Path | None
+    release_version: str,
+    contract_schema_path: Path | None,
+    ai_platform_capabilities: dict[str, dict[str, Any]],
 ) -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
     schema = load_schema("skill-frontmatter.schema.json")
     contract_schema = load_contract_schema(contract_schema_path, "skill") if contract_schema_path is not None else None
@@ -677,7 +726,7 @@ def validate_skills(
             raise ValidationError(f"{rel(path)}: duplicate skill id {skill_id!r}")
         if path.parent.name != skill_id:
             raise ValidationError(f"{rel(path)}: parent directory must match skill id {skill_id!r}")
-        validate_skill_capabilities(path, meta, catalog_tools)
+        validate_skill_capabilities(path, meta, catalog_tools, ai_platform_capabilities)
         validate_skill_body(path, meta, body)
         skills_by_id[skill_id] = meta
         index_entries.append(
@@ -946,6 +995,7 @@ def validate_asset_governance(
     profiles_by_id: dict[str, dict[str, Any]],
     gateway_tools: dict[str, dict[str, Any]],
     platform_capabilities: dict[str, dict[str, Any]],
+    ai_platform_capabilities: dict[str, dict[str, Any]],
 ) -> dict[str, int]:
     governance = read_json(ASSET_GOVERNANCE_PATH)
     if not isinstance(governance, dict):
@@ -955,7 +1005,9 @@ def validate_asset_governance(
     validate_release_signing_policy(governance["releaseSigning"])
     validate_install_audit_policy(governance["installAudit"])
 
-    expected_reviews = expected_asset_reviews(skills_by_id, presets_by_id, profiles_by_id, gateway_tools, platform_capabilities)
+    expected_reviews = expected_asset_reviews(
+        skills_by_id, presets_by_id, profiles_by_id, gateway_tools, platform_capabilities, ai_platform_capabilities
+    )
     actual_reviews: dict[tuple[str, str], dict[str, Any]] = {}
     for review in governance["permissionReview"]["assets"]:
         key = (review["type"], review["id"])
@@ -978,11 +1030,11 @@ def validate_asset_governance(
                     f"{rel(ASSET_GOVERNANCE_PATH)}: {key[0]} {key[1]!r} {field} "
                     f"must be {expected[field]!r}, got {review[field]!r}"
                 )
-        for field in ("gatewayCapabilityRefs", "platformCapabilityRefs", "requiredScopes"):
-            if sorted(review[field]) != sorted(expected[field]):
+        for field in ("gatewayCapabilityRefs", "httpCapabilityRefs", "platformCapabilityRefs", "requiredScopes"):
+            if sorted(review.get(field, [])) != sorted(expected.get(field, [])):
                 raise ValidationError(
                     f"{rel(ASSET_GOVERNANCE_PATH)}: {key[0]} {key[1]!r} {field} "
-                    f"must be {sorted(expected[field])}, got {sorted(review[field])}"
+                    f"must be {sorted(expected.get(field, []))}, got {sorted(review.get(field, []))}"
                 )
         if review["reviewStatus"] != "approved":
             raise ValidationError(f"{rel(ASSET_GOVERNANCE_PATH)}: {key[0]} {key[1]!r} is not approved")
@@ -1028,17 +1080,24 @@ def expected_asset_reviews(
     profiles_by_id: dict[str, dict[str, Any]],
     gateway_tools: dict[str, dict[str, Any]],
     platform_capabilities: dict[str, dict[str, Any]],
+    ai_platform_capabilities: dict[str, dict[str, Any]],
 ) -> dict[tuple[str, str], dict[str, Any]]:
     expected: dict[tuple[str, str], dict[str, Any]] = {}
     for skill_id, skill in skills_by_id.items():
         gateway_refs = list(skill["capabilityRefs"])
+        metadata = skill.get("metadata", {})
+        http_refs = list(metadata.get("httpCapabilityRefs", [])) if isinstance(metadata, dict) else []
         expected[("skill", skill_id)] = {
             "version": skill["version"],
             "gatewayCapabilityRefs": gateway_refs,
+            "httpCapabilityRefs": http_refs,
             "platformCapabilityRefs": [],
             "requiredScopes": skill["requiredScopes"],
-            "riskLevel": highest_gateway_risk(gateway_refs, gateway_tools),
-            "approvalRequired": gateway_approval_required(gateway_refs, gateway_tools),
+            "riskLevel": highest_risk(
+                [highest_gateway_risk(gateway_refs, gateway_tools), highest_http_risk(http_refs, ai_platform_capabilities)]
+            ),
+            "approvalRequired": gateway_approval_required(gateway_refs, gateway_tools)
+            or http_approval_required(http_refs, ai_platform_capabilities),
         }
     for preset_id, preset in presets_by_id.items():
         gateway_refs = [tool["name"] for tool in preset["tools"]]
@@ -1046,6 +1105,7 @@ def expected_asset_reviews(
         expected[("mcpPreset", preset_id)] = {
             "version": preset["version"],
             "gatewayCapabilityRefs": gateway_refs,
+            "httpCapabilityRefs": [],
             "platformCapabilityRefs": platform_refs,
             "requiredScopes": preset["requiredScopes"],
             "riskLevel": highest_risk(
@@ -1060,6 +1120,7 @@ def expected_asset_reviews(
         expected[("agentProfile", profile_id)] = {
             "version": profile["version"],
             "gatewayCapabilityRefs": gateway_refs,
+            "httpCapabilityRefs": [],
             "platformCapabilityRefs": platform_refs,
             "requiredScopes": profile["requiredScopes"],
             "riskLevel": highest_risk(
@@ -1091,6 +1152,16 @@ def highest_platform_risk(refs: list[str], platform_capabilities: dict[str, dict
     return highest_risk(levels)
 
 
+def highest_http_risk(refs: list[str], capabilities: dict[str, dict[str, Any]]) -> str:
+    levels = []
+    for ref in refs:
+        capability = capabilities.get(ref)
+        if capability is None:
+            raise ValidationError(f"{rel(ASSET_GOVERNANCE_PATH)}: unknown HTTP capability ref {ref!r}")
+        levels.append(capability["riskLevel"])
+    return highest_risk(levels)
+
+
 def highest_risk(levels: list[str]) -> str:
     if not levels:
         return "read"
@@ -1109,6 +1180,16 @@ def platform_approval_required(refs: list[str], platform_capabilities: dict[str,
         capability = platform_capabilities.get(ref)
         if capability is None:
             raise ValidationError(f"{rel(ASSET_GOVERNANCE_PATH)}: unknown platform capability ref {ref!r}")
+        if capability["requiresApproval"]:
+            return True
+    return False
+
+
+def http_approval_required(refs: list[str], capabilities: dict[str, dict[str, Any]]) -> bool:
+    for ref in refs:
+        capability = capabilities.get(ref)
+        if capability is None:
+            raise ValidationError(f"{rel(ASSET_GOVERNANCE_PATH)}: unknown HTTP capability ref {ref!r}")
         if capability["requiresApproval"]:
             return True
     return False
@@ -1439,8 +1520,18 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
             validate_platform_catalog_source_drift(platform_catalog, args.platform_capability_source)
             checks.append(check(current_check, source=report_path(args.platform_capability_source)))
 
+        current_check = "ai-platform-capability-catalog"
+        ai_platform_catalog = load_ai_platform_capability_catalog()
+        ai_platform_capabilities = {capability["key"]: capability for capability in ai_platform_catalog["capabilities"]}
+        summary["aiPlatformCapabilities"] = len(ai_platform_capabilities)
+        checks.append(
+            check(current_check, version=ai_platform_catalog["version"], capabilities=len(ai_platform_capabilities))
+        )
+
         current_check = "skills"
-        skills_by_id, generated_index = validate_skills(args.release_version, args.contracts_skill_schema)
+        skills_by_id, generated_index = validate_skills(
+            args.release_version, args.contracts_skill_schema, ai_platform_capabilities
+        )
         context["skills_by_id"] = skills_by_id
         summary["skills"] = len(skills_by_id)
         checks.append(check(current_check, count=len(skills_by_id)))
@@ -1500,6 +1591,7 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
             profiles_by_id,
             gateway_tools,
             platform_capabilities,
+            ai_platform_capabilities,
         )
         summary["assetGovernance"] = governance_summary
         checks.append(check(current_check, path=rel(ASSET_GOVERNANCE_PATH), **governance_summary))

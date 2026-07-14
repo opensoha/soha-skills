@@ -15,9 +15,183 @@
     "verification": "Verify the GitHub build provenance attestation, release manifest, checksum file, validation report, and embedded package manifest before activating a skills runtime."
   },
   "permissionReview": {
-    "reviewedAt": "2026-06-12",
+    "reviewedAt": "2026-07-14",
     "reviewer": "opensoha-maintainers",
     "assets": [
+      {
+        "type": "skill",
+        "id": "evaluation-release-gate-reviewer",
+        "version": "0.1.0",
+        "riskLevel": "high",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "gateway.manifest.read",
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list"
+        ],
+        "httpCapabilityRefs": [
+          "evaluation.run.execute",
+          "evaluation.replay.create",
+          "evaluation.gate.evaluate"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "aiClient",
+          "skill",
+          "application",
+          "environment",
+          "executionTask"
+        ],
+        "guardrails": [
+          "explicit_approval",
+          "read_only_replay",
+          "gate_error_fails_closed",
+          "redact_evaluation_secrets"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "knowledge-connector-operator",
+        "version": "0.1.0",
+        "riskLevel": "execute",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "gateway.manifest.read",
+          "knowledge.search"
+        ],
+        "httpCapabilityRefs": [
+          "knowledge.connectors.list",
+          "knowledge.connectors.create",
+          "knowledge.connectors.validate",
+          "knowledge.sync.start",
+          "knowledge.sync.status",
+          "knowledge.sync.cancel",
+          "knowledge.sync.retry"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "aiClient",
+          "skill"
+        ],
+        "guardrails": [
+          "explicit_approval",
+          "opaque_secret_refs",
+          "ssrf_boundaries",
+          "terminal_sync_evidence"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "memory-privacy-curator",
+        "version": "0.1.0",
+        "riskLevel": "high",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "gateway.manifest.read"
+        ],
+        "httpCapabilityRefs": [
+          "memory.inspect",
+          "memory.delete"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "aiClient",
+          "skill"
+        ],
+        "guardrails": [
+          "explicit_approval",
+          "verified_subject_scope",
+          "deletion_propagation",
+          "sensitive_content_minimization"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "provider-rollout-operator",
+        "version": "0.1.0",
+        "riskLevel": "high",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "gateway.manifest.read",
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list"
+        ],
+        "httpCapabilityRefs": [
+          "agent.providers.rollout"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "aiClient",
+          "skill",
+          "application",
+          "environment",
+          "executionTask"
+        ],
+        "guardrails": [
+          "explicit_approval",
+          "provider_conformance",
+          "active_run_drain",
+          "lkg_rollback"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "rag-quality-engineer",
+        "version": "0.1.0",
+        "riskLevel": "execute",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "gateway.manifest.read",
+          "knowledge.search"
+        ],
+        "httpCapabilityRefs": [
+          "knowledge.sync.status",
+          "knowledge.rebuild"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "aiClient",
+          "skill"
+        ],
+        "guardrails": [
+          "explicit_approval",
+          "fixed_query_set",
+          "citation_evidence",
+          "lkg_revision_preservation"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "ai-evaluation-engineer",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "gateway.manifest.read",
+          "delivery.execution_tasks.list",
+          "delivery.execution_logs.list"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "aiClient",
+          "skill",
+          "application",
+          "environment",
+          "executionTask"
+        ],
+        "guardrails": [
+          "read_only_evidence",
+          "no_fabricated_evaluations",
+          "runtime_manifest_gate",
+          "redact_sensitive_logs"
+        ],
+        "reviewStatus": "approved"
+      },
       {
         "type": "skill",
         "id": "delivery-developer",
@@ -87,6 +261,52 @@
           "no_mutation",
           "minimal_failure_logs",
           "preserve_artifact_ids"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "knowledge-curator",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "gateway.manifest.read",
+          "knowledge.search"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "aiClient",
+          "skill"
+        ],
+        "guardrails": [
+          "knowledge_permission_checks",
+          "explicit_mutation_scope",
+          "opaque_secret_refs",
+          "runtime_manifest_gate"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "knowledge-researcher",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "gateway.manifest.read",
+          "knowledge.search"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "aiClient",
+          "skill"
+        ],
+        "guardrails": [
+          "read_only_knowledge",
+          "citation_required",
+          "no_scope_broadening",
+          "redact_sensitive_content"
         ],
         "reviewStatus": "approved"
       },

@@ -26,6 +26,26 @@
       ]
     },
     {
+      "id": "ai-evaluation-engineer",
+      "name": "AI Evaluation Engineer",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Analyze AI evaluation contracts and bounded execution evidence without presenting planned evaluation runs as live capabilities.",
+      "path": "skills/ai-gateway/ai-evaluation-engineer/SKILL.md",
+      "capabilityRefs": [
+        "gateway.manifest.read",
+        "delivery.execution_tasks.list",
+        "delivery.execution_logs.list"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill",
+        "application",
+        "environment",
+        "executionTask"
+      ]
+    },
+    {
       "id": "cloud-local-presets",
       "name": "Cloud Local Presets",
       "version": "0.1.0",
@@ -106,6 +126,26 @@
       ]
     },
     {
+      "id": "evaluation-release-gate-reviewer",
+      "name": "Evaluation Release Gate Reviewer",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Execute reproducible evaluation evidence, isolated replay, and fail-closed release gate review.",
+      "path": "skills/ai-gateway/evaluation-release-gate-reviewer/SKILL.md",
+      "capabilityRefs": [
+        "gateway.manifest.read",
+        "delivery.execution_tasks.list",
+        "delivery.execution_logs.list"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill",
+        "application",
+        "environment",
+        "executionTask"
+      ]
+    },
+    {
       "id": "incident-handoff",
       "name": "Incident Handoff",
       "version": "0.1.0",
@@ -153,6 +193,69 @@
       "requiredScopes": [
         "cluster",
         "namespace"
+      ]
+    },
+    {
+      "id": "knowledge-connector-operator",
+      "name": "Knowledge Connector Operator",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Operate governed external knowledge connectors and bounded synchronization jobs through public Soha APIs.",
+      "path": "skills/ai-gateway/knowledge-connector-operator/SKILL.md",
+      "capabilityRefs": [
+        "gateway.manifest.read",
+        "knowledge.search"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill"
+      ]
+    },
+    {
+      "id": "knowledge-curator",
+      "name": "Knowledge Curator",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Govern Soha knowledge bases and sources, inspect synchronization health, and maintain citation-ready indexes.",
+      "path": "skills/ai-gateway/knowledge-curator/SKILL.md",
+      "capabilityRefs": [
+        "gateway.manifest.read",
+        "knowledge.search"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill"
+      ]
+    },
+    {
+      "id": "knowledge-researcher",
+      "name": "Knowledge Researcher",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Search authorized Soha knowledge bases, compare grounded evidence, and answer with traceable citations.",
+      "path": "skills/ai-gateway/knowledge-researcher/SKILL.md",
+      "capabilityRefs": [
+        "gateway.manifest.read",
+        "knowledge.search"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill"
+      ]
+    },
+    {
+      "id": "memory-privacy-curator",
+      "name": "Memory Privacy Curator",
+      "version": "0.1.0",
+      "category": "security",
+      "description": "Inspect governed AI memory provenance and execute auditable privacy deletion.",
+      "path": "skills/ai-gateway/memory-privacy-curator/SKILL.md",
+      "capabilityRefs": [
+        "gateway.manifest.read"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill"
       ]
     },
     {
@@ -219,6 +322,42 @@
         "environment",
         "executionTask",
         "releaseBundle"
+      ]
+    },
+    {
+      "id": "provider-rollout-operator",
+      "name": "Provider Rollout Operator",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Review and operate bounded Agent Provider fleet rollouts with conformance and rollback evidence.",
+      "path": "skills/ai-gateway/provider-rollout-operator/SKILL.md",
+      "capabilityRefs": [
+        "gateway.manifest.read",
+        "delivery.execution_tasks.list",
+        "delivery.execution_logs.list"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill",
+        "application",
+        "environment",
+        "executionTask"
+      ]
+    },
+    {
+      "id": "rag-quality-engineer",
+      "name": "RAG Quality Engineer",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Evaluate retrieval quality and govern bounded knowledge index rebuilds with citation evidence.",
+      "path": "skills/ai-gateway/rag-quality-engineer/SKILL.md",
+      "capabilityRefs": [
+        "gateway.manifest.read",
+        "knowledge.search"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill"
       ]
     },
     {
