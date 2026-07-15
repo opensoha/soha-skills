@@ -16,6 +16,7 @@ tmp/
 dist/
 build/
 out/
+graphify-out/
 coverage/
 node_modules/
 
