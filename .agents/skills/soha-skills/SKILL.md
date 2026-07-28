@@ -1,0 +1,52 @@
+---
+name: soha-skills
+description: >-
+  Implement or review official Soha runtime skills, MCP presets, agent
+  profiles, capability catalogs, compatibility policy, validation schemas,
+  indexes, and release packages in `soha-skills`. Use when changing assets
+  installed or executed by Soha, not when creating Codex project-local skills.
+---
+
+# Soha Skills Catalog
+
+## Purpose
+
+Maintain the official runtime asset catalog and its security and compatibility
+evidence. This repository's `skills/**` are product assets; `.agents/skills`
+contains Codex collaboration instructions.
+
+## Workflow
+
+1. Read the affected asset, its local schema, `catalog/README.md`,
+   `catalog/compatibility-matrix.json`, and `tools/validate_assets.py`.
+2. If a public manifest field changes, update `../soha-contracts` first.
+   Local schemas may be stricter but may not fork the public contract.
+3. Keep capability references backed by the Gateway, platform, or AI platform
+   catalog and by real runtime evidence.
+4. When skill front matter changes, regenerate `skills/index.json` with
+   `python3 tools/validate_assets.py --write-index`; do not hand-maintain it.
+5. Run validation before packaging. Verify release artifacts independently
+   when release behavior changes.
+
+## Asset Rules
+
+- Official skills keep required examples, permission boundaries, forbidden
+  actions, guardrails, and sensitive-data handling.
+- MCP presets and agent profiles declare only capabilities their target runtime
+  actually supports.
+- Keep Cloud-only policy out of open assets unless expressed as a generic
+  public extension.
+- Update compatibility and governance catalogs from evidence, not version
+  guesses.
+- Do not copy core business logic or treat a catalog snapshot as the live
+  runtime source of truth.
+
+## Verification
+
+```bash
+python3 tools/validate_assets.py
+python3 tools/validate_assets.py --package-dry-run
+```
+
+Use `--release-version` and `--verify-package` only for release-facing
+changes.
