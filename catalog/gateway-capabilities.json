@@ -780,6 +780,84 @@
       ]
     },
     {
+      "name": "delivery.drafts.create",
+      "title": "Create Delivery Draft",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/delivery.Service",
+      "action": "create",
+      "riskLevel": "mutate",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.application.update"
+      ],
+      "requiredScopes": [
+        "businessLine",
+        "application"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.drafts.create",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "draftId",
+          "applicationId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.drafts.confirm",
+      "title": "Confirm Delivery Draft",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/delivery.Service",
+      "action": "confirm",
+      "riskLevel": "mutate",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.application.update"
+      ],
+      "requiredScopes": [
+        "businessLine",
+        "application"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.drafts.confirm",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "draftId",
+          "applicationId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
       "name": "delivery.release.plan",
       "title": "Plan Delivery Release",
       "domain": "delivery",
@@ -813,6 +891,47 @@
       "audit": {
         "resourceKind": "AIGatewayTool",
         "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.plans.create",
+      "title": "Create Delivery Plan",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/delivery.Service",
+      "action": "create",
+      "riskLevel": "mutate",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.applications.view",
+        "delivery.application-environments.view"
+      ],
+      "requiredScopes": [
+        "application",
+        "environment"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.plans.create",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "planId",
+          "applicationId",
+          "applicationEnvironmentId"
+        ]
       },
       "redaction": [],
       "moduleId": "delivery",
@@ -1669,31 +1788,37 @@
       "riskLevel": "execute",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "delivery.releases.trigger"
+        "delivery.applications.view",
+        "delivery.builds.trigger",
+        "delivery.releases.trigger",
+        "delivery.workflows.trigger"
       ],
       "requiredScopes": [
         "application",
-        "environment",
-        "releasePlan"
+        "environment"
       ],
       "mcpAdapterId": "delivery.v1",
       "mcpToolName": "delivery.plans.confirm",
       "requiresApproval": true,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
-        "delivery-developer",
-        "delivery-tester"
+        "delivery-developer"
       ],
       "resourceRefs": [],
       "promptRefs": [],
       "audit": {
         "resourceKind": "AIGatewayTool",
-        "relatedIds": []
+        "relatedIds": [
+          "planId",
+          "applicationId",
+          "applicationEnvironmentId"
+        ]
       },
       "redaction": [],
       "moduleId": "delivery",
       "routeEvidence": [
-        "registerDeliveryRoutes"
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
       ]
     },
     {

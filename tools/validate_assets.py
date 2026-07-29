@@ -24,6 +24,7 @@ AI_PLATFORM_CATALOG_PATH = ROOT / "catalog" / "ai-platform-capabilities.json"
 COMPATIBILITY_MATRIX_PATH = ROOT / "catalog" / "compatibility-matrix.json"
 ASSET_GOVERNANCE_PATH = ROOT / "catalog" / "asset-governance.json"
 CATALOG_README_PATH = ROOT / "catalog" / "README.md"
+AGENT_SKILLS_ROOT = ROOT / "agent-skills"
 PUBLIC_CONTRACTS_ROOT = ROOT / "node_modules" / "@opensoha" / "contracts"
 SIBLING_CONTRACTS_ROOT = ROOT.parent / "soha-contracts"
 CONTRACT_SCHEMA_RELATIVE_PATHS = {
@@ -40,7 +41,7 @@ DEFAULT_GATEWAY_CATALOG_SOURCE = ROOT.parent / "soha" / "internal" / "applicatio
 DEFAULT_PLATFORM_CAPABILITY_SOURCE = ROOT.parent / "soha" / "internal" / "domain" / "cluster" / "capabilities.go"
 REQUIRED_SKILL_SECTIONS = ("Operating Contract", "Workflow", "Examples", "Permission Boundaries", "Forbidden Actions", "Guardrails")
 ALLOWED_SKILL_CATEGORIES = {"delivery", "platform", "security"}
-RELEASE_INCLUDE_DIRS = ("agent-profiles", "catalog", "mcp-presets", "schemas", "skills")
+RELEASE_INCLUDE_DIRS = ("agent-profiles", "agent-skills", "catalog", "mcp-presets", "schemas", "skills")
 RELEASE_INCLUDE_FILES = ("LICENSE", "README.md")
 SENSITIVE_TERMS_RE = re.compile(
     r"\b(access token|refresh token|token|kubeconfig|password|private key|secret|credential|registry credential|environment variable)\b",
@@ -751,6 +752,48 @@ def validate_skills(
     }
     validate_schema(generated_index, load_schema("skills-index.schema.json"), "generated skills index")
     return skills_by_id, generated_index
+
+
+def validate_agent_skills() -> int:
+    skill_paths = sorted(AGENT_SKILLS_ROOT.glob("*/SKILL.md"))
+    if not skill_paths:
+        raise ValidationError("agent-skills: expected at least one SKILL.md")
+    seen: set[str] = set()
+    for path in skill_paths:
+        meta, body = extract_front_matter(path)
+        unknown = sorted(set(meta) - {"name", "description"})
+        if unknown:
+            raise ValidationError(f"{rel(path)}: unsupported agent skill front matter fields {unknown}")
+        name = meta.get("name")
+        description = meta.get("description")
+        if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
+            raise ValidationError(f"{rel(path)}: name must be lowercase kebab-case")
+        if name in seen:
+            raise ValidationError(f"{rel(path)}: duplicate agent skill name {name!r}")
+        if path.parent.name != name:
+            raise ValidationError(f"{rel(path)}: parent directory must match agent skill name {name!r}")
+        if not isinstance(description, str) or not description.strip() or len(description) > 1024:
+            raise ValidationError(f"{rel(path)}: description must contain 1-1024 characters")
+        if not re.search(rf"^# {re.escape(name.title())}$", body, re.MULTILINE):
+            raise ValidationError(f"{rel(path)}: missing H1 '# {name.title()}'")
+        if SECRET_ASSIGNMENT_RE.search(body):
+            raise ValidationError(f"{rel(path)}: security lint found a secret-like assignment")
+
+        openai_path = path.parent / "agents" / "openai.yaml"
+        if not openai_path.is_file():
+            raise ValidationError(f"{rel(path)}: missing agents/openai.yaml")
+        openai = SimpleYAMLParser(openai_path.read_text(), openai_path).parse()
+        interface = openai.get("interface") if isinstance(openai, dict) else None
+        if not isinstance(interface, dict):
+            raise ValidationError(f"{rel(openai_path)}: interface must be a mapping")
+        for field in ("display_name", "short_description", "default_prompt"):
+            value = interface.get(field)
+            if not isinstance(value, str) or not value.strip():
+                raise ValidationError(f"{rel(openai_path)}: interface.{field} must be a non-empty string")
+        if f"${name}" not in interface["default_prompt"]:
+            raise ValidationError(f"{rel(openai_path)}: interface.default_prompt must reference ${name}")
+        seen.add(name)
+    return len(skill_paths)
 
 
 def validate_index(generated_index: dict[str, Any], write_index: bool) -> None:
@@ -1535,6 +1578,11 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
         context["skills_by_id"] = skills_by_id
         summary["skills"] = len(skills_by_id)
         checks.append(check(current_check, count=len(skills_by_id)))
+
+        current_check = "agent-skills"
+        agent_skill_count = validate_agent_skills()
+        summary["agentSkills"] = agent_skill_count
+        checks.append(check(current_check, count=agent_skill_count))
 
         current_check = "skills-index"
         validate_index(generated_index, args.write_index)

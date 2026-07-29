@@ -10,6 +10,7 @@ copy business logic between this repository and `github.com/opensoha/soha`.
 
 ```text
 soha-skills/
+  agent-skills/    # Installable agent-facing meta skills, including $soha
   catalog/         # Gateway capability catalog snapshots used for validation
   skills/          # Official Soha skills
   schemas/         # JSON Schemas for repository assets
@@ -37,7 +38,7 @@ Run the same asset gate used by CI before publishing changes:
 python3 tools/validate_assets.py
 ```
 
-The validator checks skill YAML front matter, duplicate skill ids, non-empty
+The validator checks agent-facing meta skills, skill YAML front matter, duplicate skill ids, non-empty
 capability references, required skill sections and guardrails, schema files,
 `skills/index.json` freshness, MCP preset references, agent profile references,
 allowed categories, examples, security content, and Gateway capability
@@ -143,8 +144,8 @@ Tagged releases publish:
 - `soha-skills-<version>.manifest.json`
 - `soha-skills-<version>.validation-report.json`
 
-The tarball contains `agent-profiles/`, `catalog/`, `mcp-presets/`, `schemas/`,
-`skills/`, `LICENSE`, `README.md`, and the release manifest under a
+The tarball contains `agent-profiles/`, `agent-skills/`, `catalog/`,
+`mcp-presets/`, `schemas/`, `skills/`, `LICENSE`, `README.md`, and the release manifest under a
 `soha-skills/` top-level directory. The manifest lists every packaged file with
 its SHA-256 checksum and a stable GitHub release manifest URL.
 
@@ -158,6 +159,14 @@ the release tarball, checksum, manifest, and validation report. Installers
 should write audit events that match
 `schemas/skills-install-audit-event.schema.json` for verify, install, upgrade,
 rollback, and activation decisions.
+
+The standalone `soha` CLI is the cross-agent installer for these assets. Use
+`soha setup --client <client>` (or the equivalent
+`npx -y @opensoha/cli@latest setup ...` bootstrap once that package is
+published), and manage the raw runtime
+with `soha skill status|update|remove|rollback`. Platform-specific Codex or
+Claude plugin packages, if added later, must remain thin distribution adapters
+over this canonical release and must not copy the skill source.
 
 ## License
 

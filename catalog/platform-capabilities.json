@@ -55,7 +55,7 @@
       "direct": { "status": "available" },
       "agent": {
         "status": "partial",
-        "reason": "deployment restart, rollback, and scale are available through the agent; pod deletion and YAML apply remain direct-only"
+        "reason": "deployment restart, rollback, scale, statefulset restart/scale, and daemonset restart are available through the agent; pod deletion and YAML apply remain direct-only"
       }
     },
     {
@@ -68,8 +68,8 @@
       "docsUrl": "/operations/agent-runtime",
       "direct": { "status": "available" },
       "agent": {
-        "status": "partial",
-        "reason": "core workload YAML can be read through the agent; generic resource and custom-resource YAML views remain direct-only"
+        "status": "available",
+        "reason": "built-in generic and custom-resource YAML can be read through the agent; direct-specific YAML endpoints still need parity cleanup"
       }
     },
     {
@@ -82,8 +82,22 @@
       "docsUrl": "/operations/agent-runtime",
       "direct": { "status": "available" },
       "agent": {
-        "status": "unsupported",
-        "reason": "YAML apply and delete are not supported for agent-connected clusters yet"
+        "status": "available",
+        "reason": "built-in and custom-resource YAML apply/delete are available through the agent; direct-specific endpoints still need parity cleanup"
+      }
+    },
+    {
+      "key": "resource.creation",
+      "label": "Resource creation",
+      "category": "configuration",
+      "requiredScopes": ["cluster", "namespace"],
+      "riskLevel": "mutate",
+      "requiresApproval": true,
+      "docsUrl": "/operations/agent-runtime",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "available",
+        "reason": "preflight and create are available when the connected agent publishes resource.creation"
       }
     },
     {
@@ -97,7 +111,7 @@
       "direct": { "status": "available" },
       "agent": {
         "status": "partial",
-        "reason": "ConfigMap and Secret lists are available through the agent; detail views and create flows remain direct-only"
+        "reason": "ConfigMap and Secret lists are available through the agent; detail views still need parity cleanup"
       }
     },
     {
@@ -111,7 +125,7 @@
       "direct": { "status": "available" },
       "agent": {
         "status": "partial",
-        "reason": "RBAC lists and several detail views are available through the agent; create flows remain direct-only"
+        "reason": "RBAC lists and several detail views are available through the agent; creation uses the separately gated resource.creation capability"
       }
     },
     {
@@ -135,8 +149,8 @@
       "docsUrl": "/operations/agent-runtime",
       "direct": { "status": "available" },
       "agent": {
-        "status": "partial",
-        "reason": "agent-mode requests are persisted as pending until the agent tunnel protocol attaches them"
+        "status": "available",
+        "reason": "live port-forward tunnels are available through the agent"
       }
     },
     {
@@ -150,7 +164,7 @@
       "direct": { "status": "available" },
       "agent": {
         "status": "partial",
-        "reason": "storage lists are available through the agent; PVC, PV, and StorageClass detail and create flows remain direct-only"
+        "reason": "storage lists are available through the agent; PVC, PV, and StorageClass detail views remain direct-only while creation uses resource.creation"
       }
     },
     {
@@ -163,8 +177,8 @@
       "docsUrl": "/development/add-resource-module",
       "direct": { "status": "available" },
       "agent": {
-        "status": "partial",
-        "reason": "CRD discovery is available through the agent; custom-resource list, YAML, create, apply, and delete remain direct-only"
+        "status": "available",
+        "reason": "CRD discovery and custom-resource list, YAML, create, apply, and delete are available through the agent"
       }
     },
     {
@@ -177,8 +191,8 @@
       "docsUrl": "/operations/agent-runtime",
       "direct": { "status": "available" },
       "agent": {
-        "status": "partial",
-        "reason": "release list, detail, history, and values read are available through the agent; install, values update, and delete remain direct-only"
+        "status": "available",
+        "reason": "release list, detail, history, values read, install, values update, and delete are available through the agent"
       }
     },
     {
@@ -205,8 +219,8 @@
       "docsUrl": "/operations/agent-runtime",
       "direct": { "status": "available" },
       "agent": {
-        "status": "partial",
-        "reason": "snapshot log reads are available through the agent; streaming logs remain direct-only"
+        "status": "available",
+        "reason": "snapshot and streaming pod logs are available through the agent"
       }
     },
     {
@@ -219,8 +233,8 @@
       "docsUrl": "/operations/agent-runtime",
       "direct": { "status": "available" },
       "agent": {
-        "status": "partial",
-        "reason": "non-interactive exec is available through the agent; interactive terminal sessions remain direct-only"
+        "status": "available",
+        "reason": "non-interactive exec and interactive terminal sessions are available through the agent"
       }
     },
     {

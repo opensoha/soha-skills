@@ -2,7 +2,7 @@
 name: soha-skills
 description: >-
   Implement or review official Soha runtime skills, MCP presets, agent
-  profiles, capability catalogs, compatibility policy, validation schemas,
+  profiles, installable agent-facing meta skills, capability catalogs, compatibility policy, validation schemas,
   indexes, and release packages in `soha-skills`. Use when changing assets
   installed or executed by Soha, not when creating Codex project-local skills.
 ---
@@ -12,8 +12,9 @@ description: >-
 ## Purpose
 
 Maintain the official runtime asset catalog and its security and compatibility
-evidence. This repository's `skills/**` are product assets; `.agents/skills`
-contains Codex collaboration instructions.
+evidence. This repository's `skills/**` are governed runtime workflow assets,
+`agent-skills/**` are installable skills for user agent tools, and
+`.agents/skills` contains repository collaboration instructions.
 
 ## Workflow
 
@@ -27,11 +28,13 @@ contains Codex collaboration instructions.
    `python3 tools/validate_assets.py --write-index`; do not hand-maintain it.
 5. Run validation before packaging. Verify release artifacts independently
    when release behavior changes.
+6. For `agent-skills/**`, follow the shared skill format, keep only canonical source content here, and run the skill creator `quick_validate.py` in addition to repository validation.
 
 ## Asset Rules
 
 - Official skills keep required examples, permission boundaries, forbidden
   actions, guardrails, and sensitive-data handling.
+- Agent-facing meta skills may route into runtime skill references, but must discover live Gateway capabilities instead of claiming unavailable tools.
 - MCP presets and agent profiles declare only capabilities their target runtime
   actually supports.
 - Keep Cloud-only policy out of open assets unless expressed as a generic

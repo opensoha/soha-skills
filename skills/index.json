@@ -85,6 +85,8 @@
         "delivery.standards.k8s.validate",
         "delivery.spec.render",
         "delivery.application.bootstrap",
+        "delivery.drafts.create",
+        "delivery.drafts.confirm",
         "delivery.application_environments.list",
         "delivery.application_services.list",
         "delivery.build_sources.list",
@@ -93,6 +95,8 @@
         "delivery.execution_tasks.list",
         "delivery.execution_logs.list",
         "delivery.release.plan",
+        "delivery.plans.create",
+        "delivery.plans.confirm",
         "delivery.release_context.diff",
         "delivery.rollback.context",
         "delivery.actions.trigger"
