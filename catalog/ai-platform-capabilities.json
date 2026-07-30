@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "source": {
     "repository": "github.com/opensoha/soha",
-    "path": "docs/plan/19-ai-production-rag-evaluation-memory-evolution.md#7-api-草案",
+    "path": "docs/24-ai-production-rag-evaluation-memory-evolution/plan.md#7-api-草案",
     "syncStrategy": "Promote baseline entries to stable-runtime only after the protected route, permission check, public contract, and integration test are released."
   },
   "capabilities": [
