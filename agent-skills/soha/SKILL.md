@@ -22,6 +22,14 @@ Use Soha as the control plane for delivery-center work. Prefer the configured So
 3. Use `soha diagnose --tool <name>` when a capability, permission, scope, skill binding, or approval path is unclear.
 4. Read `references/skills/index.json` and the relevant file under `references/skills/` before a product workflow. For delivery-center work, start with `delivery-developer.md`.
 
+## Use Secrets
+
+1. Never request or place a secret value in chat, tool business input, plans, manifests, logs, or generated files. Ask the user to create or rotate it with the hidden-input `soha secret` commands or the Web Secret Store.
+2. Select canonical references with `soha secret list` or the Web console. Use aliases matching `[A-Z_][A-Z0-9_]*` and references shaped as `soha://secrets/{id}` or `soha://secrets/{id}/versions/{version}`.
+3. For MCP calls, attach the alias-to-reference map through the reserved `_sohaSecretRefs` argument. The Soha adapter removes it from business input and sends canonical top-level `secretRefs`.
+4. For direct CLI tool calls, repeat `--secret-ref ALIAS=soha://secrets/{id}`. Keep the same references between a plan and its approved execution.
+5. Secret use remains subject to `secret.use`, scope and binding checks, approval, and audit. Remote agents redeem an opaque, short-lived, one-time lease; agents never receive the stored reference or reusable credentials.
+
 ## Create An Application Service
 
 1. List applications and avoid creating a duplicate.
@@ -45,6 +53,7 @@ Use Soha as the control plane for delivery-center work. Prefer the configured So
 
 - Do not bypass Soha with direct Kubernetes, CI, runner, database, registry, or deployment-target commands.
 - Do not expose access tokens, refresh tokens, passwords, private keys, kubeconfig, registry credentials, environment secrets, or unredacted secret-looking logs.
+- Do not put secret references in normal capability input or attempt to resolve them outside Soha.
 - Do not invent capability names, IDs, schemas, permissions, or successful outcomes.
 - Do not perform a mutation merely because a tool is available. Require clear user intent and honor preview, confirmation, approval, and audit boundaries.
 - Keep business line, application, service, environment, branch, commit, release bundle, execution task, and approval IDs explicit in the final handoff.

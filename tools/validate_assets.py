@@ -623,13 +623,13 @@ def extract_gateway_capability_names_from_source(path: Path, function_name: str,
 
 def extract_gateway_tool_names_from_source(path: Path) -> set[str]:
     text = path.read_text()
-    catalog = re.search(
-        r"var defaultToolCatalog = \[\]domainaigateway\.ToolCapability\{(?P<body>.*?)\n\}",
+    catalogs = re.findall(
+        r"var (?:default|operations)ToolCatalog = \[\]domainaigateway\.ToolCapability\{(?P<body>.*?)\n\}",
         text,
         re.DOTALL,
     )
-    if catalog:
-        names = set(re.findall(r'(?m)^\s*Name:\s+"([^"]+)"', catalog.group("body")))
+    if catalogs:
+        names = set(re.findall(r'(?m)^\s*Name:\s+"([^"]+)"', "\n".join(catalogs)))
     else:
         names = extract_gateway_capability_names_from_source(path, "defaultTools", "ToolCapability")
     knowledge_provider = path.with_name("knowledge_provider.go")

@@ -8,9 +8,7 @@
     "syncStrategy": "stable-runtime entries are validated against the Soha Gateway defaultTools catalog before publishing; baseline-approved and reserved entries record the governed release matrix until runtime providers land."
   },
   "plannedSkills": [
-    "docker-runtime-operator",
-    "gateway-governance",
-    "virtualization-operator"
+    "gateway-governance"
   ],
   "tools": [
     {
@@ -1545,6 +1543,86 @@
         "relatedIds": []
       },
       "redaction": [],
+      "moduleId": "platform",
+      "routeEvidence": [
+        "registerPlatformRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "k8s.resources.create.preflight",
+      "title": "Preflight Kubernetes Resources",
+      "domain": "k8s",
+      "owningWorkbench": "platform",
+      "owningService": "internal/application/resource.ResourceCreation",
+      "action": "preflight",
+      "riskLevel": "analyze",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "workspace.resource.view"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ],
+      "mcpAdapterId": "k8s.v1",
+      "mcpToolName": "k8s.resources.create.preflight",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "k8s-resource-provisioner"
+      ],
+      "resourceRefs": [
+        "soha://k8s/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [
+        "content"
+      ],
+      "moduleId": "platform",
+      "routeEvidence": [
+        "registerPlatformRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "k8s.resources.create.trigger",
+      "title": "Create Kubernetes Resources",
+      "domain": "k8s",
+      "owningWorkbench": "platform",
+      "owningService": "internal/application/resource.ResourceCreation",
+      "action": "execute",
+      "riskLevel": "high",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "platform.resource.create"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ],
+      "mcpAdapterId": "k8s.v1",
+      "mcpToolName": "k8s.resources.create.trigger",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "k8s-resource-provisioner"
+      ],
+      "resourceRefs": [
+        "soha://k8s/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [
+        "content"
+      ],
       "moduleId": "platform",
       "routeEvidence": [
         "registerPlatformRoutes",
@@ -3176,7 +3254,7 @@
       "mcpAdapterId": "docker.v1",
       "mcpToolName": "docker.projects.deploy.plan",
       "requiresApproval": false,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "docker-runtime-operator"
       ],
@@ -3215,7 +3293,7 @@
       "mcpAdapterId": "docker.v1",
       "mcpToolName": "docker.projects.deploy.trigger",
       "requiresApproval": true,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "docker-runtime-operator"
       ],
@@ -3250,7 +3328,7 @@
       "mcpAdapterId": "docker.v1",
       "mcpToolName": "docker.services.action.trigger",
       "requiresApproval": true,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "docker-runtime-operator"
       ],
@@ -3286,7 +3364,7 @@
       "mcpAdapterId": "docker.v1",
       "mcpToolName": "docker.hosts.quick_create.plan",
       "requiresApproval": false,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "docker-runtime-operator",
         "virtualization-operator"
@@ -3323,7 +3401,7 @@
       "mcpAdapterId": "docker.v1",
       "mcpToolName": "docker.hosts.quick_create.trigger",
       "requiresApproval": true,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "docker-runtime-operator",
         "virtualization-operator"
@@ -3833,7 +3911,7 @@
       "mcpAdapterId": "virtualization.v1",
       "mcpToolName": "virtualization.vms.create.plan",
       "requiresApproval": false,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "virtualization-operator"
       ],
@@ -3872,7 +3950,7 @@
       "mcpAdapterId": "virtualization.v1",
       "mcpToolName": "virtualization.vms.create.trigger",
       "requiresApproval": true,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "virtualization-operator"
       ],
@@ -3907,7 +3985,7 @@
       "mcpAdapterId": "virtualization.v1",
       "mcpToolName": "virtualization.vms.action.trigger",
       "requiresApproval": true,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "virtualization-operator"
       ],
@@ -5899,7 +5977,9 @@
         "k8s.routes.context",
         "k8s.storage.context",
         "k8s.nodes.detail",
-        "k8s.events.list"
+        "k8s.events.list",
+        "k8s.resources.create.preflight",
+        "k8s.resources.create.trigger"
       ],
       "promptRefs": [
         "soha.k8s.diagnose_workload"

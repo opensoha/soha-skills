@@ -224,6 +224,48 @@
       }
     },
     {
+      "key": "logs.runtime.snapshot",
+      "label": "Runtime log snapshots",
+      "category": "observability",
+      "requiredScopes": ["cluster", "namespace", "workload", "pod"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/operations/log-observability",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "available",
+        "reason": "bounded runtime log snapshots are available through the agent"
+      }
+    },
+    {
+      "key": "logs.runtime.stream",
+      "label": "Runtime log streams",
+      "category": "observability",
+      "requiredScopes": ["cluster", "namespace", "workload", "pod"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/operations/log-observability",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "available",
+        "reason": "bounded runtime log streams are available through the agent"
+      }
+    },
+    {
+      "key": "logs.runtime.aggregate",
+      "label": "Runtime log aggregation",
+      "category": "observability",
+      "requiredScopes": ["cluster", "namespace", "workload", "pod"],
+      "riskLevel": "read",
+      "requiresApproval": false,
+      "docsUrl": "/operations/log-observability",
+      "direct": { "status": "available" },
+      "agent": {
+        "status": "available",
+        "reason": "bounded multi-source runtime aggregation is available through the agent"
+      }
+    },
+    {
       "key": "pod.exec",
       "label": "Pod exec and terminal",
       "category": "workloads",

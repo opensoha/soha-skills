@@ -130,6 +130,27 @@
       ]
     },
     {
+      "id": "docker-runtime-operator",
+      "name": "Docker Runtime Operator",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Approval-bound Docker host, Compose project, and service operations through Soha.",
+      "path": "skills/ai-gateway/docker-runtime-operator/SKILL.md",
+      "capabilityRefs": [
+        "docker.hosts.quick_create.plan",
+        "docker.hosts.quick_create.trigger",
+        "docker.projects.deploy.plan",
+        "docker.projects.deploy.trigger",
+        "docker.services.action.trigger"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "dockerHost",
+        "dockerProject",
+        "dockerService"
+      ]
+    },
+    {
       "id": "evaluation-release-gate-reviewer",
       "name": "Evaluation Release Gate Reviewer",
       "version": "0.1.0",
@@ -169,6 +190,22 @@
         "environment",
         "executionTask",
         "releaseBundle",
+        "cluster",
+        "namespace"
+      ]
+    },
+    {
+      "id": "k8s-resource-provisioner",
+      "name": "K8s Resource Provisioner",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Approval-bound Kubernetes manifest preflight and creation for scoped demo environments.",
+      "path": "skills/ai-gateway/k8s-resource-provisioner/SKILL.md",
+      "capabilityRefs": [
+        "k8s.resources.create.preflight",
+        "k8s.resources.create.trigger"
+      ],
+      "requiredScopes": [
         "cluster",
         "namespace"
       ]
@@ -383,6 +420,23 @@
         "environment",
         "cluster",
         "namespace"
+      ]
+    },
+    {
+      "id": "virtualization-operator",
+      "name": "Virtualization Operator",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Approval-bound virtual machine planning, creation, and typed lifecycle operations through Soha.",
+      "path": "skills/ai-gateway/virtualization-operator/SKILL.md",
+      "capabilityRefs": [
+        "virtualization.vms.create.plan",
+        "virtualization.vms.create.trigger",
+        "virtualization.vms.action.trigger"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "vm"
       ]
     }
   ]

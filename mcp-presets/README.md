@@ -18,3 +18,8 @@ Current presets:
 - `cloud-governance.yaml`: cloud-compatible governance preset for onboarding,
   incident handoff, plugin administration, security-change planning, and
   approved delivery actions.
+- `local-environment-provisioning.yaml`: approval-bound VM, Docker Compose, and
+  Kubernetes demo provisioning. Credential-bearing calls pass only canonical
+  references through the reserved `_sohaSecretRefs` MCP argument; the adapter
+  promotes them to top-level invocation `secretRefs`, and remote agents receive
+  only a short-lived one-time lease.

@@ -376,6 +376,116 @@
         "reviewStatus": "approved"
       },
       {
+        "type": "skill",
+        "id": "k8s-resource-provisioner",
+        "version": "0.1.0",
+        "riskLevel": "high",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "k8s.resources.create.preflight",
+          "k8s.resources.create.trigger"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "plan_before_execute",
+          "explicit_approval",
+          "stable_idempotency_keys",
+          "no_secret_output"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "docker-runtime-operator",
+        "version": "0.1.0",
+        "riskLevel": "execute",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "docker.hosts.quick_create.plan",
+          "docker.hosts.quick_create.trigger",
+          "docker.projects.deploy.plan",
+          "docker.projects.deploy.trigger",
+          "docker.services.action.trigger"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "virtualizationConnection",
+          "dockerHost",
+          "dockerProject",
+          "dockerService"
+        ],
+        "guardrails": [
+          "plan_before_execute",
+          "explicit_approval",
+          "stable_idempotency_keys",
+          "no_secret_output"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
+        "id": "virtualization-operator",
+        "version": "0.1.0",
+        "riskLevel": "execute",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "virtualization.vms.create.plan",
+          "virtualization.vms.create.trigger",
+          "virtualization.vms.action.trigger"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "virtualizationConnection",
+          "vm"
+        ],
+        "guardrails": [
+          "plan_before_execute",
+          "explicit_approval",
+          "stable_idempotency_keys",
+          "no_secret_output"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "mcpPreset",
+        "id": "local-environment-provisioning",
+        "version": "0.1.0",
+        "riskLevel": "high",
+        "approvalRequired": true,
+        "gatewayCapabilityRefs": [
+          "virtualization.vms.create.plan",
+          "virtualization.vms.create.trigger",
+          "virtualization.vms.action.trigger",
+          "docker.hosts.quick_create.plan",
+          "docker.hosts.quick_create.trigger",
+          "docker.projects.deploy.plan",
+          "docker.projects.deploy.trigger",
+          "docker.services.action.trigger",
+          "k8s.resources.create.preflight",
+          "k8s.resources.create.trigger"
+        ],
+        "platformCapabilityRefs": [
+          "workload.mutations"
+        ],
+        "requiredScopes": [
+          "cluster",
+          "namespace"
+        ],
+        "guardrails": [
+          "discover_live_capabilities",
+          "plan_before_execute",
+          "approval_required_for_execute",
+          "stable_idempotency_keys",
+          "no_direct_runtime_credentials",
+          "no_secret_output"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
         "type": "mcpPreset",
         "id": "k8s-readonly",
         "version": "0.1.0",

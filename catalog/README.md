@@ -22,6 +22,9 @@ The normalized Gateway required scope union is:
 - `businessLine`
 - `cluster`
 - `deployment`
+- `dockerHost`
+- `dockerProject`
+- `dockerService`
 - `environment`
 - `executionTask`
 - `namespace`
@@ -42,6 +45,8 @@ The normalized Gateway required scope union is:
 - `timeRange`
 - `token`
 - `tool`
+- `virtualizationConnection`
+- `vm`
 
 Validation prefers the published `node_modules/@opensoha/contracts` package
 when it is available. A sibling `../soha-contracts` checkout is a local

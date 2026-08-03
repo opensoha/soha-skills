@@ -1,0 +1,86 @@
+schemaVersion: opensoha.dev/mcp-preset/v1
+id: local-environment-provisioning
+name: Local Environment Provisioning
+version: 0.1.0
+description: Local AI preset for approval-bound VM, Docker Compose, and Kubernetes demo environment provisioning.
+riskLevel: high
+skillRefs:
+  - virtualization-operator
+  - docker-runtime-operator
+  - k8s-resource-provisioner
+platformCapabilityRefs:
+  - workload.mutations
+requiredScopes:
+  - cluster
+  - namespace
+tools:
+  - name: virtualization.vms.create.plan
+    description: Plan a virtual machine create request without side effects.
+    riskLevel: analyze
+    requiredScopes:
+      - virtualizationConnection
+      - vm
+  - name: virtualization.vms.create.trigger
+    description: Create a virtual machine through the durable task queue.
+    riskLevel: execute
+    requiredScopes:
+      - virtualizationConnection
+      - vm
+  - name: virtualization.vms.action.trigger
+    description: Run a typed virtual machine lifecycle action.
+    riskLevel: execute
+    requiredScopes:
+      - virtualizationConnection
+      - vm
+  - name: docker.hosts.quick_create.plan
+    description: Plan Docker host provisioning without side effects.
+    riskLevel: analyze
+    requiredScopes:
+      - virtualizationConnection
+      - dockerHost
+  - name: docker.hosts.quick_create.trigger
+    description: Provision a Docker host through a durable operation.
+    riskLevel: execute
+    requiredScopes:
+      - virtualizationConnection
+      - dockerHost
+  - name: docker.projects.deploy.plan
+    description: Plan a Docker Compose project deployment.
+    riskLevel: analyze
+    requiredScopes:
+      - dockerHost
+      - dockerProject
+  - name: docker.projects.deploy.trigger
+    description: Execute a Docker Compose project deployment.
+    riskLevel: execute
+    requiredScopes:
+      - dockerHost
+      - dockerProject
+  - name: docker.services.action.trigger
+    description: Run a typed action on a Docker service.
+    riskLevel: execute
+    requiredScopes:
+      - dockerHost
+      - dockerService
+  - name: k8s.resources.create.preflight
+    description: Authorize and dry-run Kubernetes manifests without creating resources.
+    riskLevel: analyze
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.resources.create.trigger
+    description: Create preflighted Kubernetes manifests through a durable batch.
+    riskLevel: high
+    requiredScopes:
+      - cluster
+      - namespace
+guardrails:
+  - discover_live_capabilities
+  - plan_before_execute
+  - approval_required_for_execute
+  - stable_idempotency_keys
+  - top_level_secret_refs_only
+  - secret_use_scope_binding_required
+  - one_time_agent_secret_lease
+  - no_direct_runtime_credentials
+  - no_secret_output
