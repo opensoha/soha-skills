@@ -3318,8 +3318,7 @@
       "action": "execute",
       "riskLevel": "execute",
       "permissionKeys": [
-        "ai.gateway.invoke",
-        "docker.services.manage"
+        "ai.gateway.invoke"
       ],
       "requiredScopes": [
         "dockerHost",
@@ -3391,8 +3390,8 @@
       "riskLevel": "execute",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "docker.hosts.manage",
-        "virtualization.vms.manage"
+        "docker.hosts.create",
+        "virtualization.vms.create"
       ],
       "requiredScopes": [
         "virtualizationConnection",
@@ -3941,7 +3940,7 @@
       "riskLevel": "execute",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "virtualization.vms.manage"
+        "virtualization.vms.create"
       ],
       "requiredScopes": [
         "virtualizationConnection",
@@ -3975,8 +3974,7 @@
       "action": "execute",
       "riskLevel": "execute",
       "permissionKeys": [
-        "ai.gateway.invoke",
-        "virtualization.vms.manage"
+        "ai.gateway.invoke"
       ],
       "requiredScopes": [
         "virtualizationConnection",
@@ -4011,7 +4009,7 @@
       "riskLevel": "execute",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "virtualization.sync.manage"
+        "virtualization.sync.sync"
       ],
       "requiredScopes": [
         "virtualizationConnection"
@@ -4324,7 +4322,7 @@
       "riskLevel": "execute",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "observe.ai.inspection.manage"
+        "observe.ai.inspection.cancel"
       ],
       "requiredScopes": [
         "agentRun"
@@ -4479,7 +4477,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.clients.view"
       ],
       "requiredScopes": [
         "aiClient"
@@ -4517,7 +4515,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.tokens.view"
       ],
       "requiredScopes": [
         "token"
@@ -4557,7 +4555,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.tokens.view"
       ],
       "requiredScopes": [
         "serviceAccount"
@@ -4595,7 +4593,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.grants.view"
       ],
       "requiredScopes": [
         "subject",
@@ -4635,7 +4633,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.policies.view"
       ],
       "requiredScopes": [
         "subject",
@@ -4675,7 +4673,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.skills.view"
       ],
       "requiredScopes": [
         "aiClient",
@@ -4714,7 +4712,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.approvals.view"
       ],
       "requiredScopes": [
         "approval"
@@ -4752,8 +4750,7 @@
       "action": "execute",
       "riskLevel": "execute",
       "permissionKeys": [
-        "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.invoke"
       ],
       "requiredScopes": [
         "approval"
@@ -4792,7 +4789,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.view"
       ],
       "requiredScopes": [
         "audit"
@@ -4834,7 +4831,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.manage"
+        "ai.gateway.view"
       ],
       "requiredScopes": [
         "aiClient",
@@ -4991,7 +4988,7 @@
       "riskLevel": "execute",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "ai.gateway.relay.manage"
+        "ai.gateway.relay.delete"
       ],
       "requiredScopes": [
         "relayCache"
@@ -5322,7 +5319,7 @@
       "permissionKeys": [
         "ai.gateway.invoke",
         "plugin.install",
-        "plugin.manage"
+        "plugin.upgrade"
       ],
       "requiredScopes": [
         "plugin"
@@ -5356,7 +5353,7 @@
       "riskLevel": "execute",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "plugin.manage"
+        "plugin.lifecycle"
       ],
       "requiredScopes": [
         "plugin"
@@ -5390,7 +5387,7 @@
       "riskLevel": "execute",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "plugin.manage"
+        "plugin.lifecycle"
       ],
       "requiredScopes": [
         "plugin"
@@ -5424,7 +5421,7 @@
       "riskLevel": "execute",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "plugin.manage"
+        "plugin.remove"
       ],
       "requiredScopes": [
         "plugin"
@@ -5797,7 +5794,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "settings.monitoring.view"
+        "observe.monitoring.view"
       ],
       "requiredScopes": [
         "settings"
@@ -6092,7 +6089,7 @@
       "name": "soha://gateway/governance",
       "description": "Gateway manifest, clients, tokens, grants, policies, bindings, approvals, audit, and relay governance.",
       "permissionKeys": [
-        "ai.gateway.manage"
+        "ai.gateway.view"
       ],
       "requiredScopes": [
         "aiClient",
@@ -6329,7 +6326,7 @@
       "name": "soha.gateway.review_governance",
       "description": "Review Gateway grants, policies, bindings, approval, relay, and audit posture.",
       "permissionKeys": [
-        "ai.gateway.manage"
+        "ai.gateway.view"
       ],
       "requiredScopes": [
         "aiClient",

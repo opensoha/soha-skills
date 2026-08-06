@@ -359,6 +359,47 @@ def default_contracts_agent_profile_schema() -> Path | None:
     return default_contract_schema(CONTRACT_SCHEMA_RELATIVE_PATHS["agentProfile"])
 
 
+def default_contracts_permission_catalog() -> Path | None:
+    return default_contract_schema("auth/permission-catalog.json")
+
+
+def load_permission_catalog(path: Path) -> tuple[dict[str, Any], set[str]]:
+    catalog = read_json(path)
+    if not isinstance(catalog, dict) or not isinstance(catalog.get("permissions"), list):
+        raise ValidationError(f"{path}: contracts permission catalog must contain a permissions array")
+    keys = [permission.get("key") for permission in catalog["permissions"] if isinstance(permission, dict)]
+    if any(not isinstance(key, str) or not key for key in keys) or len(keys) != len(catalog["permissions"]):
+        raise ValidationError(f"{path}: every permission catalog entry must declare a non-empty key")
+    if len(set(keys)) != len(keys):
+        raise ValidationError(f"{path}: contracts permission catalog contains duplicate keys")
+    return catalog, set(keys)
+
+
+def validate_catalog_permission_keys(
+    source: Path,
+    item_kind: str,
+    items: list[dict[str, Any]],
+    identity_field: str,
+    permission_catalog: dict[str, Any],
+    known_permission_keys: set[str],
+) -> None:
+    definitions = {permission["key"]: permission for permission in permission_catalog["permissions"]}
+    for item in items:
+        unknown = sorted(set(item.get("permissionKeys", [])) - known_permission_keys)
+        if unknown:
+            raise ValidationError(
+                f"{rel(source)}: {item_kind} {item[identity_field]!r} references unknown permission keys {unknown}"
+            )
+        legacy_manage = sorted(
+            key for key in item.get("permissionKeys", []) if definitions[key].get("action") == "manage"
+        )
+        if legacy_manage:
+            raise ValidationError(
+                f"{rel(source)}: {item_kind} {item[identity_field]!r} references legacy manage "
+                f"permission keys {legacy_manage}"
+            )
+
+
 def load_contract_schema(path: Path, asset_type: str) -> dict[str, Any]:
     if not path.exists():
         raise ValidationError(f"{path}: contracts {asset_type} schema was requested but does not exist")
@@ -574,6 +615,7 @@ def validate_skill_capabilities(
     meta: dict[str, Any],
     catalog_tools: dict[str, dict[str, Any]],
     ai_platform_capabilities: dict[str, dict[str, Any]],
+    known_permission_keys: set[str] | None,
 ) -> None:
     category = meta["category"]
     if category not in ALLOWED_SKILL_CATEGORIES:
@@ -605,6 +647,10 @@ def validate_skill_capabilities(
     unknown_scopes = sorted(set(meta["requiredScopes"]) - catalog_scopes)
     if unknown_scopes:
         raise ValidationError(f"{rel(path)}: requiredScopes are not exposed by referenced Gateway capabilities: {unknown_scopes}")
+    if known_permission_keys is not None:
+        unknown_permissions = sorted(set(meta.get("permissionKeys", [])) - known_permission_keys)
+        if unknown_permissions:
+            raise ValidationError(f"{rel(path)}: unknown permission keys {unknown_permissions}")
 
 
 def extract_gateway_capability_names_from_source(path: Path, function_name: str, type_name: str) -> set[str]:
@@ -706,6 +752,7 @@ def validate_skills(
     release_version: str,
     contract_schema_path: Path | None,
     ai_platform_capabilities: dict[str, dict[str, Any]],
+    known_permission_keys: set[str] | None,
 ) -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
     schema = load_schema("skill-frontmatter.schema.json")
     contract_schema = load_contract_schema(contract_schema_path, "skill") if contract_schema_path is not None else None
@@ -727,7 +774,7 @@ def validate_skills(
             raise ValidationError(f"{rel(path)}: duplicate skill id {skill_id!r}")
         if path.parent.name != skill_id:
             raise ValidationError(f"{rel(path)}: parent directory must match skill id {skill_id!r}")
-        validate_skill_capabilities(path, meta, catalog_tools, ai_platform_capabilities)
+        validate_skill_capabilities(path, meta, catalog_tools, ai_platform_capabilities, known_permission_keys)
         validate_skill_body(path, meta, body)
         skills_by_id[skill_id] = meta
         index_entries.append(
@@ -1489,6 +1536,7 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
         "contractSchemas": {asset_type: report_path(path) for asset_type, path in contract_schema_paths.items()},
         "gatewayCatalogSource": report_path(args.gateway_catalog_source),
         "platformCapabilitySource": report_path(args.platform_capability_source),
+        "contractsPermissionCatalog": report_path(args.contracts_permission_catalog),
         "writeIndex": args.write_index,
     }
     context: dict[str, Any] = {
@@ -1526,6 +1574,7 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
         summary["gatewayTools"] = len(catalog["tools"])
         summary["gatewayRuntimeTools"] = len(catalog["_runtimeToolNames"])
         summary["gatewayToolStatusCounts"] = gateway_status_counts
+        ai_platform_catalog = load_ai_platform_capability_catalog()
         checks.append(
             check(
                 current_check,
@@ -1535,6 +1584,42 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
                 statuses=gateway_status_counts,
             )
         )
+
+        current_check = "permission-catalog-conformance"
+        known_permission_keys: set[str] | None = None
+        if args.contracts_permission_catalog is None:
+            checks.append(check(current_check, "skipped", reason="soha-contracts permission catalog was not provided"))
+        else:
+            permission_catalog, known_permission_keys = load_permission_catalog(args.contracts_permission_catalog)
+            for section in ("tools", "resources", "prompts"):
+                validate_catalog_permission_keys(
+                    CATALOG_PATH,
+                    f"Gateway {section[:-1]}",
+                    catalog.get(section, []),
+                    "name",
+                    permission_catalog,
+                    known_permission_keys,
+                )
+            validate_catalog_permission_keys(
+                AI_PLATFORM_CATALOG_PATH,
+                "AI platform capability",
+                ai_platform_catalog["capabilities"],
+                "key",
+                permission_catalog,
+                known_permission_keys,
+            )
+            summary["permissionCatalogVersion"] = permission_catalog.get("catalogVersion", "")
+            summary["permissionCatalogHash"] = permission_catalog.get("contentHash", "")
+            summary["permissionKeys"] = len(known_permission_keys)
+            checks.append(
+                check(
+                    current_check,
+                    source=report_path(args.contracts_permission_catalog),
+                    version=permission_catalog.get("catalogVersion", ""),
+                    contentHash=permission_catalog.get("contentHash", ""),
+                    permissionKeys=len(known_permission_keys),
+                )
+            )
 
         current_check = "gateway-catalog-source-drift"
         if args.gateway_catalog_source is None:
@@ -1564,7 +1649,6 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
             checks.append(check(current_check, source=report_path(args.platform_capability_source)))
 
         current_check = "ai-platform-capability-catalog"
-        ai_platform_catalog = load_ai_platform_capability_catalog()
         ai_platform_capabilities = {capability["key"]: capability for capability in ai_platform_catalog["capabilities"]}
         summary["aiPlatformCapabilities"] = len(ai_platform_capabilities)
         checks.append(
@@ -1573,7 +1657,10 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
 
         current_check = "skills"
         skills_by_id, generated_index = validate_skills(
-            args.release_version, args.contracts_skill_schema, ai_platform_capabilities
+            args.release_version,
+            args.contracts_skill_schema,
+            ai_platform_capabilities,
+            known_permission_keys,
         )
         context["skills_by_id"] = skills_by_id
         summary["skills"] = len(skills_by_id)
@@ -1720,6 +1807,12 @@ def main() -> int:
         type=Path,
         default=default_contracts_agent_profile_schema(),
         help="optional path to soha-contracts profiles/agent-profile.schema.json for public contract validation",
+    )
+    parser.add_argument(
+        "--contracts-permission-catalog",
+        type=Path,
+        default=default_contracts_permission_catalog(),
+        help="optional path to soha-contracts auth/permission-catalog.json for permission-key conformance",
     )
     parser.add_argument(
         "--gateway-catalog-source",
