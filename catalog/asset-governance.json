@@ -510,8 +510,7 @@
           "workload.read",
           "network.inventory",
           "storage.inventory",
-          "pod.logs",
-          "metrics"
+          "pod.logs"
         ],
         "requiredScopes": [
           "cluster",
@@ -550,8 +549,7 @@
           "workload.read",
           "network.inventory",
           "storage.inventory",
-          "pod.logs",
-          "metrics"
+          "pod.logs"
         ],
         "requiredScopes": [
           "cluster",

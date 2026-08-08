@@ -12,7 +12,6 @@ platformCapabilityRefs:
   - network.inventory
   - storage.inventory
   - pod.logs
-  - metrics
 requiredScopes:
   - cluster
   - namespace
@@ -29,12 +28,14 @@ tools:
     requiredScopes:
       - cluster
       - namespace
+      - pod
   - name: k8s.pods.describe
     description: Read pod status and describe context.
     riskLevel: read
     requiredScopes:
       - cluster
       - namespace
+      - pod
   - name: k8s.deployments.list
     description: List deployments in a scoped namespace.
     riskLevel: read
@@ -47,12 +48,15 @@ tools:
     requiredScopes:
       - cluster
       - namespace
+      - deployment
   - name: k8s.deployments.events
     description: Read deployment events.
     riskLevel: read
     requiredScopes:
       - cluster
       - namespace
+      - deployment
+      - timeRange
   - name: k8s.services.list
     description: List services in a scoped namespace.
     riskLevel: read
@@ -65,29 +69,34 @@ tools:
     requiredScopes:
       - cluster
       - namespace
+      - service
   - name: k8s.routes.context
     description: Read route and ingress context.
     riskLevel: read
     requiredScopes:
       - cluster
       - namespace
+      - service
   - name: k8s.storage.context
     description: Read PVC and storage binding context.
     riskLevel: read
     requiredScopes:
       - cluster
       - namespace
+      - storage
   - name: k8s.nodes.detail
     description: Read node status and scheduling context.
     riskLevel: read
     requiredScopes:
       - cluster
+      - node
   - name: k8s.events.list
     description: Read recent Kubernetes events.
     riskLevel: read
     requiredScopes:
       - cluster
       - namespace
+      - timeRange
 resources:
   - name: soha://k8s/runtime
     description: Scoped Kubernetes runtime context for the selected cluster and namespace.

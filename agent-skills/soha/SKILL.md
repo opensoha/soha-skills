@@ -22,6 +22,13 @@ Use Soha as the control plane for delivery-center work. Prefer the configured So
 3. Use `soha diagnose --tool <name>` when a capability, permission, scope, skill binding, or approval path is unclear.
 4. Read `references/skills/index.json` and the relevant file under `references/skills/` before a product workflow. For delivery-center work, start with `delivery-developer.md`.
 
+## Diagnose Kubernetes
+
+1. Select the `k8s-sre` skill and verify the live tool inputs before collecting evidence. With the CLI, run `soha context set --skill-id k8s-sre`, `soha capabilities --output inputs`, and `soha diagnose --tool k8s.pods.logs --resource soha://k8s/runtime`.
+2. Keep `clusterId`, `namespace`, workload identity, and time range explicit. Use only the K8s tools, resources, and prompts visible in the current Gateway manifest; do not infer availability from a catalog or skill document.
+3. Stay read-only. Correlate rollout status, events, pod state, bounded logs, service backends, routes, storage, and node conditions, then separate confirmed evidence from hypotheses.
+4. Report permission failures, agent parity gaps, and `capabilityWarnings` as evidence limitations. Do not fall back to kubeconfig, `kubectl`, exec, port-forward, restart, scale, rollback, patch, or delete.
+
 ## Use Secrets
 
 1. Never request or place a secret value in chat, tool business input, plans, manifests, logs, or generated files. Ask the user to create or rotate it with the hidden-input `soha secret` commands or the Web Secret Store.

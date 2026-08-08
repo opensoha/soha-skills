@@ -35,14 +35,15 @@ Use this skill when an AI assistant is helping SREs perform read-only Kubernetes
 
 ## Workflow
 
-1. Confirm cluster, namespace, workload kind, workload name, and time window.
-2. Read rollout status, deployment events, pod describe context, service backends, route context, storage context, node detail, and recent logs using visible Gateway tools.
-3. Correlate events and logs by workload, pod, container, restart count, image, service selector, route backend, PVC binding, node condition, and timestamp.
-4. Treat `capabilityWarnings` as explicit evidence of an unavailable optional API family, not as a successful empty result.
-5. Separate confirmed evidence from hypotheses.
-6. Produce a short RCA draft with likely cause, blast radius, confidence, missing evidence, and safe next checks.
-7. If a release is involved, reference the related application, release bundle, and execution task IDs when available.
-8. For deeper release-failure reasoning, call `diagnosis.release_failure.analyze` with `deepAnalysis=true` and an external `agentProviderId` only after collecting the bounded context; treat the returned `agentRunId` as queued Agent Runtime work until a runner callback writes artifacts.
+1. Discover the live Gateway manifest and select `k8s-sre`; with the CLI, use `soha capabilities --output inputs` and `soha diagnose --tool <name> --resource soha://k8s/runtime` before relying on an unfamiliar tool.
+2. Confirm cluster, namespace, workload kind, workload name, and time window.
+3. Read rollout status, deployment events, pod describe context, service backends, route context, storage context, node detail, and recent logs using visible Gateway tools.
+4. Correlate events and logs by workload, pod, container, restart count, image, service selector, route backend, PVC binding, node condition, and timestamp.
+5. Treat `capabilityWarnings` as explicit evidence of an unavailable optional API family, not as a successful empty result.
+6. Separate confirmed evidence from hypotheses.
+7. Produce a short RCA draft with likely cause, blast radius, confidence, missing evidence, and safe next checks.
+8. If a release is involved, reference the related application, release bundle, and execution task IDs when available.
+9. For deeper release-failure reasoning, call `diagnosis.release_failure.analyze` with `deepAnalysis=true` and an external `agentProviderId` only after collecting the bounded context; treat the returned `agentRunId` as queued Agent Runtime work until a runner callback writes artifacts.
 
 ## Examples
 

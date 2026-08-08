@@ -17,7 +17,6 @@ platformCapabilityRefs:
   - network.inventory
   - storage.inventory
   - pod.logs
-  - metrics
 requiredScopes:
   - cluster
   - namespace
