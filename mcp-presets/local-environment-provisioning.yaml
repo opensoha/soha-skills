@@ -9,7 +9,7 @@ skillRefs:
   - docker-runtime-operator
   - k8s-resource-provisioner
 platformCapabilityRefs:
-  - workload.mutations
+  - resource.creation
 requiredScopes:
   - cluster
   - namespace
@@ -76,6 +76,7 @@ tools:
       - namespace
 guardrails:
   - discover_live_capabilities
+  - use_provider_allowed_actions_only
   - plan_before_execute
   - approval_required_for_execute
   - stable_idempotency_keys

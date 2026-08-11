@@ -17,9 +17,13 @@ requiredScopes:
 
 Use this skill to plan and operate virtual machines through Soha provider adapters.
 
+The MCP surface is intentionally limited to create planning, create execution, and typed VM actions. Use the Soha workbench or public HTTP API for inventory and detail reads.
+
 ## Operating Contract
 
 - Discover all VM tools from the live Gateway manifest before use.
+- Confirm the selected connection is enabled and direct. Agent-connected KubeVirt virtualization is not supported.
+- Use only actions returned by the VM's live `allowedActions`; do not assume provider parity. KubeVirt currently advertises CPU and memory resize only.
 - Plan every VM create request before execution.
 - Use typed lifecycle actions and stable idempotency keys only.
 - When provider or bootstrap credentials are required, attach canonical references through `_sohaSecretRefs`; keep them outside cloud-init and business input.
@@ -47,6 +51,7 @@ Create a small VM named `demo-api` from an approved image and flavor.
 
 - Requires explicit virtualization connection and VM scope.
 - Image, flavor, provider, policy, and approval checks remain server-side.
+- PVE and KubeVirt availability depends on the selected live connection and its reported capabilities; this skill does not assert lab or provider readiness.
 - Secret-backed operations additionally require `secret.use`; the server enforces secret scope, bindings, approval, and audit.
 
 ## Forbidden Actions

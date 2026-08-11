@@ -5,6 +5,11 @@ version: 0.1.0
 category: platform
 description: Read-only Kubernetes diagnosis through Soha AI Gateway.
 capabilityRefs:
+  - k8s.namespaces.list
+  - k8s.workloads.overview
+  - k8s.configmaps.list
+  - k8s.secrets.metadata
+  - k8s.helm.releases.list
   - k8s.pods.list
   - k8s.pods.logs
   - k8s.pods.describe
@@ -32,12 +37,13 @@ Use this skill when an AI assistant is helping SREs perform read-only Kubernetes
 - Use soha platform view-model tools; do not ask for kubeconfig or run `kubectl` locally.
 - Keep cluster and namespace scope explicit in every tool call and every conclusion.
 - Prefer backend aggregated evidence over repeated namespace fan-out.
+- Treat custom-resource access as API-group-specific RBAC and Prometheus access as control-plane reachability; Agent mode does not remove either boundary.
 
 ## Workflow
 
 1. Discover the live Gateway manifest and select `k8s-sre`; with the CLI, use `soha capabilities --output inputs` and `soha diagnose --tool <name> --resource soha://k8s/runtime` before relying on an unfamiliar tool.
 2. Confirm cluster, namespace, workload kind, workload name, and time window.
-3. Read rollout status, deployment events, pod describe context, service backends, route context, storage context, node detail, and recent logs using visible Gateway tools.
+3. Start with namespace and workload overviews, then read rollout status, deployment events, pod describe context, service backends, route context, storage context, node detail, and recent logs using visible Gateway tools.
 4. Correlate events and logs by workload, pod, container, restart count, image, service selector, route backend, PVC binding, node condition, and timestamp.
 5. Treat `capabilityWarnings` as explicit evidence of an unavailable optional API family, not as a successful empty result.
 6. Separate confirmed evidence from hypotheses.
@@ -54,16 +60,17 @@ User asks: "In cluster `prod-cn`, namespace `payments`, why is deployment `api` 
 ### Expected Tool Calls
 
 1. `k8s.deployments.rollout_status` for `prod-cn`, `payments`, and deployment `api`.
-2. `k8s.deployments.events` for recent rollout events.
+2. `k8s.workloads.overview` and `k8s.deployments.events` for health and recent rollout evidence.
 3. `k8s.pods.list` and `k8s.pods.describe` for affected pods.
 4. `k8s.pods.logs` with bounded `tailLines` or `sinceSeconds`.
-5. `k8s.services.backends`, `k8s.routes.context`, and `k8s.storage.context` when network or storage symptoms appear.
-6. `k8s.nodes.detail` and `k8s.events.list` when scheduling, pressure, or node condition evidence is needed.
+5. `k8s.configmaps.list`, `k8s.secrets.metadata`, or `k8s.helm.releases.list` when configuration or release metadata is relevant; never request their content or values.
+6. `k8s.services.backends`, `k8s.routes.context`, and `k8s.storage.context` when network or storage symptoms appear.
+7. `k8s.nodes.detail` and `k8s.events.list` when scheduling, pressure, or node condition evidence is needed.
 
 ## Permission Boundaries
 
 - Requires Gateway-visible read-only Kubernetes capabilities for `cluster` and `namespace` scopes.
-- Reads only scoped status, event, route, storage, node, and log evidence exposed by the Gateway manifest.
+- Reads only scoped status, metadata, event, route, storage, node, and log evidence exposed by the Gateway manifest.
 - Treats missing capabilities, agent parity gaps, and `capabilityWarnings` as explicit evidence limitations.
 
 ## Forbidden Actions

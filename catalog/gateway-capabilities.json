@@ -1944,6 +1944,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
+        "workspace.resource.view",
         "platform.namespaces.view"
       ],
       "requiredScopes": [
@@ -1953,7 +1954,7 @@
       "mcpAdapterId": "platform-native.v1",
       "mcpToolName": "k8s.namespaces.list",
       "requiresApproval": false,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "k8s-sre"
       ],
@@ -1979,6 +1980,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
+        "workspace.resource.view",
         "platform.workloads.view"
       ],
       "requiredScopes": [
@@ -1988,7 +1990,7 @@
       "mcpAdapterId": "platform-native.v1",
       "mcpToolName": "k8s.workloads.overview",
       "requiresApproval": false,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "k8s-sre",
         "observability"
@@ -2015,6 +2017,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
+        "workspace.resource.view",
         "platform.configuration.view"
       ],
       "requiredScopes": [
@@ -2024,7 +2027,7 @@
       "mcpAdapterId": "platform-native.v1",
       "mcpToolName": "k8s.configmaps.list",
       "requiresApproval": false,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "k8s-sre"
       ],
@@ -2052,6 +2055,7 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
+        "workspace.resource.view",
         "platform.configuration.view"
       ],
       "requiredScopes": [
@@ -2061,7 +2065,7 @@
       "mcpAdapterId": "platform-native.v1",
       "mcpToolName": "k8s.secrets.metadata",
       "requiresApproval": false,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "k8s-sre",
         "security-change"
@@ -2126,16 +2130,16 @@
       "riskLevel": "read",
       "permissionKeys": [
         "ai.gateway.invoke",
+        "workspace.resource.view",
         "platform.helm.view"
       ],
       "requiredScopes": [
-        "cluster",
-        "namespace"
+        "cluster"
       ],
       "mcpAdapterId": "platform-native.v1",
       "mcpToolName": "k8s.helm.releases.list",
       "requiresApproval": false,
-      "status": "baseline-approved",
+      "status": "stable-runtime",
       "skillRefs": [
         "k8s-sre",
         "delivery-developer"
@@ -5744,87 +5748,6 @@
       ]
     },
     {
-      "name": "settings.ai.summary",
-      "title": "Read AI Settings Summary",
-      "domain": "settings",
-      "owningWorkbench": "settings",
-      "owningService": "internal/application/settings.Service",
-      "action": "read",
-      "riskLevel": "read",
-      "permissionKeys": [
-        "ai.gateway.invoke",
-        "settings.ai.view"
-      ],
-      "requiredScopes": [
-        "settings"
-      ],
-      "mcpAdapterId": "system-governance.v1",
-      "mcpToolName": "settings.ai.summary",
-      "requiresApproval": false,
-      "status": "baseline-approved",
-      "skillRefs": [
-        "gateway-governance",
-        "agent-runtime"
-      ],
-      "resourceRefs": [
-        "soha://system/governance"
-      ],
-      "promptRefs": [],
-      "audit": {
-        "resourceKind": "AIGatewayTool",
-        "relatedIds": []
-      },
-      "redaction": [
-        "credentials",
-        "tokens",
-        "secretRefs"
-      ],
-      "moduleId": "settings",
-      "routeEvidence": [
-        "registerSettingsRoutes"
-      ]
-    },
-    {
-      "name": "settings.monitoring.summary",
-      "title": "Read Monitoring Settings Summary",
-      "domain": "settings",
-      "owningWorkbench": "settings",
-      "owningService": "internal/application/settings.Service",
-      "action": "read",
-      "riskLevel": "read",
-      "permissionKeys": [
-        "ai.gateway.invoke",
-        "observe.monitoring.view"
-      ],
-      "requiredScopes": [
-        "settings"
-      ],
-      "mcpAdapterId": "system-governance.v1",
-      "mcpToolName": "settings.monitoring.summary",
-      "requiresApproval": false,
-      "status": "baseline-approved",
-      "skillRefs": [
-        "observability",
-        "gateway-governance"
-      ],
-      "resourceRefs": [
-        "soha://system/governance"
-      ],
-      "promptRefs": [],
-      "audit": {
-        "resourceKind": "AIGatewayTool",
-        "relatedIds": []
-      },
-      "redaction": [
-        "credentials",
-        "secretRefs"
-      ],
-      "moduleId": "settings",
-      "routeEvidence": [
-        "registerSettingsRoutes"
-      ]
-    },
-    {
       "name": "security.*",
       "title": "Reserved Security Workbench Namespace",
       "domain": "security",
@@ -6148,7 +6071,7 @@
     },
     {
       "name": "soha://system/governance",
-      "description": "Modules, menus, permissions, audits, operation logs, events, and settings summaries.",
+      "description": "Modules, menus, permissions, audits, operation logs, and events.",
       "permissionKeys": [
         "ai.gateway.invoke",
         "system.menus.view"
@@ -6170,9 +6093,7 @@
         "system.operation_logs.list",
         "system.events.list",
         "access.permission_snapshot.read",
-        "access.scope_grants.list",
-        "settings.ai.summary",
-        "settings.monitoring.summary"
+        "access.scope_grants.list"
       ],
       "promptRefs": [
         "soha.gateway.review_governance"

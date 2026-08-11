@@ -790,6 +790,14 @@ def validate_skills(
             }
         )
 
+    for asset_type in ("tools", "resources", "prompts"):
+        for asset in catalog.get(asset_type, []):
+            for skill_id in asset.get("skillRefs", []):
+                if skill_id not in skills_by_id:
+                    raise ValidationError(
+                        f"{rel(CATALOG_PATH)}: {asset_type[:-1]} {asset['name']!r} references unknown skill {skill_id!r}"
+                    )
+
     index_entries.sort(key=lambda item: item["id"])
     generated_index = {
         "$schema": "../schemas/skills-index.schema.json",
@@ -976,6 +984,7 @@ def platform_scope_union(platform_capabilities: dict[str, dict[str, Any]], capab
 
 def validate_mcp_presets(
     skills_by_id: dict[str, dict[str, Any]],
+    gateway_tools: dict[str, dict[str, Any]],
     platform_capabilities: dict[str, dict[str, Any]],
     contract_schema_path: Path | None,
 ) -> dict[str, dict[str, Any]]:
@@ -1000,7 +1009,19 @@ def validate_mcp_presets(
             raise ValidationError(
                 f"{rel(path)}: requiredScopes are not exposed by referenced platformCapabilityRefs: {unknown_scopes}"
             )
-        tool_names = {tool["name"] for tool in preset["tools"]}
+        tool_names: set[str] = set()
+        for tool in preset["tools"]:
+            name = tool["name"]
+            catalog_tool = gateway_tools.get(name)
+            if catalog_tool is None:
+                raise ValidationError(f"{rel(path)}: unknown Gateway tool {name!r}")
+            if catalog_tool["status"] != "stable-runtime":
+                raise ValidationError(f"{rel(path)}: Gateway tool {name!r} is not stable-runtime")
+            if tool["riskLevel"] != catalog_tool["riskLevel"]:
+                raise ValidationError(f"{rel(path)}: Gateway tool {name!r} riskLevel does not match catalog")
+            if set(tool["requiredScopes"]) != set(catalog_tool["requiredScopes"]):
+                raise ValidationError(f"{rel(path)}: Gateway tool {name!r} requiredScopes do not match catalog")
+            tool_names.add(name)
         for skill_id in preset["skillRefs"]:
             skill = skills_by_id.get(skill_id)
             if skill is None:
@@ -1699,6 +1720,7 @@ def run_validation(args: argparse.Namespace) -> tuple[int, dict[str, Any], dict[
         current_check = "mcp-presets"
         presets_by_id = validate_mcp_presets(
             skills_by_id,
+            gateway_tools,
             platform_capabilities,
             args.contracts_mcp_preset_schema,
         )

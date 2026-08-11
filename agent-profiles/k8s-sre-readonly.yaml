@@ -14,6 +14,7 @@ capabilityRefs:
 platformCapabilityRefs:
   - cluster.inventory
   - workload.read
+  - configuration.inventory
   - network.inventory
   - storage.inventory
   - pod.logs
@@ -21,6 +22,11 @@ requiredScopes:
   - cluster
   - namespace
 enabledToolRefs:
+  - k8s.namespaces.list
+  - k8s.workloads.overview
+  - k8s.configmaps.list
+  - k8s.secrets.metadata
+  - k8s.helm.releases.list
   - k8s.pods.list
   - k8s.pods.logs
   - k8s.pods.describe

@@ -12,6 +12,7 @@ skillRefs:
 platformCapabilityRefs:
   - cluster.inventory
   - workload.read
+  - configuration.inventory
   - network.inventory
   - storage.inventory
   - pod.logs
@@ -52,6 +53,35 @@ tools:
       - application
       - environment
       - executionTask
+  - name: k8s.namespaces.list
+    description: List namespace metadata in the scoped cluster.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.workloads.overview
+    description: Read workload health totals and bounded problematic pod summaries.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.configmaps.list
+    description: List ConfigMap metadata without configuration content.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.secrets.metadata
+    description: List Secret metadata without Secret data.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.helm.releases.list
+    description: List Helm release metadata without release values or manifests.
+    riskLevel: read
+    requiredScopes:
+      - cluster
   - name: k8s.pods.list
     description: List pods in the scoped namespace.
     riskLevel: read

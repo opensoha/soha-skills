@@ -19,6 +19,7 @@ capabilityRefs:
 platformCapabilityRefs:
   - cluster.inventory
   - workload.read
+  - configuration.inventory
   - network.inventory
   - storage.inventory
   - pod.logs
@@ -31,6 +32,11 @@ enabledToolRefs:
   - delivery.execution_tasks.list
   - delivery.execution_logs.list
   - diagnosis.release_failure.analyze
+  - k8s.namespaces.list
+  - k8s.workloads.overview
+  - k8s.configmaps.list
+  - k8s.secrets.metadata
+  - k8s.helm.releases.list
   - k8s.pods.list
   - k8s.pods.logs
   - k8s.pods.describe

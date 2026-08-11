@@ -171,6 +171,26 @@
       ]
     },
     {
+      "id": "gateway-governance",
+      "name": "Gateway Governance",
+      "version": "0.1.0",
+      "category": "security",
+      "description": "Read-only review of Soha AI Gateway clients, policies, tools, approvals, and audit evidence.",
+      "path": "skills/ai-gateway/gateway-governance/SKILL.md",
+      "capabilityRefs": [
+        "gateway.manifest.read",
+        "gateway.governance.status",
+        "gateway.audit_logs.list"
+      ],
+      "requiredScopes": [
+        "aiClient",
+        "skill",
+        "policy",
+        "tool",
+        "audit"
+      ]
+    },
+    {
       "id": "incident-handoff",
       "name": "Incident Handoff",
       "version": "0.1.0",
@@ -218,6 +238,11 @@
       "description": "Read-only Kubernetes diagnosis through Soha AI Gateway.",
       "path": "skills/ai-gateway/k8s-sre/SKILL.md",
       "capabilityRefs": [
+        "k8s.namespaces.list",
+        "k8s.workloads.overview",
+        "k8s.configmaps.list",
+        "k8s.secrets.metadata",
+        "k8s.helm.releases.list",
         "k8s.pods.list",
         "k8s.pods.logs",
         "k8s.pods.describe",

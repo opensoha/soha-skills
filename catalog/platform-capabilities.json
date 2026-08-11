@@ -177,8 +177,8 @@
       "docsUrl": "/development/add-resource-module",
       "direct": { "status": "available" },
       "agent": {
-        "status": "available",
-        "reason": "CRD discovery and custom-resource list, YAML, create, apply, and delete are available through the agent"
+        "status": "partial",
+        "reason": "CRD discovery is available; custom-resource read and mutation require explicit Kubernetes RBAC for each target API group and resource"
       }
     },
     {
@@ -288,7 +288,10 @@
       "requiresApproval": false,
       "docsUrl": "/architecture/monitoring-and-alerting",
       "direct": { "status": "available" },
-      "agent": { "status": "available" }
+      "agent": {
+        "status": "partial",
+        "reason": "Prometheus metrics are available when the Soha control plane can reach the configured endpoint; private in-cluster Prometheus proxying is not available"
+      }
     }
   ]
 }

@@ -321,6 +321,11 @@
         "riskLevel": "read",
         "approvalRequired": false,
         "gatewayCapabilityRefs": [
+          "k8s.namespaces.list",
+          "k8s.workloads.overview",
+          "k8s.configmaps.list",
+          "k8s.secrets.metadata",
+          "k8s.helm.releases.list",
           "k8s.pods.list",
           "k8s.pods.logs",
           "k8s.pods.describe",
@@ -451,6 +456,33 @@
         "reviewStatus": "approved"
       },
       {
+        "type": "skill",
+        "id": "gateway-governance",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "gateway.manifest.read",
+          "gateway.governance.status",
+          "gateway.audit_logs.list"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "aiClient",
+          "skill",
+          "policy",
+          "tool",
+          "audit"
+        ],
+        "guardrails": [
+          "read_only",
+          "scoped_governance_evidence",
+          "no_secret_output",
+          "separate_approved_mutations"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
         "type": "mcpPreset",
         "id": "local-environment-provisioning",
         "version": "0.1.0",
@@ -469,7 +501,7 @@
           "k8s.resources.create.trigger"
         ],
         "platformCapabilityRefs": [
-          "workload.mutations"
+          "resource.creation"
         ],
         "requiredScopes": [
           "cluster",
@@ -492,6 +524,11 @@
         "riskLevel": "read",
         "approvalRequired": false,
         "gatewayCapabilityRefs": [
+          "k8s.namespaces.list",
+          "k8s.workloads.overview",
+          "k8s.configmaps.list",
+          "k8s.secrets.metadata",
+          "k8s.helm.releases.list",
           "k8s.pods.list",
           "k8s.pods.logs",
           "k8s.pods.describe",
@@ -508,6 +545,7 @@
         "platformCapabilityRefs": [
           "cluster.inventory",
           "workload.read",
+          "configuration.inventory",
           "network.inventory",
           "storage.inventory",
           "pod.logs"
@@ -531,6 +569,11 @@
         "riskLevel": "read",
         "approvalRequired": false,
         "gatewayCapabilityRefs": [
+          "k8s.namespaces.list",
+          "k8s.workloads.overview",
+          "k8s.configmaps.list",
+          "k8s.secrets.metadata",
+          "k8s.helm.releases.list",
           "k8s.pods.list",
           "k8s.pods.logs",
           "k8s.pods.describe",
@@ -547,6 +590,7 @@
         "platformCapabilityRefs": [
           "cluster.inventory",
           "workload.read",
+          "configuration.inventory",
           "network.inventory",
           "storage.inventory",
           "pod.logs"
@@ -751,6 +795,11 @@
           "delivery.execution_logs.list",
           "delivery.workflow_templates.list",
           "diagnosis.release_failure.analyze",
+          "k8s.namespaces.list",
+          "k8s.workloads.overview",
+          "k8s.configmaps.list",
+          "k8s.secrets.metadata",
+          "k8s.helm.releases.list",
           "k8s.pods.list",
           "k8s.pods.logs",
           "k8s.pods.describe",
@@ -767,6 +816,7 @@
         "platformCapabilityRefs": [
           "cluster.inventory",
           "workload.read",
+          "configuration.inventory",
           "network.inventory",
           "storage.inventory",
           "pod.logs",
@@ -840,6 +890,11 @@
           "delivery.execution_tasks.list",
           "delivery.execution_logs.list",
           "diagnosis.release_failure.analyze",
+          "k8s.namespaces.list",
+          "k8s.workloads.overview",
+          "k8s.configmaps.list",
+          "k8s.secrets.metadata",
+          "k8s.helm.releases.list",
           "k8s.pods.list",
           "k8s.pods.logs",
           "k8s.pods.describe",
@@ -856,6 +911,7 @@
         "platformCapabilityRefs": [
           "cluster.inventory",
           "workload.read",
+          "configuration.inventory",
           "network.inventory",
           "storage.inventory",
           "pod.logs",
