@@ -1559,7 +1559,7 @@
       "riskLevel": "analyze",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "workspace.resource.view"
+        "platform.resource-creation.use"
       ],
       "requiredScopes": [
         "cluster",
@@ -1599,7 +1599,7 @@
       "riskLevel": "high",
       "permissionKeys": [
         "ai.gateway.invoke",
-        "platform.resource.create"
+        "platform.resource-creation.use"
       ],
       "requiredScopes": [
         "cluster",

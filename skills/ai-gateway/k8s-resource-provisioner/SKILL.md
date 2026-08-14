@@ -45,7 +45,8 @@ Create a small Deployment and Service in namespace `demo` on cluster `lab`.
 
 ## Permission Boundaries
 
-- Requires scoped cluster and namespace access plus `platform.resource.create` for execution.
+- Requires scoped cluster and namespace access plus `platform.resource-creation.use` for preflight and execution.
+- Every manifest still requires the exact resource-kind `create` permission for its target namespace or cluster scope.
 - The Gateway and resource service enforce resource-kind, namespace, and high-risk permissions.
 - Secret-backed operations additionally require `secret.use`; the server enforces secret scope, bindings, approval, and audit.
 
