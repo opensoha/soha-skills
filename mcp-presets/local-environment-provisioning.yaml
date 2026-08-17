@@ -62,6 +62,12 @@ tools:
     requiredScopes:
       - dockerHost
       - dockerService
+  - name: k8s.workloads.snapshot.generate
+    description: Generate a Job, CronJob, or image-following WorkloadCronJob manifest from a scoped workload template.
+    riskLevel: analyze
+    requiredScopes:
+      - cluster
+      - namespace
   - name: k8s.resources.create.preflight
     description: Authorize and dry-run Kubernetes manifests without creating resources.
     riskLevel: analyze

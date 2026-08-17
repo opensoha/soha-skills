@@ -1810,7 +1810,7 @@ def main() -> int:
     parser.add_argument("--package-dry-run", action="store_true", help="assemble the release tarball in a temporary directory and print its checksum")
     parser.add_argument("--package-output-dir", type=Path, help="write release tarball, manifest, and checksum files to this directory")
     parser.add_argument("--verify-package", type=Path, help="verify an existing release tarball, sibling manifest, and sibling checksum")
-    parser.add_argument("--release-version", default="0.1.0", help="release version used for package dry-run metadata")
+    parser.add_argument("--release-version", default="0.1.1", help="release version used for package dry-run metadata")
     parser.add_argument("--report-output", type=Path, help="write a machine-readable validation report JSON artifact")
     parser.add_argument(
         "--contracts-skill-schema",

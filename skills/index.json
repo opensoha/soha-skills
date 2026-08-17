@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/skills-index.schema.json",
   "schemaVersion": "opensoha.dev/skills-index/v1",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "skills": [
     {
       "id": "agent-runtime",
@@ -219,9 +219,10 @@
       "name": "K8s Resource Provisioner",
       "version": "0.1.0",
       "category": "platform",
-      "description": "Approval-bound Kubernetes manifest preflight and creation for scoped demo environments.",
+      "description": "Kubernetes workload snapshot generation plus approval-bound manifest preflight and creation for scoped environments.",
       "path": "skills/ai-gateway/k8s-resource-provisioner/SKILL.md",
       "capabilityRefs": [
+        "k8s.workloads.snapshot.generate",
         "k8s.resources.create.preflight",
         "k8s.resources.create.trigger"
       ],

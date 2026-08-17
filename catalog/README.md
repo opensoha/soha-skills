@@ -6,7 +6,7 @@ by local validation.
 
 ## Compatibility Matrix
 
-- Skills package version: `0.1.0`
+- Skills package version: `0.1.1`
 - Gateway capability catalog version: `0.1.0`
 - Platform capability catalog version: `0.1.0`
 - Supported `soha-core`: `>=0.1.0 <0.2.0`

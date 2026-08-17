@@ -1550,6 +1550,50 @@
       ]
     },
     {
+      "name": "k8s.workloads.snapshot.generate",
+      "title": "Generate Kubernetes Workload Snapshot",
+      "domain": "k8s",
+      "owningWorkbench": "platform",
+      "owningService": "internal/application/resource.Workloads",
+      "action": "generate",
+      "riskLevel": "analyze",
+      "permissionKeys": [
+        "ai.gateway.invoke"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ],
+      "mcpAdapterId": "k8s.v1",
+      "mcpToolName": "k8s.workloads.snapshot.generate",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "k8s-resource-provisioner"
+      ],
+      "resourceRefs": [
+        "soha://k8s/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "clusterId",
+          "namespace",
+          "sourceUid",
+          "selectedContainer"
+        ]
+      },
+      "redaction": [
+        "content"
+      ],
+      "moduleId": "platform",
+      "routeEvidence": [
+        "registerPlatformRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
       "name": "k8s.resources.create.preflight",
       "title": "Preflight Kubernetes Resources",
       "domain": "k8s",
@@ -5898,6 +5942,7 @@
         "k8s.storage.context",
         "k8s.nodes.detail",
         "k8s.events.list",
+        "k8s.workloads.snapshot.generate",
         "k8s.resources.create.preflight",
         "k8s.resources.create.trigger"
       ],

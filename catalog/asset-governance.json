@@ -387,6 +387,7 @@
         "riskLevel": "high",
         "approvalRequired": true,
         "gatewayCapabilityRefs": [
+          "k8s.workloads.snapshot.generate",
           "k8s.resources.create.preflight",
           "k8s.resources.create.trigger"
         ],
@@ -497,6 +498,7 @@
           "docker.projects.deploy.plan",
           "docker.projects.deploy.trigger",
           "docker.services.action.trigger",
+          "k8s.workloads.snapshot.generate",
           "k8s.resources.create.preflight",
           "k8s.resources.create.trigger"
         ],

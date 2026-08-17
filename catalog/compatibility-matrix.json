@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/compatibility-matrix.schema.json",
   "schemaVersion": "opensoha.dev/skills-compatibility-matrix/v1",
-  "skillsVersion": "0.1.0",
+  "skillsVersion": "0.1.1",
   "gatewayCapabilityCatalogVersion": "0.1.0",
   "platformCapabilityCatalogVersion": "0.1.0",
   "requiredScopes": [
