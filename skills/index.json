@@ -68,6 +68,27 @@
       ]
     },
     {
+      "id": "compute-sre",
+      "name": "Compute SRE",
+      "version": "0.1.0",
+      "category": "platform",
+      "description": "Read-only virtualization and container-runtime diagnosis through Soha Compute Gateway tools.",
+      "path": "skills/ai-gateway/compute-sre/SKILL.md",
+      "capabilityRefs": [
+        "compute.overview.read",
+        "compute.resources.read",
+        "compute.resource_relations.list",
+        "compute.tasks.list",
+        "compute.tasks.get",
+        "compute.task_logs.list"
+      ],
+      "requiredScopes": [
+        "computeDomain",
+        "computeResource",
+        "computeTask"
+      ]
+    },
+    {
       "id": "delivery-developer",
       "name": "Delivery Developer",
       "version": "0.1.0",

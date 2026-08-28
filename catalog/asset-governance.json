@@ -316,6 +316,34 @@
       },
       {
         "type": "skill",
+        "id": "compute-sre",
+        "version": "0.1.0",
+        "riskLevel": "read",
+        "approvalRequired": false,
+        "gatewayCapabilityRefs": [
+          "compute.overview.read",
+          "compute.resources.read",
+          "compute.resource_relations.list",
+          "compute.tasks.list",
+          "compute.tasks.get",
+          "compute.task_logs.list"
+        ],
+        "platformCapabilityRefs": [],
+        "requiredScopes": [
+          "computeDomain",
+          "computeResource",
+          "computeTask"
+        ],
+        "guardrails": [
+          "read_only",
+          "no_direct_provider_access",
+          "no_secret_output",
+          "require_resource_task_evidence"
+        ],
+        "reviewStatus": "approved"
+      },
+      {
+        "type": "skill",
         "id": "k8s-sre",
         "version": "0.1.0",
         "riskLevel": "read",

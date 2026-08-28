@@ -5792,6 +5792,247 @@
       ]
     },
     {
+      "name": "compute.overview.read",
+      "title": "Read Compute Overview",
+      "domain": "compute",
+      "owningWorkbench": "compute",
+      "owningService": "internal/application/compute.Service",
+      "action": "read",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke"
+      ],
+      "requiredScopes": [
+        "computeDomain"
+      ],
+      "mcpAdapterId": "compute.v1",
+      "mcpToolName": "compute.overview.read",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator",
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "scope"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "compute",
+      "routeEvidence": [
+        "registerComputeRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "compute.resources.read",
+      "title": "Read Compute Resource",
+      "domain": "compute",
+      "owningWorkbench": "compute",
+      "owningService": "internal/application/compute.Service",
+      "action": "read",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke"
+      ],
+      "requiredScopes": [
+        "computeDomain",
+        "computeResource"
+      ],
+      "mcpAdapterId": "compute.v1",
+      "mcpToolName": "compute.resources.read",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator",
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "resourceDomain",
+          "resourceKind",
+          "resourceId",
+          "resourceUri"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "compute",
+      "routeEvidence": [
+        "registerComputeRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "compute.resource_relations.list",
+      "title": "List Compute Resource Relations",
+      "domain": "compute",
+      "owningWorkbench": "compute",
+      "owningService": "internal/application/compute.Service",
+      "action": "list",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke"
+      ],
+      "requiredScopes": [
+        "computeDomain",
+        "computeResource"
+      ],
+      "mcpAdapterId": "compute.v1",
+      "mcpToolName": "compute.resource_relations.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator",
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "resourceDomain",
+          "resourceKind",
+          "resourceId",
+          "resourceUri"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "compute",
+      "routeEvidence": [
+        "registerComputeRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "compute.tasks.list",
+      "title": "List Compute Tasks",
+      "domain": "compute",
+      "owningWorkbench": "compute",
+      "owningService": "internal/application/compute.Service",
+      "action": "list",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke"
+      ],
+      "requiredScopes": [
+        "computeDomain",
+        "computeTask"
+      ],
+      "mcpAdapterId": "compute.v1",
+      "mcpToolName": "compute.tasks.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator",
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "taskIds",
+          "nextCursor"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "compute",
+      "routeEvidence": [
+        "registerComputeRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "compute.tasks.get",
+      "title": "Read Compute Task",
+      "domain": "compute",
+      "owningWorkbench": "compute",
+      "owningService": "internal/application/compute.Service",
+      "action": "read",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke"
+      ],
+      "requiredScopes": [
+        "computeDomain",
+        "computeTask"
+      ],
+      "mcpAdapterId": "compute.v1",
+      "mcpToolName": "compute.tasks.get",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator",
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "taskDomain",
+          "taskId",
+          "taskUri"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "compute",
+      "routeEvidence": [
+        "registerComputeRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "compute.task_logs.list",
+      "title": "List Compute Task Logs",
+      "domain": "compute",
+      "owningWorkbench": "compute",
+      "owningService": "internal/application/compute.Service",
+      "action": "logs",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke"
+      ],
+      "requiredScopes": [
+        "computeDomain",
+        "computeTask"
+      ],
+      "mcpAdapterId": "compute.v1",
+      "mcpToolName": "compute.task_logs.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator",
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "taskDomain",
+          "taskId",
+          "taskUri"
+        ]
+      },
+      "redaction": [
+        "message",
+        "payload"
+      ],
+      "moduleId": "compute",
+      "routeEvidence": [
+        "registerComputeRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
       "name": "security.*",
       "title": "Reserved Security Workbench Namespace",
       "domain": "security",

@@ -21,6 +21,9 @@ The normalized Gateway required scope union is:
 - `audit`
 - `businessLine`
 - `cluster`
+- `computeDomain`
+- `computeResource`
+- `computeTask`
 - `deployment`
 - `dockerHost`
 - `dockerProject`
