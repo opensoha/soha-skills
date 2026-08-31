@@ -23,7 +23,8 @@ Use this skill when an AI assistant is helping correlate Soha delivery logs, Kub
 
 ## Operating Contract
 
-- Use Soha Gateway as the evidence boundary for logs, events, metrics context, and provider analysis.
+- Use Soha Gateway as the evidence boundary for the delivery logs, Kubernetes events, pod logs, node detail, and release analysis declared in `capabilityRefs`.
+- Treat metrics, traces, alerts, and provider telemetry as unavailable unless another installed skill and preset expose a `stable-runtime` capability with the required scope.
 - Keep cluster, namespace, application, environment, pod, node, execution task, and time range explicit.
 - Prefer aggregated summaries and evidence IDs over raw logs that may contain passwords, tokens, or credentials.
 - Distinguish symptoms, correlated signals, likely cause, and missing telemetry.

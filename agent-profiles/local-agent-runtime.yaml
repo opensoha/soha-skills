@@ -2,7 +2,7 @@ schemaVersion: opensoha.dev/agent-profile/v1
 id: local-agent-runtime
 name: Local Agent Runtime
 version: 0.1.0
-description: Local self-hosted profile for Agent Runtime, observability, and read-only Kubernetes diagnosis.
+description: Local self-hosted profile for Agent Runtime and read-only Kubernetes diagnosis.
 mode: platform_resource_diagnosis
 providerKind: soha-agent-runtime
 skillRefs:

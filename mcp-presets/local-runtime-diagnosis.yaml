@@ -2,7 +2,7 @@ schemaVersion: opensoha.dev/mcp-preset/v1
 id: local-runtime-diagnosis
 name: Local Runtime Diagnosis
 version: 0.1.0
-description: Local self-hosted runtime diagnosis preset for Kubernetes, Agent Runtime, and observability evidence.
+description: Local self-hosted diagnosis preset for Kubernetes and Agent Runtime evidence.
 riskLevel: analyze
 skillRefs:
   - k8s-sre
