@@ -1,10 +1,6 @@
 ---
 name: soha-skills
-description: >-
-  Implement or review official Soha runtime skills, MCP presets, agent
-  profiles, installable agent-facing meta skills, capability catalogs, compatibility policy, validation schemas,
-  indexes, and release packages in `soha-skills`. Use when changing assets
-  installed or executed by Soha, not when creating Codex project-local skills.
+description: Change or review published Soha runtime skills, agent-facing assets, presets, and catalogs in soha-skills. Repository-local collaboration skills use skill-creator.
 ---
 
 # Soha Skills Catalog
@@ -24,7 +20,7 @@ evidence. This repository's `skills/**` are governed runtime workflow assets,
    Local schemas may be stricter but may not fork the public contract.
 3. Keep capability references backed by the Gateway, platform, or AI platform
    catalog and by real runtime evidence.
-4. When skill front matter changes, regenerate `skills/index.json` with
+4. When published runtime skill front matter changes, regenerate `skills/index.json` with
    `python3 tools/validate_assets.py --write-index`; do not hand-maintain it.
 5. Run validation before packaging. Verify release artifacts independently
    when release behavior changes.
@@ -51,5 +47,6 @@ python3 tools/validate_assets.py
 python3 tools/validate_assets.py --package-dry-run
 ```
 
-Use `--release-version` and `--verify-package` only for release-facing
-changes.
+Use the package dry run, `--release-version`, and `--verify-package` for package/release-facing
+changes. Repository-local `.agents/skills` prose does not update the runtime index; validate
+its metadata and references instead.

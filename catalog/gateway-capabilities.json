@@ -12,6 +12,544 @@
   ],
   "tools": [
     {
+      "name": "network_access.mihomo_profiles.list",
+      "title": "List Mihomo Profiles",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "list",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.mihomo_profiles.view"
+      ],
+      "requiredScopes": [
+        "device"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.mihomo_profiles.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.telemetry.summary",
+      "title": "Summarize Network Telemetry",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "summary",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.telemetry.view"
+      ],
+      "requiredScopes": [
+        "producer"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.telemetry.summary",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.conflicts.analyze",
+      "title": "Analyze Network Address Conflicts",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "analyze",
+      "riskLevel": "analyze",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.policy.view"
+      ],
+      "requiredScopes": [
+        "policy"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.conflicts.analyze",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.access_grants.create",
+      "title": "Create Network Resource Access Grant",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "create",
+      "riskLevel": "high",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.access_grants.create"
+      ],
+      "requiredScopes": [
+        "subject",
+        "device",
+        "site",
+        "resource"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.access_grants.create",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [
+        "token"
+      ],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.access_grants.list",
+      "title": "List Network Resource Access Grants",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "list",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.access_grants.view"
+      ],
+      "requiredScopes": [
+        "grant"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.access_grants.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.access_grants.revoke",
+      "title": "Revoke Network Resource Access Grant",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "revoke",
+      "riskLevel": "high",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.access_grants.revoke"
+      ],
+      "requiredScopes": [
+        "grant"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.access_grants.revoke",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.gateways.create",
+      "title": "Create Network Gateway",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "create",
+      "riskLevel": "high",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.gateways.create"
+      ],
+      "requiredScopes": [
+        "site",
+        "runtime"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.gateways.create",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.gateways.update",
+      "title": "Update Network Gateway",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "update",
+      "riskLevel": "high",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.gateways.update"
+      ],
+      "requiredScopes": [
+        "gateway",
+        "site",
+        "runtime"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.gateways.update",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.enrollments.create",
+      "title": "Create Network Runtime Enrollment",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "create",
+      "riskLevel": "high",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.enrollments.create"
+      ],
+      "requiredScopes": [
+        "subject",
+        "device",
+        "runtime"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.enrollments.create",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [
+        "token"
+      ],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.enrollments.list",
+      "title": "List Network Runtime Enrollments",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "list",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.enrollments.view"
+      ],
+      "requiredScopes": [
+        "enrollment"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.enrollments.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.enrollments.revoke",
+      "title": "Revoke Network Runtime Enrollment",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "revoke",
+      "riskLevel": "high",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.enrollments.revoke"
+      ],
+      "requiredScopes": [
+        "enrollment"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.enrollments.revoke",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.policy.preview",
+      "title": "Preview Network Access Policy",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "preview",
+      "riskLevel": "analyze",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.policy.view"
+      ],
+      "requiredScopes": [
+        "subject",
+        "policy"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.policy.preview",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.sessions.list",
+      "title": "List Network Sessions",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "list",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.sites.view"
+      ],
+      "requiredScopes": [
+        "session"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.sessions.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.session.coa.plan",
+      "title": "Plan Network Session Enforcement",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "plan",
+      "riskLevel": "analyze",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.sites.update"
+      ],
+      "requiredScopes": [
+        "session"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.session.coa.plan",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "network_access.session.coa.execute",
+      "title": "Execute Network Session Enforcement",
+      "domain": "network_access",
+      "owningWorkbench": "networkAccess",
+      "owningService": "internal/application/networkaccess.Service",
+      "action": "execute",
+      "riskLevel": "high",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "network_access.sites.update"
+      ],
+      "requiredScopes": [
+        "session"
+      ],
+      "mcpAdapterId": "network-access.v1",
+      "mcpToolName": "network_access.session.coa.execute",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "gateway-governance"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "networkAccess",
+      "routeEvidence": [
+        "registerNetworkAccessRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
       "name": "delivery.applications.list",
       "title": "List Applications",
       "domain": "delivery",
