@@ -5,6 +5,7 @@ version: 0.1.0
 category: platform
 description: Cross-domain observability triage through Soha AI Gateway evidence.
 capabilityRefs:
+  - observability.metrics.assess
   - k8s.pods.logs
   - k8s.events.list
   - k8s.nodes.detail
@@ -24,10 +25,11 @@ Use this skill when an AI assistant is helping correlate Soha delivery logs, Kub
 ## Operating Contract
 
 - Use Soha Gateway as the evidence boundary for the delivery logs, Kubernetes events, pod logs, node detail, and release analysis declared in `capabilityRefs`.
-- Treat metrics, traces, alerts, and provider telemetry as unavailable unless another installed skill and preset expose a `stable-runtime` capability with the required scope.
+- Discover `observability.metrics.assess` in the live manifest before evaluating registered metric conditions. Other telemetry remains unavailable unless an installed skill and preset expose the corresponding runtime capability and scope.
 - Keep cluster, namespace, application, environment, pod, node, execution task, and time range explicit.
 - Prefer aggregated summaries and evidence IDs over raw logs that may contain passwords, tokens, or credentials.
 - Distinguish symptoms, correlated signals, likely cause, and missing telemetry.
+- Fix the data source, metric scope, unit, threshold and observation window. For a release, bind `notBefore` to `delivery.batches.assess` output `/deployedAt` and allow the metric's lookback window to finish after that time. Every query step needs a finite value and fresh underlying sample timestamps. Missing coverage, no traffic, stale samples or partial responses remain inconclusive. The built-in HTTP error ratio uses `http_requests_total` with a three-digit `status` label and counts 5xx responses; do not assume another instrumentation convention matches it.
 
 ## Workflow
 

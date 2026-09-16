@@ -120,7 +120,14 @@
         "delivery.plans.confirm",
         "delivery.release_context.diff",
         "delivery.rollback.context",
-        "delivery.actions.trigger"
+        "delivery.actions.trigger",
+        "delivery.workflows.create",
+        "delivery.workflows.get",
+        "delivery.batches.create",
+        "delivery.batches.get",
+        "delivery.batches.cancel",
+        "delivery.batches.assess",
+        "observability.metrics.assess"
       ],
       "requiredScopes": [
         "businessLine",
@@ -160,15 +167,21 @@
       "capabilityRefs": [
         "docker.hosts.quick_create.plan",
         "docker.hosts.quick_create.trigger",
+        "docker.projects.create",
+        "docker.projects.get",
         "docker.projects.deploy.plan",
         "docker.projects.deploy.trigger",
-        "docker.services.action.trigger"
+        "docker.services.action.trigger",
+        "docker.operations.get",
+        "docker.projects.runtime.assess",
+        "docker.operations.cancel"
       ],
       "requiredScopes": [
         "virtualizationConnection",
         "dockerHost",
         "dockerProject",
-        "dockerService"
+        "dockerService",
+        "dockerOperation"
       ]
     },
     {
@@ -245,7 +258,9 @@
       "capabilityRefs": [
         "k8s.workloads.snapshot.generate",
         "k8s.resources.create.preflight",
-        "k8s.resources.create.trigger"
+        "k8s.resources.create.trigger",
+        "k8s.resources.create.get",
+        "k8s.resources.create.assess"
       ],
       "requiredScopes": [
         "cluster",
@@ -354,6 +369,7 @@
       "description": "Cross-domain observability triage through Soha AI Gateway evidence.",
       "path": "skills/ai-gateway/observability/SKILL.md",
       "capabilityRefs": [
+        "observability.metrics.assess",
         "k8s.pods.logs",
         "k8s.events.list",
         "k8s.nodes.detail",
@@ -477,13 +493,23 @@
       "description": "Approval-bound virtual machine planning, creation, and typed lifecycle operations through Soha.",
       "path": "skills/ai-gateway/virtualization-operator/SKILL.md",
       "capabilityRefs": [
+        "virtualization.worker_pools.list",
+        "virtualization.worker_pools.get",
+        "virtualization.workers.create",
+        "virtualization.workers.assess",
+        "virtualization.capacity.check",
+        "virtualization.operations.get",
+        "virtualization.operations.cancel",
+        "virtualization.operations.retry",
         "virtualization.vms.create.plan",
         "virtualization.vms.create.trigger",
         "virtualization.vms.action.trigger"
       ],
       "requiredScopes": [
         "virtualizationConnection",
-        "vm"
+        "vm",
+        "cluster",
+        "workerPool"
       ]
     }
   ]

@@ -4491,6 +4491,7 @@
       ],
       "requiredScopes": [
         "virtualizationConnection",
+        "namespace",
         "vm"
       ],
       "mcpAdapterId": "virtualization.v1",
@@ -4530,6 +4531,7 @@
       ],
       "requiredScopes": [
         "virtualizationConnection",
+        "namespace",
         "vm"
       ],
       "mcpAdapterId": "virtualization.v1",
@@ -6623,6 +6625,1036 @@
       "redaction": [],
       "moduleId": "cmdb",
       "routeEvidence": []
+    },
+    {
+      "name": "delivery.deployment_templates.list",
+      "title": "List Deployment Templates",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/catalog.Service",
+      "action": "list",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.deployment-templates.view"
+      ],
+      "requiredScopes": [],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.deployment_templates.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.deployment_templates.version",
+      "title": "Read Deployment Template Version",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/catalog.Service",
+      "action": "get",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.deployment-templates.view"
+      ],
+      "requiredScopes": [],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.deployment_templates.version",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.deployment_templates.preview",
+      "title": "Preview Service Deployment Configuration",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/catalog.Service",
+      "action": "preview",
+      "riskLevel": "analyze",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.deployment-templates.view",
+        "delivery.applications.view"
+      ],
+      "requiredScopes": [
+        "application"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.deployment_templates.preview",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.repositories.analyze",
+      "title": "Analyze Application Repository",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/app.Service",
+      "action": "read",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.applications.view"
+      ],
+      "requiredScopes": [
+        "application"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.repositories.analyze",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "docker.operations.get",
+      "title": "Get Docker Operation",
+      "domain": "docker",
+      "owningWorkbench": "docker",
+      "owningService": "internal/application/docker.Service",
+      "action": "get",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "docker.operations.view"
+      ],
+      "requiredScopes": [
+        "dockerOperation"
+      ],
+      "mcpAdapterId": "docker.v1",
+      "mcpToolName": "docker.operations.get",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "operationId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "docker",
+      "routeEvidence": [
+        "registerDockerRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "docker.projects.runtime.assess",
+      "title": "Assess Docker Runtime",
+      "domain": "docker",
+      "owningWorkbench": "docker",
+      "owningService": "internal/application/docker.Service",
+      "action": "assess",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "docker.projects.view",
+        "docker.services.view",
+        "docker.operations.view"
+      ],
+      "requiredScopes": [
+        "dockerProject",
+        "dockerOperation"
+      ],
+      "mcpAdapterId": "docker.v1",
+      "mcpToolName": "docker.projects.runtime.assess",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "projectId",
+          "afterOperationId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "docker",
+      "routeEvidence": [
+        "registerDockerRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "docker.operations.cancel",
+      "title": "Cancel Docker Operation",
+      "domain": "docker",
+      "owningWorkbench": "docker",
+      "owningService": "internal/application/docker.Service",
+      "action": "cancel",
+      "riskLevel": "execute",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "docker.operations.cancel"
+      ],
+      "requiredScopes": [
+        "dockerOperation"
+      ],
+      "mcpAdapterId": "docker.v1",
+      "mcpToolName": "docker.operations.cancel",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "operationId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "docker",
+      "routeEvidence": [
+        "registerDockerRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.workflows.create",
+      "title": "Create Delivery Workflow",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/workflow.Service",
+      "action": "create",
+      "riskLevel": "execute",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.workflows.view",
+        "delivery.workflows.trigger"
+      ],
+      "requiredScopes": [
+        "application",
+        "service",
+        "applicationEnvironment"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.workflows.create",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.workflows.get",
+      "title": "Get Delivery Workflow",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/workflow.Service",
+      "action": "get",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.workflows.view"
+      ],
+      "requiredScopes": [
+        "application",
+        "service",
+        "applicationEnvironment"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.workflows.get",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.batches.create",
+      "title": "Start Delivery Batch",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/workflow.Service",
+      "action": "create",
+      "riskLevel": "execute",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.workflows.view",
+        "delivery.workflows.trigger"
+      ],
+      "requiredScopes": [
+        "application",
+        "service",
+        "applicationEnvironment"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.batches.create",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.batches.get",
+      "title": "Get Delivery Batch",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/workflow.Service",
+      "action": "get",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.workflows.view"
+      ],
+      "requiredScopes": [
+        "application",
+        "service",
+        "applicationEnvironment"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.batches.get",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.batches.cancel",
+      "title": "Cancel Delivery Batch",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/workflow.Service",
+      "action": "cancel",
+      "riskLevel": "execute",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.workflows.view",
+        "delivery.workflows.trigger"
+      ],
+      "requiredScopes": [
+        "application",
+        "service",
+        "applicationEnvironment"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.batches.cancel",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "docker.projects.create",
+      "title": "Create Docker Project",
+      "domain": "docker",
+      "owningWorkbench": "docker",
+      "owningService": "internal/application/docker.Service",
+      "action": "create",
+      "riskLevel": "execute",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "docker.projects.create"
+      ],
+      "requiredScopes": [
+        "dockerHost",
+        "dockerProject"
+      ],
+      "mcpAdapterId": "docker.v1",
+      "mcpToolName": "docker.projects.create",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "hostId",
+          "projectId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "docker",
+      "routeEvidence": [
+        "registerDockerRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "docker.projects.get",
+      "title": "Get Docker Project",
+      "domain": "docker",
+      "owningWorkbench": "docker",
+      "owningService": "internal/application/docker.Service",
+      "action": "get",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "docker.projects.view"
+      ],
+      "requiredScopes": [
+        "dockerHost",
+        "dockerProject"
+      ],
+      "mcpAdapterId": "docker.v1",
+      "mcpToolName": "docker.projects.get",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "docker-runtime-operator"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "hostId",
+          "projectId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "docker",
+      "routeEvidence": [
+        "registerDockerRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "delivery.batches.assess",
+      "title": "Assess Deployed Target",
+      "domain": "delivery",
+      "owningWorkbench": "delivery",
+      "owningService": "internal/application/workflow.Service",
+      "action": "assess",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "delivery.workflows.view"
+      ],
+      "requiredScopes": [
+        "application",
+        "service",
+        "applicationEnvironment"
+      ],
+      "mcpAdapterId": "delivery.v1",
+      "mcpToolName": "delivery.batches.assess",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "delivery-developer"
+      ],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "delivery",
+      "routeEvidence": [
+        "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "observability.metrics.assess",
+      "title": "Assess Metric Conditions",
+      "domain": "observability",
+      "owningWorkbench": "monitoring",
+      "owningService": "internal/application/monitoring.Service",
+      "action": "assess",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "observe.monitoring.view"
+      ],
+      "requiredScopes": [
+        "dataSource"
+      ],
+      "mcpAdapterId": "observability.v1",
+      "mcpToolName": "observability.metrics.assess",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "observability",
+        "delivery-developer"
+      ],
+      "resourceRefs": [
+        "soha://observability/incidents"
+      ],
+      "promptRefs": [
+        "soha.observability.triage_incident"
+      ],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "monitoring",
+      "routeEvidence": [
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "virtualization.capacity.check",
+      "title": "Check VM Capacity",
+      "domain": "virtualization",
+      "owningWorkbench": "virtualization",
+      "owningService": "internal/application/virtualization.Service",
+      "action": "check",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "virtualization.clusters.view",
+        "virtualization.storage.view",
+        "virtualization.vms.view"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "namespace",
+        "vm"
+      ],
+      "mcpAdapterId": "virtualization.v1",
+      "mcpToolName": "virtualization.capacity.check",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator"
+      ],
+      "resourceRefs": [
+        "soha://virtualization/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "connectionId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "virtualization",
+      "routeEvidence": [
+        "registerVirtualizationRoutes"
+      ]
+    },
+    {
+      "name": "virtualization.operations.get",
+      "title": "Get VM Operation",
+      "domain": "virtualization",
+      "owningWorkbench": "virtualization",
+      "owningService": "internal/application/virtualization.Service",
+      "action": "get",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "virtualization.operations.view"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "namespace",
+        "vm"
+      ],
+      "mcpAdapterId": "virtualization.v1",
+      "mcpToolName": "virtualization.operations.get",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator"
+      ],
+      "resourceRefs": [
+        "soha://virtualization/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "operationId",
+          "connectionId",
+          "vmId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "virtualization",
+      "routeEvidence": [
+        "registerVirtualizationRoutes"
+      ]
+    },
+    {
+      "name": "virtualization.operations.cancel",
+      "title": "Cancel VM Operation",
+      "domain": "virtualization",
+      "owningWorkbench": "virtualization",
+      "owningService": "internal/application/virtualization.Service",
+      "action": "cancel",
+      "riskLevel": "execute",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "virtualization.operations.cancel",
+        "virtualization.operations.view"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "namespace",
+        "vm"
+      ],
+      "mcpAdapterId": "virtualization.v1",
+      "mcpToolName": "virtualization.operations.cancel",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator"
+      ],
+      "resourceRefs": [
+        "soha://virtualization/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "operationId",
+          "connectionId",
+          "vmId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "virtualization",
+      "routeEvidence": [
+        "registerVirtualizationRoutes"
+      ]
+    },
+    {
+      "name": "virtualization.operations.retry",
+      "title": "Retry VM Operation",
+      "domain": "virtualization",
+      "owningWorkbench": "virtualization",
+      "owningService": "internal/application/virtualization.Service",
+      "action": "retry",
+      "riskLevel": "execute",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "virtualization.operations.retry",
+        "virtualization.operations.view"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "namespace",
+        "vm"
+      ],
+      "mcpAdapterId": "virtualization.v1",
+      "mcpToolName": "virtualization.operations.retry",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator"
+      ],
+      "resourceRefs": [
+        "soha://virtualization/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "operationId",
+          "connectionId",
+          "vmId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "virtualization",
+      "routeEvidence": [
+        "registerVirtualizationRoutes"
+      ]
+    },
+    {
+      "name": "virtualization.worker_pools.list",
+      "title": "List Worker Pools",
+      "domain": "virtualization",
+      "owningWorkbench": "virtualization",
+      "owningService": "internal/application/virtualization.Service",
+      "action": "list",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "platform.clusters.view",
+        "platform.nodes.view",
+        "virtualization.clusters.view"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "cluster",
+        "workerPool"
+      ],
+      "mcpAdapterId": "virtualization.v1",
+      "mcpToolName": "virtualization.worker_pools.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator"
+      ],
+      "resourceRefs": [
+        "soha://virtualization/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "connectionId",
+          "clusterId",
+          "workerPoolId",
+          "operationId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "virtualization",
+      "routeEvidence": [
+        "registerVirtualizationRoutes"
+      ]
+    },
+    {
+      "name": "virtualization.worker_pools.get",
+      "title": "Get Worker Pool",
+      "domain": "virtualization",
+      "owningWorkbench": "virtualization",
+      "owningService": "internal/application/virtualization.Service",
+      "action": "get",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "platform.clusters.view",
+        "platform.nodes.view",
+        "virtualization.clusters.view"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "cluster",
+        "workerPool"
+      ],
+      "mcpAdapterId": "virtualization.v1",
+      "mcpToolName": "virtualization.worker_pools.get",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator"
+      ],
+      "resourceRefs": [
+        "soha://virtualization/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "connectionId",
+          "clusterId",
+          "workerPoolId",
+          "operationId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "virtualization",
+      "routeEvidence": [
+        "registerVirtualizationRoutes"
+      ]
+    },
+    {
+      "name": "virtualization.workers.create",
+      "title": "Create Kubernetes Worker",
+      "domain": "virtualization",
+      "owningWorkbench": "virtualization",
+      "owningService": "internal/application/virtualization.Service",
+      "action": "create",
+      "riskLevel": "execute",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "platform.clusters.view",
+        "platform.nodes.create",
+        "platform.nodes.view",
+        "virtualization.clusters.view",
+        "virtualization.images.view",
+        "virtualization.vms.create"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "cluster",
+        "workerPool"
+      ],
+      "mcpAdapterId": "virtualization.v1",
+      "mcpToolName": "virtualization.workers.create",
+      "requiresApproval": true,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator"
+      ],
+      "resourceRefs": [
+        "soha://virtualization/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "connectionId",
+          "clusterId",
+          "workerPoolId",
+          "operationId"
+        ]
+      },
+      "redaction": [
+        "worker bootstrap credentials"
+      ],
+      "moduleId": "virtualization",
+      "routeEvidence": [
+        "registerVirtualizationRoutes"
+      ]
+    },
+    {
+      "name": "virtualization.workers.assess",
+      "title": "Assess Kubernetes Worker",
+      "domain": "virtualization",
+      "owningWorkbench": "virtualization",
+      "owningService": "internal/application/virtualization.Service",
+      "action": "assess",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "platform.clusters.view",
+        "platform.nodes.view",
+        "virtualization.clusters.view",
+        "virtualization.operations.view"
+      ],
+      "requiredScopes": [
+        "virtualizationConnection",
+        "cluster",
+        "workerPool"
+      ],
+      "mcpAdapterId": "virtualization.v1",
+      "mcpToolName": "virtualization.workers.assess",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "virtualization-operator"
+      ],
+      "resourceRefs": [
+        "soha://virtualization/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": [
+          "connectionId",
+          "clusterId",
+          "workerPoolId",
+          "operationId"
+        ]
+      },
+      "redaction": [],
+      "moduleId": "virtualization",
+      "routeEvidence": [
+        "registerVirtualizationRoutes"
+      ]
+    },
+    {
+      "name": "k8s.resources.create.get",
+      "title": "Read Kubernetes Creation Receipt",
+      "domain": "k8s",
+      "owningWorkbench": "platform",
+      "owningService": "internal/application/resource.ResourceCreation",
+      "action": "get",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "platform.resource-creation.use"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ],
+      "mcpAdapterId": "k8s.v1",
+      "mcpToolName": "k8s.resources.create.get",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "k8s-resource-provisioner"
+      ],
+      "resourceRefs": [
+        "soha://k8s/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [
+        "content"
+      ],
+      "moduleId": "platform",
+      "routeEvidence": [
+        "registerPlatformRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "k8s.resources.create.assess",
+      "title": "Verify Created Kubernetes Objects",
+      "domain": "k8s",
+      "owningWorkbench": "platform",
+      "owningService": "internal/application/resource.ResourceCreation",
+      "action": "assess",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "platform.resource-creation.use"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ],
+      "mcpAdapterId": "k8s.v1",
+      "mcpToolName": "k8s.resources.create.assess",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [
+        "k8s-resource-provisioner"
+      ],
+      "resourceRefs": [
+        "soha://k8s/runtime"
+      ],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [
+        "content"
+      ],
+      "moduleId": "platform",
+      "routeEvidence": [
+        "registerPlatformRoutes",
+        "registerAIGatewayRoutes"
+      ]
     }
   ],
   "resources": [
@@ -6723,7 +7755,9 @@
         "k8s.events.list",
         "k8s.workloads.snapshot.generate",
         "k8s.resources.create.preflight",
-        "k8s.resources.create.trigger"
+        "k8s.resources.create.trigger",
+        "k8s.resources.create.get",
+        "k8s.resources.create.assess"
       ],
       "promptRefs": [
         "soha.k8s.diagnose_workload"

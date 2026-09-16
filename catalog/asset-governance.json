@@ -223,7 +223,14 @@
           "delivery.plans.confirm",
           "delivery.release_context.diff",
           "delivery.rollback.context",
-          "delivery.actions.trigger"
+          "delivery.actions.trigger",
+          "delivery.workflows.create",
+          "delivery.workflows.get",
+          "delivery.batches.create",
+          "delivery.batches.get",
+          "delivery.batches.cancel",
+          "delivery.batches.assess",
+          "observability.metrics.assess"
         ],
         "platformCapabilityRefs": [],
         "requiredScopes": [
@@ -417,7 +424,9 @@
         "gatewayCapabilityRefs": [
           "k8s.workloads.snapshot.generate",
           "k8s.resources.create.preflight",
-          "k8s.resources.create.trigger"
+          "k8s.resources.create.trigger",
+          "k8s.resources.create.get",
+          "k8s.resources.create.assess"
         ],
         "platformCapabilityRefs": [],
         "requiredScopes": [
@@ -441,8 +450,13 @@
         "gatewayCapabilityRefs": [
           "docker.hosts.quick_create.plan",
           "docker.hosts.quick_create.trigger",
+          "docker.operations.cancel",
+          "docker.operations.get",
+          "docker.projects.create",
           "docker.projects.deploy.plan",
           "docker.projects.deploy.trigger",
+          "docker.projects.get",
+          "docker.projects.runtime.assess",
           "docker.services.action.trigger"
         ],
         "platformCapabilityRefs": [],
@@ -450,7 +464,8 @@
           "virtualizationConnection",
           "dockerHost",
           "dockerProject",
-          "dockerService"
+          "dockerService",
+          "dockerOperation"
         ],
         "guardrails": [
           "plan_before_execute",
@@ -467,14 +482,24 @@
         "riskLevel": "execute",
         "approvalRequired": true,
         "gatewayCapabilityRefs": [
+          "virtualization.capacity.check",
+          "virtualization.operations.cancel",
+          "virtualization.operations.get",
+          "virtualization.operations.retry",
+          "virtualization.vms.action.trigger",
           "virtualization.vms.create.plan",
           "virtualization.vms.create.trigger",
-          "virtualization.vms.action.trigger"
+          "virtualization.worker_pools.get",
+          "virtualization.worker_pools.list",
+          "virtualization.workers.assess",
+          "virtualization.workers.create"
         ],
         "platformCapabilityRefs": [],
         "requiredScopes": [
+          "cluster",
           "virtualizationConnection",
-          "vm"
+          "vm",
+          "workerPool"
         ],
         "guardrails": [
           "plan_before_execute",
@@ -518,17 +543,32 @@
         "riskLevel": "high",
         "approvalRequired": true,
         "gatewayCapabilityRefs": [
-          "virtualization.vms.create.plan",
-          "virtualization.vms.create.trigger",
-          "virtualization.vms.action.trigger",
           "docker.hosts.quick_create.plan",
           "docker.hosts.quick_create.trigger",
+          "docker.operations.cancel",
+          "docker.operations.get",
+          "docker.projects.create",
           "docker.projects.deploy.plan",
           "docker.projects.deploy.trigger",
+          "docker.projects.get",
+          "docker.projects.runtime.assess",
           "docker.services.action.trigger",
-          "k8s.workloads.snapshot.generate",
           "k8s.resources.create.preflight",
-          "k8s.resources.create.trigger"
+          "k8s.resources.create.trigger",
+          "k8s.workloads.snapshot.generate",
+          "virtualization.capacity.check",
+          "virtualization.operations.cancel",
+          "virtualization.operations.get",
+          "virtualization.operations.retry",
+          "virtualization.vms.action.trigger",
+          "virtualization.vms.create.plan",
+          "virtualization.vms.create.trigger",
+          "virtualization.worker_pools.get",
+          "virtualization.worker_pools.list",
+          "virtualization.workers.assess",
+          "virtualization.workers.create",
+          "k8s.resources.create.get",
+          "k8s.resources.create.assess"
         ],
         "platformCapabilityRefs": [
           "resource.creation"
@@ -677,7 +717,8 @@
           "k8s.events.list",
           "k8s.nodes.detail",
           "delivery.execution_logs.list",
-          "diagnosis.release_failure.analyze"
+          "diagnosis.release_failure.analyze",
+          "observability.metrics.assess"
         ],
         "platformCapabilityRefs": [],
         "requiredScopes": [
@@ -841,7 +882,8 @@
           "k8s.routes.context",
           "k8s.storage.context",
           "k8s.nodes.detail",
-          "k8s.events.list"
+          "k8s.events.list",
+          "observability.metrics.assess"
         ],
         "platformCapabilityRefs": [
           "cluster.inventory",

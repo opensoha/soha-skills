@@ -14,17 +14,75 @@ requiredScopes:
   - cluster
   - namespace
 tools:
+  - name: virtualization.worker_pools.list
+    description: Discover registered supply pools for a connection.
+    riskLevel: read
+    requiredScopes:
+      - virtualizationConnection
+      - cluster
+      - workerPool
+  - name: virtualization.worker_pools.get
+    description: Read the original worker pool and current revision.
+    riskLevel: read
+    requiredScopes:
+      - virtualizationConnection
+      - cluster
+      - workerPool
+  - name: virtualization.workers.create
+    description: Create one approved worker using atomic pool and provider admission.
+    riskLevel: execute
+    requiredScopes:
+      - virtualizationConnection
+      - cluster
+      - workerPool
+  - name: virtualization.workers.assess
+    description: Read original Node identity and fresh readiness evidence.
+    riskLevel: read
+    requiredScopes:
+      - virtualizationConnection
+      - cluster
+      - workerPool
+  - name: virtualization.capacity.check
+    description: Read fresh VM placement capacity including concurrent reservations; does not reserve.
+    riskLevel: read
+    requiredScopes:
+      - virtualizationConnection
+      - namespace
+      - vm
+  - name: virtualization.operations.get
+    description: Read the original VM operation receipt with sensitive content omitted.
+    riskLevel: read
+    requiredScopes:
+      - virtualizationConnection
+      - namespace
+      - vm
+  - name: virtualization.operations.cancel
+    description: Request cancellation while retaining existing provider resources.
+    riskLevel: execute
+    requiredScopes:
+      - virtualizationConnection
+      - namespace
+      - vm
+  - name: virtualization.operations.retry
+    description: Retry the original operation with current authorization and capacity admission.
+    riskLevel: execute
+    requiredScopes:
+      - virtualizationConnection
+      - namespace
+      - vm
   - name: virtualization.vms.create.plan
     description: Plan a virtual machine create request without side effects.
     riskLevel: analyze
     requiredScopes:
       - virtualizationConnection
+      - namespace
       - vm
   - name: virtualization.vms.create.trigger
     description: Create a virtual machine through the durable task queue.
     riskLevel: execute
     requiredScopes:
       - virtualizationConnection
+      - namespace
       - vm
   - name: virtualization.vms.action.trigger
     description: Run a typed virtual machine lifecycle action.
@@ -44,6 +102,18 @@ tools:
     requiredScopes:
       - virtualizationConnection
       - dockerHost
+  - name: docker.projects.create
+    description: Save inline Docker project configuration with an immutable creation receipt; does not deploy.
+    riskLevel: execute
+    requiredScopes:
+      - dockerHost
+      - dockerProject
+  - name: docker.projects.get
+    description: Read the authorized Docker project identity and configuration state.
+    riskLevel: read
+    requiredScopes:
+      - dockerHost
+      - dockerProject
   - name: docker.projects.deploy.plan
     description: Plan a Docker Compose project deployment.
     riskLevel: analyze
@@ -62,6 +132,22 @@ tools:
     requiredScopes:
       - dockerHost
       - dockerService
+  - name: docker.operations.get
+    description: Read the existing durable Docker operation after submission or reconnect.
+    riskLevel: read
+    requiredScopes:
+      - dockerOperation
+  - name: docker.projects.runtime.assess
+    description: Evaluate expected services from fresh inventory after a specific deployment.
+    riskLevel: read
+    requiredScopes:
+      - dockerProject
+      - dockerOperation
+  - name: docker.operations.cancel
+    description: Request cancellation and follow the domain outcome and any required approval.
+    riskLevel: execute
+    requiredScopes:
+      - dockerOperation
   - name: k8s.workloads.snapshot.generate
     description: Generate a Job, CronJob, or image-following WorkloadCronJob manifest from a scoped workload template.
     riskLevel: analyze
@@ -77,6 +163,18 @@ tools:
   - name: k8s.resources.create.trigger
     description: Create preflighted Kubernetes manifests through a durable batch.
     riskLevel: high
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.resources.create.get
+    description: Read the original actor-owned resource creation receipt without repeating writes.
+    riskLevel: read
+    requiredScopes:
+      - cluster
+      - namespace
+  - name: k8s.resources.create.assess
+    description: Verify original Kubernetes object UIDs; missing evidence is inconclusive.
+    riskLevel: read
     requiredScopes:
       - cluster
       - namespace

@@ -264,7 +264,8 @@ def validate_gateway_catalog_tool_record(
         raise ValidationError(f"{rel(CATALOG_PATH)}: non-reserved Gateway tool {name!r} must declare an owning service")
     if not tool["permissionKeys"]:
         raise ValidationError(f"{rel(CATALOG_PATH)}: Gateway tool {name!r} must declare permissionKeys")
-    if not tool["requiredScopes"]:
+    global_catalog_reads = {"delivery.deployment_templates.list", "delivery.deployment_templates.version"}
+    if not tool["requiredScopes"] and not (name in global_catalog_reads and tool["riskLevel"] == "read"):
         raise ValidationError(f"{rel(CATALOG_PATH)}: Gateway tool {name!r} must declare requiredScopes")
     if tool["riskLevel"] in {"mutate", "execute", "high"} and not isinstance(tool["requiresApproval"], bool):
         raise ValidationError(f"{rel(CATALOG_PATH)}: Gateway tool {name!r} must declare explicit approval posture")
@@ -678,9 +679,10 @@ def extract_gateway_tool_names_from_source(path: Path) -> set[str]:
         names = set(re.findall(r'(?m)^\s*Name:\s+"([^"]+)"', "\n".join(catalogs)))
     else:
         names = extract_gateway_capability_names_from_source(path, "defaultTools", "ToolCapability")
-    knowledge_provider = path.with_name("knowledge_provider.go")
-    if knowledge_provider.exists():
-        names.update(re.findall(r'(?m)^\s*Name:\s+"([^"]+)"', knowledge_provider.read_text()))
+    for provider_name in ("knowledge_provider.go", "delivery_provider.go", "docker_project_provider.go", "observability_provider.go", "virtualization_provider.go", "resource_creation_provider.go"):
+        provider = path.with_name(provider_name)
+        if provider.exists():
+            names.update(re.findall(r'(?:^\s*|\{)Name:\s+"([^"]+)"', provider.read_text(), re.MULTILINE))
     return names
 
 

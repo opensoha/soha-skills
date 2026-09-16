@@ -28,6 +28,9 @@ Use this skill when an AI assistant is helping QA or a release tester inspect ca
 - Use soha Gateway tools for application-environment bindings, execution tasks, logs, artifacts, and release-failure context.
 - Do not mutate application configuration, environment bindings, workflow approval gates, or Kubernetes resources while working in this skill.
 - Keep every conclusion tied to a bundle id, execution task id, environment id, log excerpt summary, artifact id, or test report reference.
+- Separate saved definitions, imported drafts, published template versions, accepted triggers, running batches, and verified results. A successful synchronization or external CI trigger does not prove a build or deployment completed.
+- For GitLab, inspect the frozen pipeline/source commits, parent/child result, artifact report, and verified registry digest. For Buildpacks, report the runner architecture and whether execution was native or emulated.
+- For GitOps and Operator delivery, require the current generation and matching child inventory. For blue-green/canary, inspect actual Service revisions or traffic weights, the full metric window, and confirmed stable traffic after failure/cancellation. If Gateway lacks this evidence, state the gap; do not query a controller directly or promote/abort a rollout from this read-only skill.
 
 ## Workflow
 

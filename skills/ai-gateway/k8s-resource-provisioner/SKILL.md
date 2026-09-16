@@ -8,6 +8,8 @@ capabilityRefs:
   - k8s.workloads.snapshot.generate
   - k8s.resources.create.preflight
   - k8s.resources.create.trigger
+  - k8s.resources.create.get
+  - k8s.resources.create.assess
 requiredScopes:
   - cluster
   - namespace
@@ -22,7 +24,8 @@ Use this skill to generate workload snapshots, then validate and create bounded 
 - Discover the capabilities required by the requested workflow from the live Gateway manifest before use.
 - Treat snapshot generation as read-only manifest preparation; it never creates or synchronizes a resource.
 - Always preflight the exact content before requesting creation.
-- Reuse one stable idempotency key when retrying the same creation request.
+- Pin capability version 1 and reuse one stable idempotency key for the same creation request. Use a common `CapabilityPlan` to bind the creation operation ID to the verification input.
+- Recover a lost reply from the original batch. An unknown or partial result does not authorize another create or automatic rollback.
 - When external credentials are required, attach canonical references through `_sohaSecretRefs`; keep them outside Kubernetes manifests and business input.
 
 ## Workflow
@@ -31,9 +34,10 @@ Use this skill to generate workload snapshots, then validate and create bounded 
 2. When deriving a Job, CronJob, or image-following WorkloadCronJob, call `k8s.workloads.snapshot.generate` with one Deployment, StatefulSet, or DaemonSet source and review the generated manifest.
 3. Select only secrets bound to the capability and target cluster or namespace, then call `k8s.resources.create.preflight` with the final credential-free manifest.
 4. Stop on any authorization, capability, dry-run, or scope error.
-5. Present the plan and obtain the required human approval.
+5. Present the plan and follow the Gateway decision; obtain human approval when the active policy requires it.
 6. Call `k8s.resources.create.trigger` with the same content, secret references, and a stable idempotency key.
-7. Report the operation id, content hash, and per-document result.
+7. Follow `k8s.resources.create.get` using the same cluster and operation ID. Read access rechecks the original actor and current permissions for every actual resource scope.
+8. Run `k8s.resources.create.assess` to compare current objects with their original UIDs. Missing UID or observation is inconclusive; replacement or deletion fails verification. Report the operation ID, content hash, UID and evidence. This proves object creation only; use separate deployment and observability assessments for readiness, URL reachability and application health.
 
 ## Examples
 

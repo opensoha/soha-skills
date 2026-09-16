@@ -19,9 +19,10 @@ out/
 graphify-out/
 coverage/
 node_modules/
+__pycache__/
+*.py[cod]
 
 # Local environment
 .env
 .env.*
 !.env.example
-

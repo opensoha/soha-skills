@@ -21,6 +21,11 @@ requiredScopes:
   - cluster
   - namespace
 tools:
+  - name: observability.metrics.assess
+    description: Assess explicit metric conditions using complete windows and fresh source samples.
+    riskLevel: read
+    requiredScopes:
+      - dataSource
   - name: delivery.applications.list
     description: List applications when local runtime diagnosis needs delivery context.
     riskLevel: read

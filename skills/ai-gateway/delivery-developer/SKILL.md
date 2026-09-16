@@ -30,6 +30,13 @@ capabilityRefs:
   - delivery.release_context.diff
   - delivery.rollback.context
   - delivery.actions.trigger
+  - delivery.workflows.create
+  - delivery.workflows.get
+  - delivery.batches.create
+  - delivery.batches.get
+  - delivery.batches.cancel
+  - delivery.batches.assess
+  - observability.metrics.assess
 requiredScopes:
   - businessLine
   - application
@@ -48,6 +55,23 @@ Use this skill when an AI coding tool is helping a developer onboard an applicat
 - Keep build, deploy, verify, workflow, and rollback actions inside a confirmed `DeliveryPlan` or the explicitly approved `delivery.actions.trigger`; do not synthesize runner callbacks.
 - For application onboarding, produce or submit a `DeliveryDraft` only. A draft may include application metadata, service components, build sources, environment bindings, release targets, Dockerfile, Helm/Deployment, workflow template, and approval hints, but it must not create platform objects until a human confirms the draft.
 - Preserve application, business line, environment, branch, commit, release bundle, and execution task identifiers in the final answer.
+- Treat template YAML/JSON preview, draft import, Git synchronization, publication, service-version adoption, and workflow execution as separate actions. Saving or synchronizing a definition is not permission to run it. Discover each action in the live Gateway manifest; console or CLI support does not imply a Gateway tool exists.
+- Use immutable template versions, source commits, and verified image digests. GitLab trigger acceptance is not pipeline completion; parent/child status and verified artifact evidence must be available before reporting a deployable result. Buildpacks requires the advertised runner toolchain and architecture, with emulation identified explicitly.
+- For GitOps, Operator, or progressive delivery, retain the approved Plan/Task and controller ownership. Do not use ordinary Kubernetes writes to restart, scale, or replace managed children. Pause, promote, abort, or recovery requires a separately visible authorized action; promotion cannot skip the metric window, and cancellation is pending until the executor confirms stopping.
+
+## Composable Delivery Tasks
+
+- Version 1 of `delivery.drafts.create` requires a stable `idempotencyKey` and the complete canonical draft input. It saves a draft only; `delivery.drafts.confirm` separately applies the authorized specification atomically and keeps a fixed confirmation receipt.
+- Bind the draft `/id` into confirmation `/draftId`, then bind confirmation `/application/id` and each `/services/<index>/id` into delivery targets. Service IDs retain their own application scope; cross-application bindings are rejected. Binding paths use actual array indices, never `*`.
+
+- Discover `delivery.workflows.create/get` and `delivery.batches.create/get/cancel` in the live manifest. Creating a workflow saves a definition and a fixed receipt; it does not deploy.
+- Keep an actor-scoped creation key stable. Bind the workflow receipt's `/id` and `/version` to a subsequent batch's `/workflowId` and `/workflowVersion`; pin both. Editing the workflow invalidates an older version for new batches.
+- Batch creation uses the existing build, plan approval, deploy and health stages. Preserve each target's application, service, environment and immutable artifact selection; Gateway and the owning domain check every target.
+- Follow the shared goal task method in the agent skill to resume the same task and inspect historical plans. A pending bound step may withhold its input until its actual target is established; this is a visibility projection, not an empty executable request.
+- Batch cancellation is a request. Poll the returned status reference until the domain confirms an outcome; applied changes remain. A partial authorized view cannot be treated as the complete batch.
+- Report a direct access URL only when returned by authorized domain evidence and verified after deployment. A completed batch is not, by itself, a successful access or health assessment.
+- Use `delivery.batches.assess` with the exact batch and logical target ID after deployment. Runtime evidence must match the frozen deployment and remain fresh. For an HTTP goal, first read entry candidates, then fix the selected URL, health path and expected status in the verification step. An unverified candidate, missing signal, TLS failure or stale inventory cannot establish success. HTTP results describe reachability from the Soha control plane; report private-network and authentication requirements to the IDE user.
+- Add `observability.metrics.assess` when the goal requires post-release metric conditions. Bind `/notBefore` from the deployment assessment's `/deployedAt`; keep the data source and metric labels explicit. Query evaluation time does not prove source freshness. Missing instrumentation, an incomplete post-release window or absent traffic must not be reported as healthy.
 
 ## Workflow
 

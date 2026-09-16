@@ -16,6 +16,7 @@ by local validation.
 The normalized Gateway required scope union is:
 
 - `application`
+- `applicationEnvironment`
 - `aiClient`
 - `approval`
 - `audit`
@@ -24,9 +25,11 @@ The normalized Gateway required scope union is:
 - `computeDomain`
 - `computeResource`
 - `computeTask`
+- `dataSource`
 - `deployment`
 - `device`
 - `dockerHost`
+- `dockerOperation`
 - `dockerProject`
 - `dockerService`
 - `enrollment`
@@ -59,6 +62,7 @@ The normalized Gateway required scope union is:
 - `tool`
 - `virtualizationConnection`
 - `vm`
+- `workerPool`
 
 Validation prefers the published `node_modules/@opensoha/contracts` package
 when it is available. A sibling `../soha-contracts` checkout is a local
@@ -84,3 +88,5 @@ release manifest, checksum, compatibility matrix, validation report, and target
 CLI load check pass. Roll back by restoring the previous verified wrapper
 package and switching the active `~/.soha/skills` runtime pointer back to the
 previous verified directory.
+
+Worker supply adds the `workerPool` scope alongside the virtualization connection and target cluster. Discover registered pools and their revisions before creation; follow the original VM operation and fresh worker assessment for recovery. The catalog lists source capabilities and is not proof that a running server has upgraded or a provider is ready.

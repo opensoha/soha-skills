@@ -1,11 +1,11 @@
 ---
 name: soha
-description: Use when an AI agent needs to configure Soha MCP or skills, inspect OpenSoha capabilities, create a Soha-compliant application service, or plan, publish, update, verify, and roll back releases through the governed delivery center.
+description: Use when an AI agent needs to discover and use governed Soha capabilities across delivery, runtime, compute, and observability, configure Soha MCP or skills, or track durable operations from an IDE.
 ---
 
 # Soha
 
-Use Soha as the control plane for delivery-center work. Prefer the configured Soha MCP server. Use the `soha` CLI when MCP is unavailable or when the task is installation, diagnostics, or explicit command-line automation.
+Use Soha as the control plane for supported business operations. Prefer the configured Soha MCP server. Use the `soha` CLI when MCP is unavailable or when the task is installation, diagnostics, or explicit command-line automation.
 
 ## Connect
 
@@ -21,6 +21,47 @@ Use Soha as the control plane for delivery-center work. Prefer the configured So
 2. With the CLI, run `soha capabilities --output names`, then `soha capabilities --output inputs` before an unfamiliar call.
 3. Use `soha diagnose --tool <name>` when a capability, permission, scope, skill binding, or approval path is unclear.
 4. Read `references/skills/index.json` and the relevant file under `references/skills/` before a product workflow. For delivery-center work, start with `delivery-developer.md`.
+
+For a general task, use the capability lifecycle below. The Kubernetes and delivery workflows are examples, not the full capability catalog.
+
+## Compose And Track Capabilities
+
+1. Keep the user's goal, success criteria, authorized scope, and constraints explicit. Discover the capabilities relevant to the next step; the existence of a workbench or API does not prove that it exposes an executable capability.
+2. Read the full live contract with `soha capabilities --output json` or the MCP tool metadata. Where present, preserve the capability `version`, input schema, `execution.mode`, and `execution.idempotencyKeyField`. Missing lifecycle metadata means the guarantee is unknown; do not infer idempotency from a read-only or low-risk label.
+3. Read `execution.checks` when present: `availability`, `precondition`, and `verification` reference versioned read capabilities. Discover each referenced input schema; do not copy the write input blindly. Invoke checks under the same caller scope, and use `producesAssessment` verification steps to judge the goal. Missing or invisible checks mean unknown, and an availability result expires and does not reserve resources. Use the domain's available plan/preflight capability before a write. Treat results as inputs only after checking the resource kind, scope, and actual returned IDs. Use the shared goal task API below only when the installed CLI/MCP and server expose it; discover provisioning support separately.
+4. The current CLI and MCP adapter pin discovered versions automatically. For a saved CLI call, use `soha tool call <name> --capability-version <version>`. If the installed CLI lacks the flag or the server lacks versions, report that version pinning is unavailable. A stale version requires rediscovery and review of the remaining plan, not an unversioned retry.
+5. Preserve the declared idempotency key for identical retries of one intent. Changed parameters or a new intent require a new plan and key. `execution.recoveryMode=original_call` means the managed goal executor can look up a domain receipt using its exact persisted call and current authorization. Resume that task after a lost reply; do not change the key to escape an unknown effect. On `pending_approval`, retain the approval ID and follow that approval; do not repeatedly submit the mutation.
+6. A successful invocation can mean asynchronous submission. If a `task` is returned, keep its `kind`, `id`, `status`, `terminal`, and `statusCall`. Invoke the returned status capability with its version and input under the same authorized caller context. Stop on missing permission or capability; never bypass governance by using a direct provider endpoint.
+7. Poll with a bounded interval and deadline, preserving the last task reference if interrupted. Reconnect using that reference. A timeout waiting in the IDE does not prove the server task stopped, and a terminal operation does not prove the application is healthy or its URL reachable. Use available domain evidence to evaluate the user's success criteria.
+8. Report executed steps, pending approvals/tasks, verified results, and missing capabilities separately. Add another capability only when the live registry and the current authorization support it; skills do not grant permissions or supply missing domain implementations.
+
+## Shared Goal Tasks
+
+For a multi-step goal, discover a bounded set with `soha capabilities --query <intent> --limit 50 --output json` or `soha.capabilities.search`. Preserve the returned version, input/output semantics, effects, and assessment support. A visible tool still needs current permission and domain preconditions when executed.
+
+1. Construct a `CapabilityTaskInput` using the live contract: stable `idempotencyKey`, `plan.goal`, versioned `plan.steps`, and `plan.verificationSteps`. Each step has `id` and `call` (`toolName`, `capabilityVersion`, `input`). Use only explicitly idempotent capabilities. Bind an earlier successful output with `bindings` entries (`stepId`, `outputPath`, `inputPath`) and list that source in `dependsOn`; pointers and resource kind, unit, and scope must match the live schema. Keep SecretRefs at `call.secretRefs`.
+2. Run `soha ai task validate --input plan.json` or `soha.plans.validate`. Validation is a preflight; execution rechecks current identity, scope, secrets, version, and approval. A valid plan is not permission to execute beyond the user's authorized intent.
+3. Submit the reviewed intent with `soha ai task create --input plan.json --yes` or `soha.tasks.create`. Use `--yes` only within already authorized work. Keep the returned task ID and idempotency key; retries with the same key must keep the same input.
+4. Continue in any configured client using `soha ai task get <taskId>`, `soha ai task wait <taskId> --wait-timeout 10m`, or `soha.tasks.get`. The Web workbench is `/ai-workbench/tasks?taskId=<taskId>`. Waiting stops for an approval, blocked state, or terminal outcome. CLI wait returns nonzero unless the goal completed; inspect the structured result. A local wait timeout does not cancel the server task.
+5. Follow returned approval IDs through Soha governance. After interrupted or inconclusive work, inspect all child outcomes before revising. `soha ai task resume <taskId> --input revision.json --yes` / `soha.tasks.resume` accepts `expectedVersion` from the current task and a revised `plan`. Keep the goal unchanged. Omitted `call.secretRefs` on a retained step preserves its existing references without exposing them; use an explicit empty object to clear references only on an undispatched step. Dispatched step IDs freeze their original calls and bindings; keep unresolved steps, and use new IDs for fresh verification. Revisions are accepted only when the task is paused or terminal and its lease is released; pending domain cancellation must settle first. Reload on a version conflict.
+6. Read historical evidence with `soha ai task get <taskId> --plan-version <revision>` or `soha.tasks.get` with `planVersion`. History is read-only and retains current visibility checks. It does not grant access to hidden secret references or old permissions.
+7. Request a stop with `soha ai task cancel <taskId> --yes` or `soha.tasks.cancel`. Cancellation may itself require approval; retain the child task until its owning domain confirms the outcome. Do not reinterpret cancellation as rollback.
+8. Evaluate `assessment` and its evidence against the goal. `satisfied`, `unsatisfied`, and `inconclusive` have different meanings. Neither an accepted API call nor missing signals proves success. Return a directly accessible URL only when domain output provides the address and the requested reachability checks succeed.
+
+These are Soha task tools over the shared API. Do not claim MCP protocol Tasks support or automatic VM/node provisioning from their names. Servers without these tools can still expose individual domain capabilities; report the missing shared task support instead of inventing endpoints.
+
+## Registered Inspections
+
+Use a registration only when the user authorizes recurring work and specifies its scope, trigger, and constraints. Discover `soha.inspections.*` in the installed MCP server or `soha ai inspection` in CLI help before use; these adapter tools use the existing inspection API and Workflow queue.
+
+1. Build and validate the same version-pinned capability plan used for a shared goal. The registration accepts `id`, `title`, `scopeType`, optional `clusterId`/`namespace`, `enabled`, `intervalMinutes`, `capabilityPlan`, optional `aiClientId`/`skillId`, and `trigger`. Do not combine a capability plan with legacy `checks`. Keep secret values out of the plan.
+2. A schedule uses `trigger: {"kind":"schedule"}`. An alert uses `trigger: {"kind":"alert","alertRuleId":"<registered internal rule>","maxEventAgeSeconds":3600}`; `intervalMinutes` is its cooldown. Only new firing occurrences after registration are eligible. Resolved, acknowledged, replaced, stale, or disabled occurrences cannot start an unhanded-off goal. Alert content is not executable plan input.
+3. Register with `soha ai inspection create --input inspection.json --yes` or `soha.inspections.create` with `input`. Keep a stable explicit registration ID. After a lost create response or ID conflict, read that ID before attempting any new registration. Set `enabled:false` while preparing a registration; set it true only within authorized recurring work. An enabled registration can act later without the IDE remaining connected.
+4. Read `soha ai inspection get <id>` / `soha.inspections.get`. Update the reviewed full input, including `id` and current `expectedRevision`, with `soha ai inspection update <id> --input inspection.json --yes` or `soha.inspections.update`. Reload after a revision conflict. Disable a registration with the same update; existing goal tasks keep their separate cancellation lifecycle.
+5. For an explicit manual run, use `soha ai inspection run <id> --idempotency-key <stable-key> --expected-revision <revision> --yes` or `soha.inspections.run`. Reuse both key and revision after a lost response. Each durable occurrence derives independent keys for the plan's declared write capabilities; retries of that occurrence preserve those keys.
+6. Read `soha ai inspection runs <id>` / `soha.inspections.runs`. A `handed_off` receipt provides `report.capabilityTaskId`; continue with `soha.tasks.get`, the CLI shared task commands, or `/ai-workbench/tasks?taskId=<id>` in another authorized client. Handoff is not completion or health evidence.
+7. At most one pending receipt or active goal is admitted per registration. A blocked goal still occupies this slot because a dispatched write may have an unknown effect; inspect and resume the original goal first. Missed schedule intervals coalesce; repeated alert callbacks do not create new occurrences. A blocked receipt requires inspecting current registration, identity, permission, and plan version; do not create additional registrations to evade the block.
+8. Keep registrations with execution history disabled for audit. Delete is for unused configuration. Never treat disabling or deleting configuration as rollback of a VM, deployment, or other completed effect.
 
 ## Diagnose Kubernetes
 

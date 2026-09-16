@@ -7,6 +7,7 @@
   "requiredScopes": [
     "aiClient",
     "application",
+    "applicationEnvironment",
     "approval",
     "audit",
     "businessLine",
@@ -14,9 +15,11 @@
     "computeDomain",
     "computeResource",
     "computeTask",
+    "dataSource",
     "deployment",
     "device",
     "dockerHost",
+    "dockerOperation",
     "dockerProject",
     "dockerService",
     "enrollment",
@@ -48,7 +51,8 @@
     "token",
     "tool",
     "virtualizationConnection",
-    "vm"
+    "vm",
+    "workerPool"
   ],
   "supportedVersions": {
     "soha-core": ">=0.1.0 <0.2.0",
