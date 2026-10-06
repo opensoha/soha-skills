@@ -1589,15 +1589,9 @@
       "mcpToolName": "k8s.crds.list",
       "requiresApproval": false,
       "status": "stable-runtime",
-      "skillRefs": [
-        "k8s-sre"
-      ],
-      "resourceRefs": [
-        "soha://k8s/runtime"
-      ],
-      "promptRefs": [
-        "soha.k8s.diagnose_workload"
-      ],
+      "skillRefs": [],
+      "resourceRefs": [],
+      "promptRefs": [],
       "audit": {
         "resourceKind": "AIGatewayTool",
         "relatedIds": []
@@ -1630,15 +1624,9 @@
       "mcpToolName": "k8s.custom_resources.list",
       "requiresApproval": false,
       "status": "stable-runtime",
-      "skillRefs": [
-        "k8s-sre"
-      ],
-      "resourceRefs": [
-        "soha://k8s/runtime"
-      ],
-      "promptRefs": [
-        "soha.k8s.diagnose_workload"
-      ],
+      "skillRefs": [],
+      "resourceRefs": [],
+      "promptRefs": [],
       "audit": {
         "resourceKind": "AIGatewayTool",
         "relatedIds": []
@@ -1673,15 +1661,9 @@
       "mcpToolName": "k8s.pods.metrics",
       "requiresApproval": false,
       "status": "stable-runtime",
-      "skillRefs": [
-        "k8s-sre"
-      ],
-      "resourceRefs": [
-        "soha://k8s/runtime"
-      ],
-      "promptRefs": [
-        "soha.k8s.diagnose_workload"
-      ],
+      "skillRefs": [],
+      "resourceRefs": [],
+      "promptRefs": [],
       "audit": {
         "resourceKind": "AIGatewayTool",
         "relatedIds": []
@@ -1716,15 +1698,9 @@
       "mcpToolName": "k8s.deployments.metrics",
       "requiresApproval": false,
       "status": "stable-runtime",
-      "skillRefs": [
-        "k8s-sre"
-      ],
-      "resourceRefs": [
-        "soha://k8s/runtime"
-      ],
-      "promptRefs": [
-        "soha.k8s.diagnose_workload"
-      ],
+      "skillRefs": [],
+      "resourceRefs": [],
+      "promptRefs": [],
       "audit": {
         "resourceKind": "AIGatewayTool",
         "relatedIds": []
