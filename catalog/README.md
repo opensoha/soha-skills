@@ -6,8 +6,8 @@ by local validation.
 
 ## Compatibility Matrix
 
-- Skills package version: `0.1.2`
-- Gateway capability catalog version: `0.1.0`
+- Skills package version: `0.1.3`
+- Gateway capability catalog version: `0.1.1`
 - Platform capability catalog version: `0.1.0`
 - Supported `soha-core`: `>=0.1.0 <0.2.0`
 - Supported `soha-cli`: `>=0.1.0 <0.2.0`
@@ -90,3 +90,5 @@ package and switching the active `~/.soha/skills` runtime pointer back to the
 previous verified directory.
 
 Worker supply adds the `workerPool` scope alongside the virtualization connection and target cluster. Discover registered pools and their revisions before creation; follow the original VM operation and fresh worker assessment for recovery. The catalog lists source capabilities and is not proof that a running server has upgraded or a provider is ready.
+
+The four CRD/custom-resource and workload metric entries reflect the reviewed Core 0.1.10 tool definitions. Discover capabilities from the running server before invoking them; older supported versions may not expose these tools.
