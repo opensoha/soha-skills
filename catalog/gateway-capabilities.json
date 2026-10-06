@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/gateway-capability-catalog.schema.json",
   "schemaVersion": "opensoha.dev/gateway-capability-catalog/v1",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "source": {
     "repository": "github.com/opensoha/soha",
     "path": "internal/application/aigateway/catalog.go",
@@ -1566,6 +1566,149 @@
       "moduleId": "delivery",
       "routeEvidence": [
         "registerDeliveryRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "k8s.crds.list",
+      "title": "List Custom Resource Definitions",
+      "domain": "k8s",
+      "owningWorkbench": "platform",
+      "owningService": "internal/application/resource.Service",
+      "action": "read",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "workspace.resource.view",
+        "platform.extensions.view"
+      ],
+      "requiredScopes": [
+        "cluster"
+      ],
+      "mcpAdapterId": "platform-native.v1",
+      "mcpToolName": "k8s.crds.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "platform",
+      "routeEvidence": [
+        "registerPlatformRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "k8s.custom_resources.list",
+      "title": "List Custom Resources",
+      "domain": "k8s",
+      "owningWorkbench": "platform",
+      "owningService": "internal/application/resource.Service",
+      "action": "read",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "workspace.resource.view",
+        "platform.extensions.view"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace"
+      ],
+      "mcpAdapterId": "platform-native.v1",
+      "mcpToolName": "k8s.custom_resources.list",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "platform",
+      "routeEvidence": [
+        "registerPlatformRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "k8s.pods.metrics",
+      "title": "Read Pod Metrics",
+      "domain": "k8s",
+      "owningWorkbench": "platform",
+      "owningService": "internal/application/resource.Service",
+      "action": "read",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "workspace.resource.view",
+        "platform.pods.view"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "pod",
+        "timeRange"
+      ],
+      "mcpAdapterId": "platform-native.v1",
+      "mcpToolName": "k8s.pods.metrics",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "platform",
+      "routeEvidence": [
+        "registerPlatformRoutes",
+        "registerAIGatewayRoutes"
+      ]
+    },
+    {
+      "name": "k8s.deployments.metrics",
+      "title": "Read Deployment Metrics",
+      "domain": "k8s",
+      "owningWorkbench": "platform",
+      "owningService": "internal/application/resource.Service",
+      "action": "read",
+      "riskLevel": "read",
+      "permissionKeys": [
+        "ai.gateway.invoke",
+        "workspace.resource.view",
+        "platform.deployment.view"
+      ],
+      "requiredScopes": [
+        "cluster",
+        "namespace",
+        "deployment",
+        "timeRange"
+      ],
+      "mcpAdapterId": "platform-native.v1",
+      "mcpToolName": "k8s.deployments.metrics",
+      "requiresApproval": false,
+      "status": "stable-runtime",
+      "skillRefs": [],
+      "resourceRefs": [],
+      "promptRefs": [],
+      "audit": {
+        "resourceKind": "AIGatewayTool",
+        "relatedIds": []
+      },
+      "redaction": [],
+      "moduleId": "platform",
+      "routeEvidence": [
+        "registerPlatformRoutes",
         "registerAIGatewayRoutes"
       ]
     },

@@ -86,8 +86,8 @@ python3 tools/validate_assets.py --package-dry-run
 Write and independently verify a release package:
 
 ```bash
-python3 tools/validate_assets.py --release-version 0.1.2 --package-output-dir dist
-python3 tools/validate_assets.py --release-version 0.1.2 --verify-package dist/soha-skills-0.1.2.tar.gz
+python3 tools/validate_assets.py --release-version 0.1.3 --package-output-dir dist
+python3 tools/validate_assets.py --release-version 0.1.3 --verify-package dist/soha-skills-0.1.3.tar.gz
 ```
 
 Write a CI/release validation report artifact:
