@@ -68,12 +68,12 @@ Create a small VM named `demo-api` from an approved image and flavor.
 ## Forbidden Actions
 
 - Do not request provider passwords, API tokens, private keys, credentials, or console secrets.
-- Do not run provider CLI, shell, SSH, raw hypervisor commands, or untyped VM actions.
+- Do not run provider CLI, direct SSH, raw hypervisor commands, or untyped VM actions. Managed VM commands are permitted only through live Soha VM SSH capabilities with approval.
 
 ## Guardrails
 
 - Keep cloud-init credentials and secret material out of plans, logs, and chat output.
-- Pass references only through `_sohaSecretRefs`; never pass, resolve, log, or return secret values.
+- Pass provider/bootstrap references through `_sohaSecretRefs`; managed guest initialization uses `guestAccess.publicKeyRefs` with explicit `vm_cloud_init` permission. Never pass, resolve, log, or return secret values.
 - Stop if the plan changes before execution and request a new approval.
 - Reuse an idempotency key only for an identical approved request.
 - Capacity suggestions expire after 30 seconds and never reserve resources. Bind node/storage suggestions only within the same connection; creation performs fresh atomic admission.
@@ -95,3 +95,14 @@ Create a small VM named `demo-api` from an approved image and flavor.
 6. Cancellation revokes the original short-lived bootstrap token where possible. It does not delete a partial VM, a registered Node, or issued kubelet certificates. Keep partial-resource references and scope them explicitly for any authorized follow-up.
 
 Pool edits use revision checks. Unused pool configurations may be deleted; pools with operation history are disabled and retained for recovery and audit. Saving a pool is a configuration action and never creates a worker automatically.
+
+## Candidate VM SSH workflow
+
+Use this workflow only when the live manifest exposes `virtualization.vm_ssh.preflight`, `execute`, `get`, `cancel`, and `assess`. It requires the matching candidate Core/Agent protocol; this package does not assert released or real PVE readiness.
+
+1. Read preflight for the named VM and current binding revision. The binding fixes guest account, credential version, provider identity, trusted host key and execution Agent. Missing executor capability, stale identity or missing permission stops execution.
+2. Review the exact command and timeout, then obtain the tool's required approval. Use an identical approved request and stable idempotency key with `execute`; never select arbitrary hosts or resolve credentials into environment variables.
+3. Follow `get` for the original command. `cancel` cancels that same task and revokes its authorization. A dispatched command without a reliable exit status stays unknown; do not replay it or claim that remote effects were rolled back.
+4. `assess` proves only VM SSH capability and current binding. It does not mark a complete Personal Computer environment ready.
+
+For candidate PVE admission, a configured policy applies even when a caller omits `requireCapacity`. CPU and memory ratios are separate bounded configuration budgets; actual capacity and storage remain enforced. Administrators confirm physical source identity and activate old policies explicitly. Do not change ratios, VM configurations or source identity to bypass a rejection. Credential rotation never automatically updates guest authorized_keys or login bindings.

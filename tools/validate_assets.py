@@ -8,7 +8,9 @@ import datetime
 import gzip
 import hashlib
 import json
+import os
 import re
+import shutil
 import sys
 import tarfile
 import tempfile
@@ -1906,4 +1908,9 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    guard = shutil.which("opensoha-verify")
+    if (os.environ.get("GITHUB_ACTIONS") != "true"
+            and not os.environ.get("OPENSOHA_VERIFY_ACTIVE")
+            and (guard or os.environ.get("OPENSOHA_LOCAL_VERIFY_REQUIRED"))):
+        os.execvp(guard or "opensoha-verify", [guard or "opensoha-verify", "run", "--", sys.executable, __file__, *sys.argv[1:]])
     raise SystemExit(main())
